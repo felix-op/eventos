@@ -44,6 +44,7 @@ class Event(models.Model):
         self.date = date or self.date
 
         self.save()
+
         
 # ===========   TICKET      =================
 
@@ -220,3 +221,118 @@ class Comment(models.Model):
         if text is not None:
             self.text = text
         self.save()
+
+## Modelo NOTIFICATION = NOTIFICACION
+
+class Priority_level(models.TextChoices):
+    HIGH = 'HIGH', 'High'
+    MEDIUM = 'MEDIUM', 'Medium'
+    LOW = 'LOW', 'Low'
+
+class Notification(models.Model):
+    title = models.CharField(max_length=150)
+    message = models.TextField(max_length=500)
+    created_at = models.DateTimeField(auto_now_add = True)
+    priority = models.CharField(max_length=6, 
+        choices=Priority_level.choices, default = Priority_level.LOW)
+    is_read = models.BooleanField(default = False)
+    
+    def __str__(self):
+        return self.title
+    
+    @classmethod
+    def validate(cls, title, message, priority):
+        errors = {}
+
+        if title == "":
+            errors["title"] = "Por favor ingrese un titulo"
+
+        if message == "":
+            errors["message"] = "Por favor ingrese un mensaje"
+
+        if priority not in Priority_level.values:
+            errors["priority"] = "Nivel de prioridad no válido. Elija entre HIGH, MEDIUM o LOW."
+        return errors
+
+    @classmethod
+    def new(cls, title, message, priority, is_read=False):
+        errors = Notification.validate(title, message, priority)
+
+        if len(errors.keys()) > 0:
+            return False, errors
+
+        Notification.objects.create(
+            title=title,
+            message=message,
+            priority=priority,
+            is_read=is_read,
+        )
+
+        return True, None
+
+    def update(self, title, message, priority, is_read):
+        self.title = title or self.title
+        self.message = message or self.message
+        self.priority = priority or self.priority
+        self.is_read = is_read or self.is_read
+
+        self.save()
+
+## Modelo VENUE = LUGAR DE ENCUENTRO
+class Venue(models.Model):
+    name = models.CharField(max_length=200)
+    address = models.CharField(max_length=200)
+    city = models.CharField(max_length=150)
+    capacity = models.IntegerField()
+    contact = models.CharField(max_length=150)
+    
+    def __str__(self):
+        return self.name
+
+    @classmethod
+    def validate(cls, name, address, city, capacity, contact):
+        errors = {}
+
+        if name == "":
+            errors["name"] = "Por favor ingrese un nombre"
+
+        if address == "":
+            errors["address"] = "Por favor ingrese una dirección"
+            
+        if city == "":
+            errors["city"] = "Por favor ingrese una ciudad"
+
+        if capacity == None or capacity == 0:
+            errors["capacity"] = "Por favor ingrese una capacidad (núm. +)"
+        
+        if contact == "":
+            errors["contact"] = "Por favor ingrese un contacto"
+        
+        return errors
+
+    @classmethod
+    def new(cls, name, address, city, capacity, contact):
+        errors = Venue.validate(name, address, city, capacity, contact)
+
+        if len(errors.keys()) > 0:
+            return False, errors
+
+        Venue.objects.create(
+            name=name,
+            address=address,
+            city=city,
+            capacity=capacity,
+            contact=contact,
+        )
+
+        return True, None
+
+    def update(self, name, address, city, capacity, contact):
+        self.name = name or self.name
+        self.address = address or self.address
+        self.city = city or self.city
+        self.capacity = capacity or self.capacity
+        self.contact =contact or self.contact
+
+        self.save()
+
