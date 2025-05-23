@@ -44,8 +44,34 @@ class Event(models.Model):
         self.date = date or self.date
 
         self.save()
+<<<<<<< HEAD
 
         
+=======
+# ===========   User      =================
+class User(models.Model):
+    ADMINISTRADOR = 'admin'
+    VENDEDOR = 'vendedor'
+    CLIENTE = 'cliente'
+
+    TIPOS_USUARIO = [
+        (ADMINISTRADOR, 'Administrador'),
+        (VENDEDOR, 'Vendedor'),
+        (CLIENTE, 'Cliente'),
+    ]
+    tipo = models.CharField(max_length=10, choices=TIPOS_USUARIO, default=CLIENTE)
+    username = models.CharField(max_length=100, blank=False, unique=True)
+    email = models.EmailField(blank=False,unique=True)
+    notification = models.ManyToManyField('Notification', related_name='receptor')
+
+    def __str__(self):
+        return self.username
+
+    def update(self, username=None):
+        if username:
+            self.username = username
+        self.save() 
+>>>>>>> 6f8e9a0c0ee5a69b87ca6aeab18efef9d99e4cf6
 # ===========   TICKET      =================
 
 class Ticket_type(models.IntegerChoices):
@@ -221,6 +247,7 @@ class Comment(models.Model):
         if text is not None:
             self.text = text
         self.save()
+<<<<<<< HEAD
 
 ## Modelo NOTIFICATION = NOTIFICACION
 
@@ -336,3 +363,25 @@ class Venue(models.Model):
 
         self.save()
 
+=======
+# ===========   RefundRequest      =================
+class RefundRequest(models.Model):
+    approved = models.BooleanField(default=False)
+    approval_date = models.DateField(null=True, blank=True)
+    ticket_code = models.CharField(max_length=100, blank=False)
+    reason = models.CharField(max_length=1000, blank=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.ticket_code
+
+    def update(self, approved=None, reason=None, approval_date=None):
+        if approved is not None:
+            self.approved = approved
+        if reason is not None:
+            self.reason = reason
+        if approval_date is not None:
+            self.approval_date = approval_date
+        self.save()
+>>>>>>> 6f8e9a0c0ee5a69b87ca6aeab18efef9d99e4cf6
