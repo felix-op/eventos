@@ -44,10 +44,6 @@ class Event(models.Model):
         self.date = date or self.date
 
         self.save()
-<<<<<<< HEAD
-
-        
-=======
 # ===========   User      =================
 class User(models.Model):
     ADMINISTRADOR = 'admin'
@@ -71,7 +67,6 @@ class User(models.Model):
         if username:
             self.username = username
         self.save() 
->>>>>>> 6f8e9a0c0ee5a69b87ca6aeab18efef9d99e4cf6
 # ===========   TICKET      =================
 
 class Ticket_type(models.IntegerChoices):
@@ -247,7 +242,6 @@ class Comment(models.Model):
         if text is not None:
             self.text = text
         self.save()
-<<<<<<< HEAD
 
 ## Modelo NOTIFICATION = NOTIFICACION
 
@@ -363,7 +357,6 @@ class Venue(models.Model):
 
         self.save()
 
-=======
 # ===========   RefundRequest      =================
 class RefundRequest(models.Model):
     approved = models.BooleanField(default=False)
@@ -384,4 +377,3 @@ class RefundRequest(models.Model):
         if approval_date is not None:
             self.approval_date = approval_date
         self.save()
->>>>>>> 6f8e9a0c0ee5a69b87ca6aeab18efef9d99e4cf6
