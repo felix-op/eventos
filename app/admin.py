@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Event
+from .models import Category, Comment, Event, Notification, Rating, RefundRequest, Ticket, User, Venue
 
 
 class EventAdmin(admin.ModelAdmin):
@@ -8,4 +8,12 @@ class EventAdmin(admin.ModelAdmin):
     list_filter = ("date",)
 
 
+admin.site.register(Category)
+admin.site.register(Comment)
 admin.site.register(Event, EventAdmin)
+admin.site.register(Notification)
+admin.site.register(Rating)
+admin.site.register(RefundRequest)
+admin.site.register(Ticket)
+admin.site.register(User)
+admin.site.register(Venue)
