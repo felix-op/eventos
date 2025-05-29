@@ -1,5 +1,5 @@
 from django.views.generic import TemplateView, ListView, DetailView
-from .models import Event
+from .models import Event, Notification
 
 
 class HomeView(TemplateView):
@@ -28,3 +28,16 @@ class EventDetailView(DetailView):
     model = Event
     template_name = "app/event_detail.html"
     context_object_name = "event"
+
+class NotificationListView(ListView):
+    model = Notification
+    template_name = "app/notifications.html"
+    context_object_name = "notifications"
+    
+    def get_queryset(self):
+        return Notification.objects.all().order_by("create_at")
+    
+    def get_context_data(self, **kwargs):
+        context = super(NotificationListView, self).get_context_data(**kwargs)
+        return context
+    
