@@ -46,6 +46,11 @@
     .container-fluid {
         min-height: 80vh;
     }
+
+    {% block extra_css %}
+    
+    {% endblock %}
+
 </style>
 
 <body>
@@ -53,7 +58,7 @@
         {% include "nav.html" %}
     </nav>
 
-    <div class="container-fluid" style="background-color: rebeccapurple;">
+    <div class="container-fluid">
         {% block content %}
         {% endblock %}
     </div>
