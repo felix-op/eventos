@@ -28,7 +28,7 @@ class EventListView(ListView):
         context = super().get_context_data(**kwargs)
         return context
 
-class UserDashboard(TemplateView):
+class UserDashboard(LoginRequiredMixin,TemplateView):
     # LoginRequiredMixin como parametro cuando tengamos usuarios
     template_name = "user_dashboard.html"
 
