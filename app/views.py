@@ -1,5 +1,6 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView, ListView, DetailView
-from .models import Event, Notification
+from .models import Event, Notification, Ticket
 from django.shortcuts import render
 
 
@@ -28,11 +29,20 @@ class EventListView(ListView):
         return context
 
 class UserDashboard(TemplateView):
+    # LoginRequiredMixin como parametro cuando tengamos usuarios
     template_name = "user_dashboard.html"
 
+    def get_queryset(self):
+        # Cuando tengamos los usurio, poner:
+        #return Ticket.objects.filter(user=self.request.user)
+        return Ticket.objects.all()
+    
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['datos'] = True
+        # Cuando tengamos los usurio, poner:
+        #context['tickets'] = Ticket.objects.all()
+        context['tickets'] = Ticket.objects.all()
         return context
 
 
