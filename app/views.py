@@ -6,6 +6,9 @@ from django.shortcuts import render
 class HomeView(TemplateView):
     template_name = "home.html"
 
+class NavView(TemplateView):
+    template_name = "nav.html"
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['usuario_logueado'] = True
@@ -22,6 +25,14 @@ class EventListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        return context
+
+class UserDashboard(TemplateView):
+    template_name = "user_dashboard.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['datos'] = True
         return context
 
 
