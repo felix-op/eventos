@@ -9,7 +9,7 @@
         <a class="nav-link text-light" href="{% url 'home' %}">Home</a>
         </li>
         <li class="nav-item">
-        <a class="nav-link text-light" href="{% url 'home' %}">Events</a>
+        <a class="nav-link text-light" href="{% url 'events' %}">Events</a>
         </li>
         {% if user.is_authenticated %} <!-- or not usuario_logeado% -->
             <li class="nav-item dropdown">
