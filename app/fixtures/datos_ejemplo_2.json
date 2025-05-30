@@ -1,0 +1,94 @@
+[
+    {
+      "model": "app.category",
+      "pk": 3,
+      "fields": {
+        "name": "Teatro",
+        "description": "Obras teatrales en vivo",
+        "is_active": true
+      }
+    },
+    {
+      "model": "app.venue",
+      "pk": 3,
+      "fields": {
+        "name": "Teatro del Sur",
+        "address": "Boulevard Artístico 789",
+        "city": "Ushuaia",
+        "capacity": 1200,
+        "contact": "contacto@teatrodelsur.com"
+      }
+    },
+    {
+      "model": "app.event",
+      "pk": 3,
+      "fields": {
+        "category": 3,
+        "venue": 3,
+        "title": "Obra: El Fantasma del Sur",
+        "description": "Una obra teatral dramática basada en leyendas locales.",
+        "date": "2025-08-10T20:00:00Z",
+        "total_rating": 5,
+        "created_at": "2025-06-01T10:00:00Z",
+        "updated_at": "2025-06-01T10:00:00Z"
+      }
+    },
+    {
+      "model": "app.notification",
+      "pk": 4,
+      "fields": {
+        "title": "Nuevo Teatro Disponible",
+        "message": "Ya puedes comprar entradas para la obra 'El Fantasma del Sur'.",
+        "created_at": "2025-06-02T09:00:00Z",
+        "priority": "MEDIUM",
+        "is_read": false
+      }
+    },
+    {
+      "model": "app.user",
+      "pk": 4,
+      "fields": {
+        "tipo": "cliente",
+        "username": "cliente_maria",
+        "email": "maria@example.com",
+        "notification": [4]
+      }
+    },
+    {
+      "model": "app.user",
+      "pk": 5,
+      "fields": {
+        "tipo": "vendedor",
+        "username": "seller2",
+        "email": "seller2@example.com",
+        "notification": []
+      }
+    },
+    {
+      "model": "app.ticket",
+      "pk": 3,
+      "fields": {
+        "ticket_code": "TICKET789C",
+        "quantity": 3,
+        "type": 1,
+        "state": 1,
+        "user": 4,
+        "event": 3,
+        "buy_date": "2025-06-05T11:00:00Z"
+      }
+    },
+    {
+      "model": "app.ticket",
+      "pk": 4,
+      "fields": {
+        "ticket_code": "TICKET101D",
+        "quantity": 2,
+        "type": 2,
+        "state": 1,
+        "user": 4,
+        "event": 1,
+        "buy_date": "2025-06-05T12:30:00Z"
+      }
+    }
+  ]
+  
