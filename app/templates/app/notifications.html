@@ -1,0 +1,45 @@
+{% block extra_css %}
+.notifi-box {
+	width: 300px;
+	height: 0px;
+	opacity: 0;
+	position: absolute;
+	top: 63px;
+	right: 35px;
+	transition: 1s opacity, 250ms height;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+{% endblock %}
+
+<div class="notifi-box">
+    <h2>Notifications ({{ total_notifications }}) <span>17</span></h2>
+    <!--
+    {%for noti in personal_notis%}
+        <div class="notifi-item">
+            <div class="text">
+                <h4>{{ noti.title }}</h4>
+                <p>{{ noti.message }}</p>
+                <p>{{ noti.priority }}</p>
+                <p>{{ noti.create_at }}</p>
+            </div>
+    -->
+    <div class="notifi-item">
+        <div class="text">
+            <h4>Elias Lipodevski</h4>
+            <p>Que onda pibe</p>
+        </div>
+    </div>
+    <div class="notifi-item">
+        <div class="text">
+            <h4>Ricardo Lipodevski</h4>
+            <p>Que onda pibe</p>
+        </div>
+    </div>
+    <div class="notifi-item">
+        <div class="text">
+            <h4>Javier Lipodevski</h4>
+            <p>Que onda pibe</p>
+        </div>
+    </div>
+</div>

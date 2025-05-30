@@ -1,5 +1,6 @@
 from django.views.generic import TemplateView, ListView, DetailView
 from .models import Event, Notification
+from django.shortcuts import render
 
 
 class HomeView(TemplateView):
@@ -41,3 +42,10 @@ class NotificationListView(ListView):
         context = super(NotificationListView, self).get_context_data(**kwargs)
         return context
     
+    def get_total(request):
+        total = Notification.objects.count()
+        return render(request, 'notifications.html', {'total_notifications':total})
+    
+    def mostrar_notifications(request):
+        notis = Notification.objects.all()
+        return render(request, 'notifications.html', {'personal_notis': notis})
