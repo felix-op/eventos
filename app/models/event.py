@@ -7,7 +7,7 @@ from django.db import models
 class Event(models.Model):
     category = models.ForeignKey("Category", on_delete=models.PROTECT, null=True)
     venue = models.ForeignKey("Venue", on_delete=models.PROTECT, null=True)
-    imagen = models.ImageField(upload_to='static/media/events', null=True, blank=True)
+    imagen = models.ImageField(upload_to='events/', null=True, blank=True)
     title = models.CharField(max_length=200)
     description = models.TextField()
     date = models.DateTimeField()

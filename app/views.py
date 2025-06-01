@@ -29,19 +29,14 @@ class EventListView(ListView):
         return context
 
 class UserDashboard(LoginRequiredMixin,TemplateView):
-    # LoginRequiredMixin como parametro cuando tengamos usuarios
     template_name = "user_dashboard.html"
 
     def get_queryset(self):
-        # Cuando tengamos los usurio, poner:
-        #return Ticket.objects.filter(user=self.request.user)
         return Ticket.objects.all()
     
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Cuando tengamos los usurio, poner:
-        #context['tickets'] = Ticket.objects.all()
         context['tickets'] = Ticket.objects.all()
         return context
 

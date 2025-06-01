@@ -1,0 +1,29 @@
+[
+    {
+        "model": "app.category",
+        "pk": 1,
+        "fields": {
+            "name": "Personalizado",
+            "description": "Eventos diseñados especialmente a medida",
+            "is_active": true
+        }
+    },
+    {
+        "model": "app.category",
+        "pk": 2,
+        "fields": {
+            "name": "Cena temática",
+            "description": "Eventos gastronómicos con ambientación especial",
+            "is_active": true
+        }
+    },
+    {
+        "model": "app.category",
+        "pk": 3,
+        "fields": {
+            "name": "Corporativo",
+            "description": "Eventos empresariales, conferencias y talleres",
+            "is_active": true
+        }
+    }
+]

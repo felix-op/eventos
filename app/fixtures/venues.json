@@ -1,0 +1,35 @@
+[
+    {
+        "model": "app.venue",
+        "pk": 1,
+        "fields": {
+            "name": "Jardín Paraíso",
+            "address": "Calle de las Flores 123",
+            "city": "Sevilla",
+            "capacity": 120,
+            "contact": "eventos@jardinparaiso.com"
+        }
+    },
+    {
+        "model": "app.venue",
+        "pk": 2,
+        "fields": {
+            "name": "Restaurante Estilo Colonial",
+            "address": "Av. Gourmet 45",
+            "city": "Granada",
+            "capacity": 80,
+            "contact": "reservas@colonialgourmet.es"
+        }
+    },
+    {
+        "model": "app.venue",
+        "pk": 3,
+        "fields": {
+            "name": "Centro de Eventos El Mirador",
+            "address": "Calle Escenario 12",
+            "city": "Madrid",
+            "capacity": 200,
+            "contact": "contacto@elmirador.com"
+        }
+    }
+]
