@@ -1,12 +1,14 @@
 from django.db import models
 
+from app.models.user import User
+
 # =======================
 # Model: notification_user
 # Description: Intermediate model for Many-to-Many relationship between User and Notification,
 #              storing read status for each user.
 # =======================
 class Notification_user(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     notification = models.ForeignKey(Notification, on_delete=models.CASCADE)
     is_read = models.BooleanField(default=False)
     read_at = models.DateTimeField(null=True, blank=True) # Opcional: cuándo fue leída
