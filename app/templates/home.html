@@ -1,9 +1,93 @@
 {% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+.home_container_01,
+.home_container_02,
+.home_container_03 {
+    background-size: cover;       /* Ajusta la imagen para cubrir todo el contenedor */
+    background-position: center;  /* Centra la imagen en el contenedor */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    background-color: #f8f9fa;    /* Color de respaldo */
+
+    /* Estilos para el texto sobre la imagen de fondo */
+    color: white;               /* Si la imagen es oscura, haz el texto blanco */
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.7); /* Sombra para mejor legibilidad */
+    text-align: left; /* Alineación del texto dentro del contenedor */
+
+    /* Altura mínima para que la imagen de fondo sea visible */
+    min-height: 800px; /* Ajusta esta altura según lo que necesites */
+
+    /* Padding vertical para dar espacio al contenido */
+    padding-top: 80px; /* Espacio desde arriba */
+    padding-bottom: 80px; /* Espacio desde abajo */
+    padding-left: 5%;   /* Padding lateral relativo para el contenido */
+    padding-right: 5%;  /* Así el texto no está pegado a los bordes */
+
+    /* Propiedades para que la imagen de fondo vaya de extremo a extremo */
+    width: 100vw; /* Ocupa el 100% del ancho de la ventana */
+    position: relative; /* Necesario para el truco de margin */
+    left: 50%; /* Mueve el elemento al centro de la pantalla */
+    right: 50%; /* ... */
+    margin-left: -50vw; /* Compensa la posición izquierda para que abarque todo el ancho */
+    margin-right: -50vw; /* Compensa la posición derecha */
+}
+
+/* Estilos específicos para cada contenedor si difieren */
+.home_container_01 {
+    background-image: url("/static/media/home/home-event-1.png");
+    /* Otros estilos específicos para este contenedor si los hubiera */
+}
+
+.home_container_02 {
+    background-image: url("/static/media/home/home-event-2.png");
+    /* Otros estilos específicos para este contenedor si los hubiera */
+}
+
+.home_container_03 {
+    background-image: url("/static/media/home/home-event-3.png");
+    /* Otros estilos específicos para este contenedor si los hubiera */
+}
+
+/* Otros estilos exclusivos de la página de inicio */
+.home_swiper {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* Espacio entre las imágenes */
+    flex-wrap: wrap; /* Para que las imágenes se ajusten en pantallas pequeñas */
+}
+{% endblock %}
 
 {% block content %}
-<div class="p-5 bg-light rounded-3">
-    <h1 class="display-5 fw-bold">Eventos y Entradas</h1>
-    <p class="fs-4">Descubre, organiza y participa en los mejores eventos. Compra entradas, deja
-        comentarios y califica tus experiencias.</p>
+<div class="home_block">
+    <div class="home_container_01 container-fluid">
+        <h1 class="display-5 fw-bold">Events & Tickets</h1>
+
+        <p class="fs-4">Discover, organize and participate in the best events. Buy tickets, leave
+            comments and rate your experiences.</p>
+
+        <a href="#" class="button">Get your ticket</a>
+
+    </div>
+
+    <div class="home_container_02">
+        <h1 class="display-5 fw-bold">About Us</h1>
+
+        <p class="fs-4">We are a leading ticket sales company that connects event enthusiasts with unforgettable experiences. 
+            We offer an intuitive and secure platform where you can find and purchase tickets for a wide range of events, from concerts and festivals to sports games and plays. 
+            We are committed to providing easy and reliable access to the moments that excite you the most, ensuring that your shopping experience is smooth and hassle-free from start to finish.</p>
+
+    </div>
+
+    <div class="home_container_03">
+        <h1 class="display-5 fw-bold">Visit our networks and get to know us more</h1>
+
+        <a href="#" class="button">Facebook</a>
+        <a href="#" class="button">Instagram</a>
+        <a href="#" class="button">Youtube</a>
+        <a href="#" class="button">TikTok</a>
+
+    </div>
+
 </div>
 {% endblock content %}
