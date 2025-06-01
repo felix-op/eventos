@@ -28,10 +28,10 @@ class Notification(models.Model):
     def validate(cls, title, message, priority):
         errors = {}
 
-        if title == "":
+        if not title: # Verifica si la cadena está vacía o es None
             errors["title"] = "Por favor ingrese un titulo"
 
-        if message == "":
+        if not message: # Verifica si la cadena está vacía o es None
             errors["message"] = "Por favor ingrese un mensaje"
 
         if priority not in PriorityLevel.values:
@@ -42,22 +42,43 @@ class Notification(models.Model):
     def new(cls, title, message, priority, is_read=False):
         errors = Notification.validate(title, message, priority)
 
-        if len(errors.keys()) > 0:
+        if errors: # Verifica si el diccionario de errores no está vacío
             return False, errors
 
-        Notification.objects.create(
+        notification = cls.objects.create( # Usa cls para consistencia
             title=title,
             message=message,
             priority=priority,
             is_read=is_read,
         )
 
-        return True, None
+        return True, notification # Devuelve el objeto creado
 
-    def update(self, title, message, priority, is_read):
-        self.title = title or self.title
-        self.message = message or self.message
-        self.priority = priority or self.priority
-        self.is_read = is_read or self.is_read
+    def update(self, title=None, message=None, priority=None, is_read=None):
+        # Crea un diccionario de campos a actualizar, excluyendo valores None
+        updated_fields = {}
+        if title is not None:
+            updated_fields['title'] = title
+        if message is not None:
+            updated_fields['message'] = message
+        if priority is not None:
+            updated_fields['priority'] = priority
+        if is_read is not None:
+            updated_fields['is_read'] = is_read
+
+        # Valida los cambios potenciales
+        # Combina los valores actuales con las actualizaciones propuestas para la validación
+        temp_title = updated_fields.get('title', self.title)
+        temp_message = updated_fields.get('message', self.message)
+        temp_priority = updated_fields.get('priority', self.priority)
+
+        errors = self.validate(temp_title, temp_message, temp_priority)
+
+        if errors:
+            return False, errors # Devuelve False y errores si la validación falla
+
+        for field, value in updated_fields.items():
+            setattr(self, field, value)
 
         self.save()
+        return True, None # Devuelve True en caso de éxito
