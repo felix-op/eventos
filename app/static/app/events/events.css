@@ -1,0 +1,10 @@
+.eventos {
+    background-color: blue;
+}
+
+.event-wrapper {
+    min-height: 80vh;
+    margin-bottom: 3rem;
+    /* o usar Bootstrap's mb-5 */
+    padding-bottom: 2rem;
+}

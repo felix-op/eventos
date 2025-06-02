@@ -13,6 +13,6 @@ urlpatterns = [
     path("events/", EventListView.as_view(), name="events"),
     path("events/<int:pk>/", EventDetailView.as_view(), name="event_detail"),
     path('logout/', auth_views.LogoutView.as_view(next_page='home'), name='logout'),
-    path('login/', auth_views.LoginView.as_view(template_name='app/login.html'), name='login'),
+    path('login/', auth_views.LoginView.as_view(template_name='app/pages/login.html'), name='login'),
     
 ]

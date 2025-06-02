@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Eventos{% endblock %}
+
+{% block link_css %}
+    {% static 'app/events/events.css' %}
+{% endblock %}
+
+{% block content %}
+<header class="container py-4 mb-5 border-bottom">
+    <h2 class="mb-3">Explora nuestros eventos</h2>
+    <form method="get" class="row g-2 align-items-center">
+        <div class="col-auto">
+            <input type="text" name="search" class="form-control" placeholder="Buscar por título, ciudad...">
+        </div>
+        <div class="col-auto">
+            <select name="category" class="form-select">
+                <option value="">Todas las categorías</option>
+                {# Podrías iterar las categorías desde el contexto más adelante #}
+            </select>
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-outline-primary">Filtrar</button>
+        </div>
+    </form>
+</header>
+
+
+
+{% for event in events %}
+    {# app/components/event_card.html #}
+    <div class="event-wrapper container-fluid d-flex flex-wrap align-items-stretch mb-5 pb-5 shadow-sm rounded"
+        style="background-color: {% if forloop.counter|divisibleby:'2' %}#e9ecef{% else %}#f8f9fa{% endif %};"
+    >
+
+        <!-- Imagen -->
+        <div class="col-12 col-md-6 p-0 {% if forloop.counter|divisibleby:"2" %}order-md-2{% endif %}">
+            <img src="{{ event.imagen.url }}" alt="{{ event.title }}"
+                class="img-fluid w-100 object-fit-cover"
+                style="height: 100%; max-height: 500px; object-fit: cover;">
+        </div>
+
+        <!-- Contenido -->
+        <div class="col-12 col-md-6 d-flex flex-column justify-content-center align-items-start p-4 p-md-5"
+            style="background-color: {% if forloop.counter|divisibleby:'2' %}#e9ecef{% else %}#f8f9fa{% endif %};">
+
+            <h1 class="mb-3 fs-3 fs-md-1">{{ event.title }}</h1>
+            <p class="mb-4">{{ event.description }}</p>
+            <p class="mb-4 fw-bold fs-4">Precio: ${{ event.price }}</p>
+
+            <button class="btn btn-primary btn-lg mb-3 w-100 w-md-auto">Comprar ticket</button>
+
+            <button class="btn btn-outline-secondary mb-3 w-100 w-md-auto" type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#detallesEvento{{ forloop.counter }}"
+                    aria-expanded="false" aria-controls="detallesEvento{{ forloop.counter }}">
+                Ver detalles
+            </button>
+
+            <div class="collapse w-100" id="detallesEvento{{ forloop.counter }}">
+                <div class="card card-body bg-white shadow-sm mt-3">
+                    <h5>Lugar del evento</h5>
+                    <ul class="list-unstyled mb-3">
+                        <li><strong>Nombre:</strong> {{ event.venue.name }}</li>
+                        <li><strong>Ciudad:</strong> {{ event.venue.city }}</li>
+                        <li><strong>Dirección:</strong> {{ event.venue.address }}</li>
+                        <li><strong>Capacidad:</strong> {{ event.venue.capacity }} personas</li>
+                        <li><strong>Contacto:</strong> <a href="mailto:{{ event.venue.contact }}">{{ event.venue.contact }}</a></li>
+                    </ul>
+
+                    <h5>Categoría</h5>
+                    <p><strong>{{ event.category.name }}</strong> - {{ event.category.description }}</p>
+                </div>
+            </div>
+
+            {% include "app/components/rating.html" with promedio=event.total_rating %}
+        </div>
+    </div>
+    <div class="w-100 clearfix"></div>
+
+{% endfor %}
+
+
+
+
+
+<script src="{% static 'app/events/rating.js' %}"></script>
+
+{% endblock %}

@@ -5,7 +5,7 @@ from django.shortcuts import render
 
 
 class HomeView(TemplateView):
-    template_name = "home.html"
+    template_name = "app/pages/home.html"
 
 class NavView(TemplateView):
     template_name = "nav.html"
@@ -18,7 +18,7 @@ class NavView(TemplateView):
 
 class EventListView(ListView):
     model = Event
-    template_name = "app/events.html"
+    template_name = "app/pages/events.html"
     context_object_name = "events"
 
     def get_queryset(self):
@@ -29,7 +29,7 @@ class EventListView(ListView):
         return context
 
 class UserDashboard(LoginRequiredMixin,TemplateView):
-    template_name = "user_dashboard.html"
+    template_name = "app/pages/user_dashboard.html"
 
     def get_queryset(self):
         return Ticket.objects.all()
@@ -48,7 +48,7 @@ class EventDetailView(DetailView):
 
 class NotificationListView(ListView):
     model = Notification
-    template_name = "app/notifications.html"
+    template_name = "app/pages/notifications.html"
     context_object_name = "notifications"
     
     def get_queryset(self):

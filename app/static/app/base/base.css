@@ -1,0 +1,25 @@
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.navbar .nav-link.active {
+    color: white;
+    font-weight: bold;
+}
+
+nav {
+    height: 10vh;
+}
+
+footer {
+    height: 10vh;
+}
+
+.container-fluid {
+    flex-grow: 1;
+    padding: 2rem;
+}
