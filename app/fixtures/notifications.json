@@ -1,0 +1,72 @@
+[
+  {
+    "model": "app.notification",
+    "pk": 1,
+    "fields": {
+      "title": "Nuevo Teatro Disponible",
+      "message": "Ya puedes comprar entradas para la obra 'El Fantasma del Sur'.",
+      "created_at": "2025-06-02T09:00:00Z",
+      "priority": "MEDIUM"
+    }
+  },
+  {
+    "model": "app.notification",
+    "pk": 2,
+    "fields": {
+      "title": "¡Recordatorio de Evento!",
+      "message": "Mañana es el concierto de 'Luces del Norte'. ¡No te lo pierdas!",
+      "created_at": "2025-06-03T14:30:00Z",
+      "priority": "HIGH"
+    }
+  },
+  {
+    "model": "app.notification",
+    "pk": 3,
+    "fields": {
+      "title": "Oferta Especial",
+      "message": "20% de descuento en entradas para 'Festival de Jazz' por tiempo limitado.",
+      "created_at": "2025-06-03T10:00:00Z",
+      "priority": "LOW"
+    }
+  },
+  {
+    "model": "app.notification",
+    "pk": 4,
+    "fields": {
+      "title": "Cambio de Horario",
+      "message": "El evento 'Noche de Monólogos' se pospuso para el 15 de julio.",
+      "created_at": "2025-06-01T18:00:00Z",
+      "priority": "HIGH"
+    }
+  },
+  {
+    "model": "app.notification",
+    "pk": 5,
+    "fields": {
+      "title": "Entradas Agotadas",
+      "message": "Las entradas para el 'Show de Magia Familiar' se han agotado. ¡Estate atento a nuevas fechas!",
+      "created_at": "2025-06-02T11:45:00Z",
+      "priority": "MEDIUM"
+    }
+  },
+  {
+    "model": "app.notification",
+    "pk": 6,
+    "fields": {
+      "title": "Nuevo Artista Confirmado",
+      "message": "¡'Música Viva' suma a un nuevo artista sorpresa! Consulta la agenda.",
+      "created_at": "2025-06-03T09:15:00Z",
+      "priority": "MEDIUM"
+    }
+  },
+  {
+    "model": "app.notification",
+    "pk": 7,
+    "fields": {
+      "title": "¡Valoramos tu opinión!",
+      "message": "Ayúdanos a mejorar. Deja tu reseña sobre el evento 'Danza Urbana'.",
+      "created_at": "2025-06-01T16:00:00Z",
+      "priority": "LOW"
+    }
+  }
+]
