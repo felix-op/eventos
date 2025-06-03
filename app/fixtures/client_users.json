@@ -1,0 +1,46 @@
+[
+    {
+      "model": "app.User",
+      "pk": 1,
+      "fields": {
+        "username": "cliente1",
+        "email": "cliente1@example.com",
+        "password": "pbkdf2_sha256$1000000$E40vO83drSMJBZWzhmV9e0$zUyOJf6uo2QcR44EuHwGyyRaLWcL4iar+pj13dIN2AQ=",
+        "is_active": true,
+        "groups": [1]
+      }
+    },
+    {
+      "model": "app.User",
+      "pk": 2,
+      "fields": {
+        "username": "cliente2",
+        "email": "cliente2@example.com",
+        "password": "pbkdf2_sha256$1000000$E40vO83drSMJBZWzhmV9e0$zUyOJf6uo2QcR44EuHwGyyRaLWcL4iar+pj13dIN2AQ=",
+        "is_active": true,
+        "groups": [1]
+      }
+    },
+    {
+        "model": "app.User",
+        "pk": 3,
+        "fields": {
+          "username": "cliente3",
+          "email": "cliente3@example.com",
+          "password": "pbkdf2_sha256$1000000$E40vO83drSMJBZWzhmV9e0$zUyOJf6uo2QcR44EuHwGyyRaLWcL4iar+pj13dIN2AQ=",
+          "is_active": true,
+          "groups": [1]
+        }
+    },
+    {
+        "model": "app.User",
+        "pk": 4,
+        "fields": {
+          "username": "cliente4",
+          "email": "cliente4@example.com",
+          "password": "pbkdf2_sha256$1000000$E40vO83drSMJBZWzhmV9e0$zUyOJf6uo2QcR44EuHwGyyRaLWcL4iar+pj13dIN2AQ=",
+          "is_active": true,
+          "groups": [1]
+        }
+    }
+]
