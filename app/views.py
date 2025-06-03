@@ -1,8 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import TemplateView, ListView, DetailView
-from .models import Event, Notification, Ticket
+from django.views.generic import TemplateView, ListView, DetailView,CreateView
+from .models import Event, Notification, Ticket,User
 from django.shortcuts import render
 from django.db.models import Case, When
+from django.contrib.auth.forms import UserCreationForm
+from django.urls import reverse_lazy
+from django.contrib.auth import login
+from django.contrib.auth.models import Group
 
 
 class HomeView(TemplateView):
@@ -78,3 +82,26 @@ def get_noti_preview_list(request):
     # Obtiene 5 notificaciones más recientes
     
     return render(request, 'app/components/notifications_preview.html', {'notis_preview': notis_preview})
+
+# REGISTER
+class RegistroForm(UserCreationForm):
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password1', 'password2']
+
+class RegisterView(CreateView):
+    form_class = RegistroForm
+    template_name = 'app/pages/register.html'
+    success_url = reverse_lazy('home')  
+
+    def form_valid(self, form):
+        # añado al usuairo a un grupo
+        response = super().form_valid(form)
+        user = self.object
+        group = Group.objects.get(name='client')
+        user.groups.add(group)
+        user.save()
+        # se logea
+        login(self.request, self.object)
+        return response

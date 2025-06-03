@@ -112,7 +112,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = "es-ar"
+LANGUAGE_CODE = "en"
 
 TIME_ZONE = "UTC"
 
@@ -132,3 +132,6 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 LOGIN_REDIRECT_URL = '/'
+
+# custom user
+AUTH_USER_MODEL = 'app.User'

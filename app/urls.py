@@ -5,6 +5,7 @@ from .views import (
     EventListView,
     EventDetailView,
     UserDashboard,
+    RegisterView
 )
 from . import views
 
@@ -15,5 +16,6 @@ urlpatterns = [
     path("events/<int:pk>/", EventDetailView.as_view(), name="event_detail"),
     path('logout/', auth_views.LogoutView.as_view(next_page='home'), name='logout'),
     path('login/', auth_views.LoginView.as_view(template_name='app/pages/login.html'), name='login'),
+    path('register/',RegisterView.as_view(), name='register'),
     path('components/notifications_preview.html', views.get_noti_preview_list, name='notifications_preview'),
 ]

@@ -9,7 +9,8 @@
       {{ form.as_p }}
       <button type="submit" class="btn btn-primary">Log In</button>
     </form>
-
+    <p> dont have an account ?</p>
+    <a href="{% url 'register'%}"><h5>Register</h5> </a>
     {% if form.non_field_errors %}
       <div class="alert alert-danger">
         {% for error in form.non_field_errors %}
