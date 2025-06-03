@@ -8,7 +8,7 @@ python manage.py cargar_datos
    >   - Contraseña clientes : `Cliente123`
 # Crear admin default
 ```bash
-python manage.py cargar_datos
+python manage.py admin_default
 ```
    > - Un usuario admin con las siguientes credenciales:
    >   - Usuario: `admin`
