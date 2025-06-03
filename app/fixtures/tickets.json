@@ -1,0 +1,107 @@
+[
+    {
+      "model": "app.ticket",
+      "pk": 1,
+      "fields": {
+        "buy_date": "2024-06-01T14:00:00Z",
+        "ticket_code": "ABC123USER1",
+        "quantity": 2,
+        "type": 1,
+        "state": 1,
+        "user": 1,
+        "event": 1
+      }
+    },
+    {
+      "model": "app.ticket",
+      "pk": 2,
+      "fields": {
+        "buy_date": "2024-06-02T15:30:00Z",
+        "ticket_code": "DEF456USER1",
+        "quantity": 1,
+        "type": 2,
+        "state": 1,
+        "user": 1,
+        "event": 2
+      }
+    },
+    {
+      "model": "app.ticket",
+      "pk": 3,
+      "fields": {
+        "buy_date": "2024-06-03T12:00:00Z",
+        "ticket_code": "GHI789USER2",
+        "quantity": 3,
+        "type": 1,
+        "state": 2,
+        "user": 2,
+        "event": 3
+      }
+    },
+    {
+      "model": "app.ticket",
+      "pk": 4,
+      "fields": {
+        "buy_date": "2024-06-03T16:00:00Z",
+        "ticket_code": "JKL012USER2",
+        "quantity": 1,
+        "type": 2,
+        "state": 1,
+        "user": 2,
+        "event": 1
+      }
+    },
+    {
+      "model": "app.ticket",
+      "pk": 5,
+      "fields": {
+        "buy_date": "2024-06-04T10:00:00Z",
+        "ticket_code": "MNO345USER3",
+        "quantity": 2,
+        "type": 1,
+        "state": 2,
+        "user": 2,
+        "event": 4
+      }
+    },
+    {
+      "model": "app.ticket",
+      "pk": 6,
+      "fields": {
+        "buy_date": "2024-06-04T11:00:00Z",
+        "ticket_code": "PQR678USER3",
+        "quantity": 2,
+        "type": 2,
+        "state": 2,
+        "user": 3,
+        "event": 2
+      }
+    },
+    {
+      "model": "app.ticket",
+      "pk": 7,
+      "fields": {
+        "buy_date": "2024-06-05T09:00:00Z",
+        "ticket_code": "STU901USER4",
+        "quantity": 1,
+        "type": 1,
+        "state": 2,
+        "user": 4,
+        "event": 3
+      }
+    },
+    {
+      "model": "app.ticket",
+      "pk": 8,
+      "fields": {
+        "buy_date": "2024-06-05T12:30:00Z",
+        "ticket_code": "VWX234USER4",
+        "quantity": 2,
+        "type": 2,
+        "state": 1,
+        "user": 4,
+        "event": 4
+      }
+    }
+  ]
+  

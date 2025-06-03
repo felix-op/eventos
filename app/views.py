@@ -35,14 +35,10 @@ class EventListView(ListView):
 
 class UserDashboard(LoginRequiredMixin,TemplateView):
     template_name = "app/pages/user_dashboard.html"
-
-    def get_queryset(self):
-        return Ticket.objects.all()
-    
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['tickets'] = Ticket.objects.all()
+        context['tickets'] = Ticket.objects.filter(user=self.request.user)
         return context
 
 
@@ -82,6 +78,7 @@ def get_noti_preview_list(request):
     # Obtiene 5 notificaciones más recientes
     
     return render(request, 'app/components/notifications_preview.html', {'notis_preview': notis_preview})
+
 
 # REGISTER
 class RegistroForm(UserCreationForm):
