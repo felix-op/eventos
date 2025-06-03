@@ -1,7 +1,3 @@
-{% extends "base.html" %}
-{% load static %}
-
-{% block extra_css %}
 .home_container_01,
 .home_container_02,
 .home_container_03 {
@@ -49,38 +45,3 @@
     gap: 20px; /* Espacio entre las imágenes */
     flex-wrap: wrap; /* Para que las imágenes se ajusten en pantallas pequeñas */
 }
-{% endblock %}
-
-{% block content %}
-<div class="home_block">
-    <div class="home_container_01 container-fluid">
-        <h1 class="display-5 fw-bold">Events & Tickets</h1>
-
-        <p class="fs-4">Discover, organize and participate in the best events. Buy tickets, leave
-            comments and rate your experiences.</p>
-
-        <a href="#" class="button btn btn-light">Get your ticket</a>
-
-    </div>
-
-    <div class="home_container_02">
-        <h1 class="display-5 fw-bold">About Us</h1>
-
-        <p class="fs-4">We are a leading ticket sales company that connects event enthusiasts with unforgettable experiences. 
-            We offer an intuitive and secure platform where you can find and purchase tickets for a wide range of events, from concerts and festivals to sports games and plays. 
-            We are committed to providing easy and reliable access to the moments that excite you the most, ensuring that your shopping experience is smooth and hassle-free from start to finish.</p>
-
-    </div>
-
-    <div class="home_container_03">
-        <h1 class="display-5 fw-bold">Visit our networks and get to know us more</h1>
-
-        <a href="#" class="button">Facebook</a>
-        <a href="#" class="button">Instagram</a>
-        <a href="#" class="button">Youtube</a>
-        <a href="#" class="button">TikTok</a>
-
-    </div>
-
-</div>
-{% endblock content %}

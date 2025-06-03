@@ -2,6 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView, ListView, DetailView
 from .models import Event, Notification, Ticket
 from django.shortcuts import render
+from django.db.models import Case, When
 
 
 class HomeView(TemplateView):
@@ -46,13 +47,16 @@ class EventDetailView(DetailView):
     template_name = "app/event_detail.html"
     context_object_name = "event"
 
+
+from .models import Notification, PriorityLevel
+
 class NotificationListView(ListView):
     model = Notification
     template_name = "app/pages/notifications.html"
     context_object_name = "notifications"
     
     def get_queryset(self):
-        return Notification.objects.all().order_by("create_at")
+        return Notification.objects.all().order_by("created_at")
     
     def get_context_data(self, **kwargs):
         context = super(NotificationListView, self).get_context_data(**kwargs)
@@ -62,6 +66,15 @@ class NotificationListView(ListView):
         total = Notification.objects.count()
         return render(request, 'notifications.html', {'total_notifications':total})
     
-    def mostrar_notifications(request):
-        notis = Notification.objects.all()
-        return render(request, 'notifications.html', {'personal_notis': notis})
+def get_noti_preview_list(request):
+    # Asignar valores de num de prioridad
+    notis_preview = Notification.objects.annotate(
+        priority_orden=Case(
+            When(priority=PriorityLevel.HIGH, then=1),
+            When(priority=PriorityLevel.MEDIUM, then=2),
+            When(priority=PriorityLevel.LOW, then=3),
+        )
+    ).orden_by('priority_order', '-create_at')[:5]
+    # Obtiene 5 notificaciones más recientes
+    
+    return render(request, 'app/components/notifications_preview.html', {'notis_preview': notis_preview})

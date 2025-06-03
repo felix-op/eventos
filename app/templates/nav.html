@@ -1,3 +1,9 @@
+{% load static %}
+
+{% block link_css %}
+    {% static "css_nav/nav_styles.css" %}
+{% endblock %}
+
 <div class="container">
     <a class="navbar-brand" href="#" style="color: white">
         <img src="https://cdn-icons-png.flaticon.com/512/432/432312.png" alt="EVENTOS" width="30" height="24">
@@ -22,17 +28,7 @@
                             <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2m.995-14.901a1 1 0 1 0-1.99 0A5 5 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901"/>
                         </svg>
                     </a>
-                    <ul class="dropdown-menu">
-                        {% block notifications %}
-
-                        {% endblock %}
-                        <!--
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        -->
-                    </ul>
+                    {% include 'app/components/notifications_preview.html' %}
                 </li>
 
             <li class="nav-item">
