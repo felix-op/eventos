@@ -20,6 +20,9 @@ class Command(BaseCommand):
             call_command('loaddata', 'notifications.json')
             self.stdout.write(self.style.SUCCESS("Loaded Notifications ✅"))
 
+            call_command('loaddata', 'user_groups.json')
+            self.stdout.write(self.style.SUCCESS("Grupos de usuarios cargados ✅"))
+
         except Exception as e:
             raise CommandError(f"Ocurrió un error al cargar fixtures: {e}")
     
