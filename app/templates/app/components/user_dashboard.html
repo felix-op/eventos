@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+.sidebar {
+    width: 250px;
+    background-color: #f8f9fa;
+    height: 100vh;
+    padding-top: 2rem;
+    border-right: 1px solid #dee2e6;
+  }
+  .sidebar a {
+    text-decoration: none;
+    color: #333;
+  }
+  .sidebar a:hover {
+    color: #0d6efd;
+  }
+  .content {
+    padding: 2rem;
+    overflow-y: auto;
+    height: 100vh;
+  }
+  .section {
+    margin-bottom: 3rem;
+  }
+  .placeholder-box {
+    background-color: #e9ecef;
+    height: 150px;
+    border-radius: 5px;
+  }
+
+{% endblock %}
+
+{% block content %}
+<div class="d-flex">
+  <!-- SIDEBAR -->
+      <!-- Botón hamburguesa mobile -->
+      <button class="btn btn-outline-secondary d-md-none m-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenuMobile" aria-controls="sidebarMenuMobile">
+        <i class="bi bi-list"></i> Menú
+      </button>
+
+      <!-- Sidebar escritorio -->
+      <div class="d-none d-md-block sidebar" style="height: 100%">
+        <h4 class="mb-4 px-3">My Profile</h4>
+        <ul class="nav flex-column px-3">
+          <li class="nav-item mb-2"><a class="nav-link" href="#Purchase">🛒 Purchase History</a></li>
+          <li class="nav-item mb-2"><a class="nav-link" href="#Comments">💬 Comments</a></li>
+          <li class="nav-item mb-2"><a class="nav-link" href="#Ratings">⭐ Ratings</a></li>
+          <li class="nav-item mb-2"><a class="nav-link" href="#Favorites">❤️ Favorites</a></li>
+          <li class="nav-item"><a class="nav-link" href="#information">⚙️ User information</a></li>
+        </ul>
+      </div>
+
+      <!-- Sidebar mobile -->
+      <div class="offcanvas offcanvas-start d-md-none" tabindex="-1" id="sidebarMenuMobile">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title">Menú</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
+        </div>
+        <div class="offcanvas-body px-3">
+          <ul class="nav flex-column">
+            <li class="nav-item mb-2"><a class="nav-link" href="#Purchase">🛒 Purchase History</a></li>
+            <li class="nav-item mb-2"><a class="nav-link" href="#Comments">💬 Comments</a></li>
+            <li class="nav-item mb-2"><a class="nav-link" href="#Ratings">⭐ Ratings</a></li>
+            <li class="nav-item mb-2"><a class="nav-link" href="#Favorites">❤️ Favorites</a></li>
+            <li class="nav-item"><a class="nav-link" href="#information">⚙️ User information</a></li>
+          </ul>
+        </div>
+      </div>
+
+  <!-- SECCIONES -->
+  <div class="d-flex" style="height: 80vh; width: 100%">
+    <div class="content flex-grow-1" style="padding: 0; height: 80vh">
+      <!-- PURCHASE -->
+      {% include "../pages/purchase_dashboard.html" %}
+      <!-- COMMENT -->        
+      {% include "../pages/comment_dashboard.html" %}
+      
+      <div id="Ratings" class="section">
+        <h5 class="mb-4 fw-semibold text-primary">Ratings</h5>
+      </div>
+      <div id="Favorites" class="section">
+        <h5 class="mb-4 fw-semibold text-primary">Favorites</h5>
+      </div>
+      <div id="information" class="section">
+            <h5 class="mb-4 fw-semibold text-primary">User information</h5>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

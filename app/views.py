@@ -1,14 +1,15 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView, ListView, DetailView,CreateView, FormView
 from .models import Event, Notification, Ticket, User, Comment, PriorityLevel
-from django.shortcuts import render
+from django.shortcuts import render,redirect, get_object_or_404
 from django.db.models import Case, When
 from django.contrib.auth.forms import UserCreationForm
-from django.urls import reverse_lazy
+from django.views import View
+from django.urls import reverse_lazy,reverse
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.models import Group
-from .forms import LoginForm
+from .forms import LoginForm, CommentForm
 
 class HomeView(TemplateView):
     template_name = "app/pages/home.html"
@@ -34,7 +35,7 @@ class EventListView(ListView):
         return context
 
 class UserDashboard(LoginRequiredMixin,TemplateView):
-    template_name = "app/pages/user_dashboard.html"
+    template_name = "app/components/user_dashboard.html"
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -109,3 +110,21 @@ class LoginManualView(FormView):
         login(self.request, form.user)
         messages.success(self.request, f"Bienvenido, {form.cleaned_data['usuario']}!")
         return super().form_valid(form)
+    
+#   COMMENT CLASSES
+
+class CommentUpdateView(View):
+    def post(self, request, pk):
+        comment = get_object_or_404(Comment, pk=pk, user=request.user)
+        form = CommentForm(request.POST, instance=comment)
+        if form.is_valid():
+            form.save()
+        return redirect('user_dashboard')  # o a donde quieras volver
+
+# DELETE desde modal
+class CommentDeleteView(View):
+    def post(self, request, pk):
+        comment = get_object_or_404(Comment, pk=pk, user=request.user)
+        comment.delete()
+        return redirect('user_dashboard')
+

@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.auth import authenticate
 from django.core.exceptions import ValidationError
+from .models import Comment
+
 
 class LoginForm(forms.Form):
     usuario = forms.CharField(
@@ -43,3 +45,22 @@ class LoginForm(forms.Form):
                 raise ValidationError("Credenciales inválidas. Intente de nuevo.")
             self.user = user  # Guarda el usuario para usarlo luego
         return cleaned_data
+    
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['title', 'text']
+
+    def clean_title(self):
+        title = self.cleaned_data.get('title')
+        if not title:
+            raise forms.ValidationError("El título no puede estar vacío.")
+        return title
+
+    def clean_text(self):
+        text = self.cleaned_data.get('text')
+        if not text:
+            raise forms.ValidationError("El texto no puede estar vacío.")
+        return text
