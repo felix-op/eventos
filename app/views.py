@@ -47,11 +47,6 @@ class EventDetailView(DetailView):
     template_name = "app/event_detail.html"
     context_object_name = "event"
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 4592a6f29b191dced4ac4ac3c6ea9a2687372045
 class NotificationListView(ListView):
     model = Notification
     template_name = "app/pages/notifications.html"
