@@ -1,22 +1,47 @@
-<!-- templates/eventos/login.html -->
 {% extends "base.html" %}
+{% load static %}
+
+{% block link_css %}
+    {% static "app/login/login.css" %}
+{% endblock link_css %}
 
 {% block content %}
-  <div class="container">
-    <h2>Login</h2>
-    <form method="post">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <button type="submit" class="btn btn-primary">Log In</button>
-    </form>
-    <p> dont have an account ?</p>
-    <a href="{% url 'register'%}"><h5>Register</h5> </a>
-    {% if form.non_field_errors %}
-      <div class="alert alert-danger">
-        {% for error in form.non_field_errors %}
-          <p>{{ error }}</p>
-        {% endfor %}
+<div class="wrapper {% if not form.errors %}fadeInDown{% endif %}">
+    <div id="formContent">
+      <div class="{% if not form.errors %}fadeInDown{% endif %} first">
+        <h1 class="mt-5">Log in</h1>
       </div>
-    {% endif %}
+  
+      <!-- Login Form -->
+      <form method="post" action="">
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+          <div class="alert alert-danger">
+            {% for err in form.non_field_errors %}
+              <div>{{ err }}</div>
+            {% endfor %}
+          </div>
+        {% endif %}
+        <div class="{% if not form.errors %}fadeIn first{% else %}first{% endif %}">
+            {{ form.usuario }}
+            {% for err in form.usuario.errors %}
+                <div class="text-danger small">{{ err }}</div>
+            {% endfor %}
+        </div>
+        <div class="{% if not form.errors %}fadeIn first{% else %}first{% endif %}">
+            {{ form.contrasena }}
+            {% for err in form.contrasena.errors %}
+              <div class="text-danger small">{{ err }}</div>
+            {% endfor %}
+        </div>
+        <input type="submit" class="{% if not form.errors %}fadeIn four{% else %}first{% endif %}" value="Log In">
+      </form>
+  
+      <!-- Remind Passowrd -->
+      <div id="formFooter">
+        <a class="underlineHover" href="{% url 'home' %}">Go to the Site</a>
+      </div>
+  
+    </div>
   </div>
 {% endblock %}

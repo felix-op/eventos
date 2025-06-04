@@ -1,13 +1,14 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import TemplateView, ListView, DetailView,CreateView
-from .models import Event, Notification, Ticket,User,Comment
+from django.views.generic import TemplateView, ListView, DetailView,CreateView, FormView
+from .models import Event, Notification, Ticket, User, Comment, PriorityLevel
 from django.shortcuts import render
 from django.db.models import Case, When
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
+from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.models import Group
-
+from .forms import LoginForm
 
 class HomeView(TemplateView):
     template_name = "app/pages/home.html"
@@ -19,7 +20,6 @@ class NavView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['usuario_logueado'] = self.request.user.is_authenticated
         return context
-
 
 class EventListView(ListView):
     model = Event
@@ -42,14 +42,10 @@ class UserDashboard(LoginRequiredMixin,TemplateView):
         context['comments'] = Comment.objects.filter(user=self.request.user)
         return context
 
-
 class EventDetailView(DetailView):
     model = Event
     template_name = "app/event_detail.html"
     context_object_name = "event"
-
-
-from .models import Notification, PriorityLevel
 
 class NotificationListView(ListView):
     model = Notification
@@ -94,7 +90,7 @@ class RegisterView(CreateView):
     success_url = reverse_lazy('home')  
 
     def form_valid(self, form):
-        # añado al usuairo a un grupo
+        # añado al usuario a un grupo
         response = super().form_valid(form)
         user = self.object
         group = Group.objects.get(name='client')
@@ -103,3 +99,13 @@ class RegisterView(CreateView):
         # se logea
         login(self.request, self.object)
         return response
+    
+class LoginManualView(FormView):
+    template_name = 'app/pages/login.html'
+    form_class = LoginForm
+    success_url = reverse_lazy("home")
+
+    def form_valid(self, form):
+        login(self.request, form.user)
+        messages.success(self.request, f"Bienvenido, {form.cleaned_data['usuario']}!")
+        return super().form_valid(form)
