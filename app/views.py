@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView, ListView, DetailView,CreateView
-from .models import Event, Notification, Ticket,User
+from .models import Event, Notification, Ticket,User,Comment
 from django.shortcuts import render
 from django.db.models import Case, When
 from django.contrib.auth.forms import UserCreationForm
@@ -36,14 +36,11 @@ class EventListView(ListView):
 
 class UserDashboard(LoginRequiredMixin,TemplateView):
     template_name = "app/pages/user_dashboard.html"
-
-    def get_queryset(self):
-        return Ticket.objects.all()
-    
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['tickets'] = Ticket.objects.all()
+        context['tickets'] = Ticket.objects.filter(user=self.request.user)
+        context['comments'] = Comment.objects.filter(user=self.request.user)
         return context
 
 
@@ -82,6 +79,7 @@ def get_noti_preview_list(request):
     # Obtiene 5 notificaciones más recientes
     
     return render(request, 'app/components/notifications_preview.html', {'notis_preview': notis_preview})
+
 
 # REGISTER
 class RegistroForm(UserCreationForm):

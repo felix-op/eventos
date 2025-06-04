@@ -1,0 +1,80 @@
+[
+    {
+      "model": "app.comment",
+      "pk": 1,
+      "fields": {
+        "user": 1,
+        "event": 1,
+        "title": "Muy buen evento",
+        "text": "Me encantó la organización y la música en vivo.",
+        "create_at": "2024-06-01T18:00:00Z"
+      }
+    },
+    {
+      "model": "app.comment",
+      "pk": 2,
+      "fields": {
+        "user": 1,
+        "event": 2,
+        "title": "Excelente experiencia",
+        "text": "Todo estuvo bien, aunque había mucha gente.",
+        "create_at": "2024-06-02T18:00:00Z"
+      }
+    },
+    {
+      "model": "app.comment",
+      "pk": 3,
+      "fields": {
+        "user": 2,
+        "event": 3,
+        "title": "No me gustó tanto",
+        "text": "El lugar estaba un poco desordenado, pero la banda estuvo genial.",
+        "create_at": "2024-06-03T15:00:00Z"
+      }
+    },
+    {
+      "model": "app.comment",
+      "pk": 4,
+      "fields": {
+        "user": 2,
+        "event": 1,
+        "title": "Buen ambiente",
+        "text": "Muy buena atención y sonido impecable.",
+        "create_at": "2024-06-03T18:00:00Z"
+      }
+    },
+    {
+      "model": "app.comment",
+      "pk": 5,
+      "fields": {
+        "user": 3,
+        "event": 2,
+        "title": "Gran noche",
+        "text": "El DJ estuvo increíble. Volvería sin dudas.",
+        "create_at": "2024-06-04T14:00:00Z"
+      }
+    },
+    {
+      "model": "app.comment",
+      "pk": 6,
+      "fields": {
+        "user": 4,
+        "event": 3,
+        "title": "Evento decente",
+        "text": "Estuvo bien, pero esperaba más variedad en los puestos de comida.",
+        "create_at": "2024-06-05T10:00:00Z"
+      }
+    },
+    {
+      "model": "app.comment",
+      "pk": 7,
+      "fields": {
+        "user": 4,
+        "event": 4,
+        "title": "Excelente organización",
+        "text": "Todo fue muy profesional. Seguridad y limpieza al 100%.",
+        "create_at": "2024-06-05T13:30:00Z"
+      }
+    }
+  ]
+  
