@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Comment, Event, Notification, Rating, RefundRequest, Ticket, User, Venue
+from .models import Category, Comment, Event, Notification, Rating, RefundRequest, Ticket, User, Venue, Notification_user
 
 
 class EventAdmin(admin.ModelAdmin):
@@ -17,3 +17,4 @@ admin.site.register(RefundRequest)
 admin.site.register(Ticket)
 admin.site.register(User)
 admin.site.register(Venue)
+admin.site.register(Notification_user)

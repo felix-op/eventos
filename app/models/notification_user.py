@@ -1,6 +1,10 @@
 from django.db import models
+from django.contrib.auth import get_user_model
 
-from app.models.user import User
+
+from .notification import Notification 
+
+User = get_user_model() # Obtiene la instancia activa del modelo de usuario
 
 # =======================
 # Model: notification_user
@@ -15,7 +19,7 @@ class Notification_user(models.Model):
 
     class Meta:
         # Asegura que un usuario solo pueda tener una entrada por notificación
-        unique_together = ('user', 'notification')
+        unique_together = ('notification', 'user')
 
     def __str__(self):
         return f"{self.user.username} - {self.notification.title} ({'Leída' if self.is_read else 'No Leída'})"

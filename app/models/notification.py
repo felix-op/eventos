@@ -1,6 +1,8 @@
 from django.db import models
+from django.contrib.auth import get_user_model # Importa la forma correcta de obtener el User model
 
-from app.models.user import User
+User = get_user_model() # Obtiene la instancia activa del modelo de usuario
+
 # =======================
 # Enum: PriorityLevel
 # Description: Priority levels for notifications (High, Medium, Low).
@@ -23,11 +25,11 @@ class Notification(models.Model):
     # Relación Many-to-Many con el modelo de usuario a través de UserNotification
     # 'notifications_received' es un related_name que permite acceder
     # a las notificaciones recibidas por un usuario desde el objeto User
-    #recipients = models.ManyToManyField(
-    #    User,
-    #    through='app.Notification_user', # Especifica el modelo intermedio
-    #    related_name='notifications_received'
-    #)
+    recipients = models.ManyToManyField(
+        User,
+        through='app.Notification_user', # Especifica el modelo intermedio
+        related_name='notifications_received'
+    )
     
     def __str__(self):
         return self.title
@@ -63,6 +65,8 @@ class Notification(models.Model):
             priority=priority,
         )
 
+        from app.models.notification_user import Notification_user
+        
         # Asocia la notificación con cada usuario a través del modelo intermedio
         for user in recipient_users:
             Notification_user.objects.create(

@@ -24,7 +24,6 @@ class User(AbstractUser):
         default=UserType.CLIENTE
     )
     """
-    notification = models.ManyToManyField('Notification', related_name='receptor')
 
     def __str__(self):
         return self.username

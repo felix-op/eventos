@@ -7,6 +7,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.contrib.auth import login
 from django.contrib.auth.models import Group
+from .models import PriorityLevel
 
 
 class HomeView(TemplateView):
@@ -52,7 +53,6 @@ class EventDetailView(DetailView):
     context_object_name = "event"
 
 
-from .models import Notification, PriorityLevel
 
 class NotificationListView(ListView):
     model = Notification
@@ -78,7 +78,7 @@ def get_noti_preview_list(request):
             When(priority=PriorityLevel.MEDIUM, then=2),
             When(priority=PriorityLevel.LOW, then=3),
         )
-    ).orden_by('priority_order', '-create_at')[:5]
+    ).order_by('priority_orden', '-created_at')[:5]
     # Obtiene 5 notificaciones más recientes
     
     return render(request, 'app/components/notifications_preview.html', {'notis_preview': notis_preview})

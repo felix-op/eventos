@@ -17,14 +17,14 @@ class Command(BaseCommand):
             call_command('loaddata', 'events.json')
             self.stdout.write(self.style.SUCCESS("Eventos cargados ✅"))
 
-            call_command('loaddata', 'notifications.json')
-            self.stdout.write(self.style.SUCCESS("Loaded Notifications ✅"))
-
             call_command('loaddata', 'user_groups.json')
             self.stdout.write(self.style.SUCCESS("Grupos de usuarios cargados ✅"))
-
+            
             call_command('loaddata', 'client_users.json')
             self.stdout.write(self.style.SUCCESS("Usuarios clientes, cargados ✅"))
+
+            call_command('loaddata', 'notifications.json')
+            self.stdout.write(self.style.SUCCESS("Loaded Notifications ✅"))
 
         except Exception as e:
             raise CommandError(f"Ocurrió un error al cargar fixtures: {e}")
