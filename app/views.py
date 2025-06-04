@@ -8,12 +8,7 @@ from django.urls import reverse_lazy
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.models import Group
-<<<<<<< HEAD
-from .models import PriorityLevel
-
-=======
 from .forms import LoginForm
->>>>>>> 4592a6f29b191dced4ac4ac3c6ea9a2687372045
 
 class HomeView(TemplateView):
     template_name = "app/pages/home.html"
