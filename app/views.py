@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView, ListView, DetailView,CreateView
-from .models import Event, Notification, Ticket,User
+from .models import Event, Notification, Ticket,User,Comment
 from django.shortcuts import render
 from django.db.models import Case, When
 from django.contrib.auth.forms import UserCreationForm
@@ -39,6 +39,7 @@ class UserDashboard(LoginRequiredMixin,TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['tickets'] = Ticket.objects.filter(user=self.request.user)
+        context['comments'] = Comment.objects.filter(user=self.request.user)
         return context
 
 

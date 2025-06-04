@@ -29,6 +29,9 @@ class Command(BaseCommand):
             call_command('loaddata', 'tickets.json')
             self.stdout.write(self.style.SUCCESS("tickets cargados ✅"))
 
+            call_command('loaddata', 'comments.json')
+            self.stdout.write(self.style.SUCCESS("comments cargados ✅"))
+
         except Exception as e:
             raise CommandError(f"Ocurrió un error al cargar fixtures: {e}")
     
