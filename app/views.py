@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView, ListView, DetailView,CreateView, FormView
-from .models import Event, Notification, Ticket, User, Comment, PriorityLevel
+from .models import Event, Notification, Ticket, User, Comment, PriorityLevel, RefundRequest
 from django.shortcuts import render,redirect, get_object_or_404
 from django.db.models import Case, When
 from django.contrib.auth.forms import UserCreationForm
@@ -9,7 +9,9 @@ from django.urls import reverse_lazy,reverse
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.models import Group
-from .forms import LoginForm, CommentForm
+from .forms import LoginForm, CommentForm,RefundRequestForm
+from django.contrib import messages
+
 
 class HomeView(TemplateView):
     template_name = "app/pages/home.html"
@@ -41,6 +43,8 @@ class UserDashboard(LoginRequiredMixin,TemplateView):
         context = super().get_context_data(**kwargs)
         context['tickets'] = Ticket.objects.filter(user=self.request.user)
         context['comments'] = Comment.objects.filter(user=self.request.user)
+        context['refundChoices'] = RefundRequest.REASON_CHOICES
+        context['refunds'] = RefundRequest.objects.filter(usuario=self.request.user)
         return context
 
 class EventDetailView(DetailView):
@@ -119,12 +123,28 @@ class CommentUpdateView(View):
         form = CommentForm(request.POST, instance=comment)
         if form.is_valid():
             form.save()
+        messages.success(request, "Comentario actualizado correctamente.")
         return redirect('user_dashboard')  # o a donde quieras volver
 
-# DELETE desde modal
+
 class CommentDeleteView(View):
     def post(self, request, pk):
         comment = get_object_or_404(Comment, pk=pk, user=request.user)
         comment.delete()
+        messages.success(request, "Comentario eliminado correctamente.")
         return redirect('user_dashboard')
 
+# RefundRequest CLASSES
+class RefundRequestCreateView(View):
+    def post(self, request, ticket_id):
+        ticket = get_object_or_404(Ticket, pk=ticket_id)
+        form = RefundRequestForm(request.POST)
+        if form.is_valid():
+            RefundRequest.objects.create(
+                usuario=request.user,
+                ticket_code=ticket,
+                reason=form.cleaned_data['reason'],
+                reason_detail=form.cleaned_data['reason_detail']
+            )
+        messages.success(request, "Solicitud enviada correctamente.")
+        return redirect('user_dashboard')  

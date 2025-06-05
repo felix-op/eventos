@@ -58,7 +58,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
         </div>
         <div class="offcanvas-body px-3">
-          <ul class="nav flex-column">
+          <ul class="nav flex-column" style="font-size: 1.5rem;">
             <li class="nav-item mb-2"><a class="nav-link" href="#Purchase">🛒 Purchase History</a></li>
             <li class="nav-item mb-2"><a class="nav-link" href="#Comments">💬 Comments</a></li>
             <li class="nav-item mb-2"><a class="nav-link" href="#Ratings">⭐ Ratings</a></li>
@@ -87,5 +87,22 @@
       </div>
     </div>
   </div>
+
+  <!-- MENSAJE DE CONFIRMACION -->
+  {% if messages %}
+    <div aria-live="polite" aria-atomic="true" class="position-fixed bottom-0 end-0 p-3" style="z-index: 1080;">
+      {% for message in messages %}
+        <div class="toast align-items-center text-bg-success border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="d-flex">
+            <div class="toast-body">
+              {{ message }}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
 </div>
 {% endblock content %}

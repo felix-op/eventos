@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth import authenticate
 from django.core.exceptions import ValidationError
-from .models import Comment
+from .models import Comment, RefundRequest
 
 
 class LoginForm(forms.Form):
@@ -64,3 +64,9 @@ class CommentForm(forms.ModelForm):
         if not text:
             raise forms.ValidationError("El texto no puede estar vacío.")
         return text
+
+
+class RefundRequestForm(forms.ModelForm):
+    class Meta:
+        model = RefundRequest
+        fields = ['reason', 'reason_detail']

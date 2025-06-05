@@ -8,7 +8,8 @@ from .views import (
     UserDashboard,
     RegisterView,
     CommentUpdateView,
-    CommentDeleteView
+    CommentDeleteView,
+    RefundRequestCreateView
 )
 
 
@@ -23,4 +24,6 @@ urlpatterns = [
     path('components/notifications_preview.html', views.get_noti_preview_list, name='notifications_preview'),
     path('comment/update/<int:pk>/', CommentUpdateView.as_view(), name='comment_update'),
     path('comment/delete/<int:pk>/', CommentDeleteView.as_view(), name='comment_delete'),
+    path('refund/create/<int:ticket_id>/', RefundRequestCreateView.as_view(), name='refund_create'),
+
 ]

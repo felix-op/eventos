@@ -1,5 +1,4 @@
 from django.db import models
-
 # =======================
 # Enum: TicketType
 # Description: Enum for ticket categories (General, VIP).
@@ -54,6 +53,11 @@ class Ticket(models.Model):
 
 
         return errors
+
+    @property
+    def has_refund(self):
+        from . import RefundRequest
+        return RefundRequest.objects.filter(ticket_code=self).exists()
 
     @classmethod
     def new(cls, buy_date,  ticket_code, quantity, type, state, user, event):

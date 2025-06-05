@@ -23,7 +23,12 @@
                 <!-- Botón Reembolso -->
                 <div class="mt-3 text-end">
                 <button class="btn btn-sm btn-outline-warning" data-bs-toggle="modal" data-bs-target="#refundModal{{ ticket.pk }}">
-                    <i class="bi bi-arrow-counterclockwise me-1"></i>Solicitar reembolso
+                    {% if ticket.has_refund %}
+                        {% comment "" %} FALTA VERIFICAR SI YA FUE REEMBOLSADO Y NO MOSTRAR NADA{% endcomment %}
+                        <i class="bi bi-arrow-counterclockwise me-1"></i>Reembolso solicitado          
+                    {% else %}
+                        <i class="bi bi-arrow-counterclockwise me-1"></i>Solicitar reembolso           
+                    {% endif %}
                 </button>
                 </div>
             </div>
@@ -37,23 +42,22 @@
                     <h5 class="modal-title" id="refundModalLabel{{ ticket.pk }}">Solicitar Reembolso</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
-                <form method="post">
+                <form method="post" action="{% url 'refund_create' ticket.id %}">
                     {% csrf_token %}
                     <div class="modal-body">
                     <p class="mb-3">Selecciona el motivo del reembolso para el ticket <strong>#{{ ticket.ticket_code }}</strong>:</p>
                     <div class="mb-3">
                         <label for="reason{{ ticket.pk }}" class="form-label">Motivo</label>
                         <select class="form-select" id="reason{{ ticket.pk }}" name="reason" required>
-                        <option value="" selected disabled>Elegir motivo...</option>
-                        <option value="event_cancelled">El evento fue cancelado</option>
-                        <option value="could_not_attend">No pude asistir</option>
-                        <option value="mistaken_purchase">Compra por error</option>
-                        <option value="other">Otro</option>
+                            <option value="" selected disabled>Elegir motivo...</option>
+                            {% for value,label in refundChoices %}
+                                <option value="{{value}}">{{label}}</option>
+                            {% endfor %}
                         </select>
                     </div>
                     <div class="mb-3">
                         <label for="details{{ ticket.pk }}" class="form-label">Detalles adicionales (opcional)</label>
-                        <textarea class="form-control" id="details{{ ticket.pk }}" name="details" rows="3"></textarea>
+                        <textarea class="form-control" id="details{{ ticket.pk }}" name="reason_detail" rows="3"></textarea>
                     </div>
                     </div>
                     <div class="modal-footer">
