@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView, ListView, DetailView,CreateView, FormView
-from .models import Event, Notification, Ticket, User, Comment, PriorityLevel, RefundRequest
+from .models import Event, Notification, Ticket, User, Comment, PriorityLevel, RefundRequest, Notification_user
 from django.shortcuts import render,redirect, get_object_or_404
 from django.db.models import Case, When
 from django.contrib.auth.forms import UserCreationForm
@@ -11,6 +11,7 @@ from django.contrib.auth import login
 from django.contrib.auth.models import Group
 from .forms import LoginForm, CommentForm,RefundRequestForm
 from django.contrib import messages
+from django.http import HttpResponseRedirect
 
 
 class HomeView(TemplateView):
@@ -21,7 +22,23 @@ class NavView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['usuario_logueado'] = self.request.user.is_authenticated
+        user = self.request.user
+        context['usuario_logueado'] = user.is_authenticated
+        
+        if user.is_authenticated:
+            notis_preview = Notification_user.objects.filter(
+                user=user
+            ).select_related('notification').annotate(
+                priority_orden=Case(
+                    When(notification__priority=PriorityLevel.HIGH, then=1),
+                    When(notification__priority=PriorityLevel.MEDIUM, then=2),
+                    When(notification__priority=PriorityLevel.LOW, then=3),
+                )
+            ).order_by('priority_orden', '-notification__created_at')[:5]
+        else:
+            notis_preview = []
+        
+        context['notis_preview'] = notis_preview
         return context
 
 class EventListView(ListView):
@@ -52,34 +69,48 @@ class EventDetailView(DetailView):
     template_name = "app/event_detail.html"
     context_object_name = "event"
 
-class NotificationListView(ListView):
-    model = Notification
+# NOTIFICATIONS
+class NotificationDetailView(LoginRequiredMixin, DetailView):
+    model = Notification_user
+    template_name = "app/pages/notification_detail.html"
+    context_object_name = "notif"
+
+    def get_object(self):
+        notif_user = get_object_or_404(
+            Notification_user.objects.select_related('notification'),
+            id=self.kwargs['pk'],
+            user=self.request.user
+        )
+        # Marcar como leída si aún no lo está
+        if not notif_user.is_read:
+            notif_user.mark_as_read()
+        return notif_user
+    
+#class MarkNotificationReadView(LoginRequiredMixin, View):
+#    def post(self, request, pk):
+#        notif_user = get_object_or_404(Notification_user, pk=pk, user=request.user)
+#        notif_user.mark_as_read()
+#        return HttpResponseRedirect(reverse("notification_detail", args=[pk]))
+
+class NotificationListView(LoginRequiredMixin, ListView):
     template_name = "app/pages/notifications.html"
     context_object_name = "notifications"
-    
+
     def get_queryset(self):
-        return Notification.objects.all().order_by("created_at")
-    
-    def get_context_data(self, **kwargs):
-        context = super(NotificationListView, self).get_context_data(**kwargs)
-        return context
-    
-    def get_total(request):
-        total = Notification.objects.count()
-        return render(request, 'notifications.html', {'total_notifications':total})
-    
-def get_noti_preview_list(request):
-    # Asignar valores de num de prioridad
-    notis_preview = Notification.objects.annotate(
-        priority_orden=Case(
-            When(priority=PriorityLevel.HIGH, then=1),
-            When(priority=PriorityLevel.MEDIUM, then=2),
-            When(priority=PriorityLevel.LOW, then=3),
+        # Retorna la relación usuario-notificación
+        return Notification_user.objects.filter(
+            user=self.request.user
+        ).select_related('notification').order_by(
+            'is_read', '-notification__created_at'
         )
-    ).order_by('priority_orden', '-created_at')[:5]
-    # Obtiene 5 notificaciones más recientes
-    
-    return render(request, 'app/components/notifications_preview.html', {'notis_preview': notis_preview})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['total_unread'] = Notification_user.objects.filter(
+            user=self.request.user,
+            is_read=False
+        ).count()
+        return context
 
 
 # REGISTER

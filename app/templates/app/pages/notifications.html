@@ -1,19 +1,46 @@
-{% block extra_css %}
-.notifi-box {
-	width: 300px;
-	height: 0px;
-	opacity: 0;
-	position: absolute;
-	top: 63px;
-	right: 35px;
-	transition: 1s opacity, 250ms height;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
+{% extends 'base.html' %}
 
+{% block content %}
+<div class="container py-4">
+    <h2 class="mb-4">Tus notificaciones</h2>
+
+    {% if notifications %}
+        <p class="mb-3">Total sin leer: <span class="badge bg-primary">{{ total_unread }}</span></p>
+
+        <ul class="list-group">
+            {% for n in notifications %}
+                <li class="list-group-item list-group-item-action mb-2 rounded shadow-sm
+                    {% if not n.is_read %} list-group-item-light border-start border-4 border-primary {% endif %}">
+					<!--
+					<a href="{% url 'notification_detail' n.id %}" class="text-decoration-none text-reset">
+                    -->
+					<div class="d-flex justify-content-between align-items-center mb-1">
+                        <h5 class="mb-0">{{ n.notification.title }}</h5>
+                        <span class="badge 
+                            {% if n.notification.priority == 'HIGH' %} bg-danger
+                            {% elif n.notification.priority == 'MEDIUM' %} bg-warning text-dark
+                            {% else %} bg-secondary
+                            {% endif %}
+                        ">
+                            {{ n.notification.priority }}
+                        </span>
+                    </div>
+                    <p class="mb-1">{{ n.notification.message }}</p>
+                    <div class="text-muted small">Recibida el {{ n.notification.created_at|date:"d M Y H:i" }}</div>
+
+                    {% if not n.is_read %}
+                        <form action= "#" method="post" class="mt-2">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-outline-primary">Marcar como leída</button>
+                        </form>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <div class="alert alert-info" role="alert">
+            No tienes notificaciones por el momento.
+        </div>
+    {% endif %}
+</div>
 {% endblock %}
-
-<script src="https://cdn.tailwindcss.com"></script>
-
-{% block notifications %}
-
-{% endblock notifications %}

@@ -7,9 +7,12 @@ from .views import (
     EventDetailView,
     UserDashboard,
     RegisterView,
+    NotificationListView,
+    NotificationDetailView,
+    MarkNotificationReadView,
     CommentUpdateView,
     CommentDeleteView,
-    RefundRequestCreateView
+    RefundRequestCreateView,
 )
 
 
@@ -21,7 +24,9 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(next_page='home'), name='logout'),
     path('login/', views.LoginManualView.as_view(), name="login"),
     path('register/',RegisterView.as_view(), name='register'),
-    path('components/notifications_preview.html', views.get_noti_preview_list, name='notifications_preview'),
+    path('notifications/', NotificationListView.as_view(), name='notifications'),
+    #path("notifications/<int:pk>/", NotificationDetailView.as_view(), name="notification_detail"),
+    #path("notifications/<int:pk>/mark_read/", MarkNotificationReadView.as_view(), name="notification_mark_read"),
     path('comment/update/<int:pk>/', CommentUpdateView.as_view(), name='comment_update'),
     path('comment/delete/<int:pk>/', CommentDeleteView.as_view(), name='comment_delete'),
     path('refund/create/<int:ticket_id>/', RefundRequestCreateView.as_view(), name='refund_create'),
