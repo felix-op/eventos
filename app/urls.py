@@ -9,7 +9,7 @@ from .views import (
     RegisterView,
     NotificationListView,
     NotificationDetailView,
-    MarkNotificationReadView,
+    #MarkNotificationReadView,
     CommentUpdateView,
     CommentDeleteView,
     RefundRequestCreateView,

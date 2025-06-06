@@ -39,7 +39,7 @@ class Ticket(models.Model):
     event = models.ForeignKey("Event", on_delete=models.CASCADE, related_name='event', blank = False)
 
     def __str__(self):
-        return self.ticket_code
+        return f"{self.ticket_code} - {self.user.username} - {self.event.title}"
     
     @classmethod
     def validate(cls, quantity, ticket_code):

@@ -1,5 +1,6 @@
 from django.db import models
-
+from .ticket import TicketState
+from django.utils import timezone
 # =======================
 # Model: RefundRequest
 # Description: User request for ticket refund with approval status and reason.
@@ -23,13 +24,24 @@ class RefundRequest(models.Model):
 
 
     def __str__(self):
-        return self.ticket_code.ticket_code
+        return f"{self.ticket_code.ticket_code} - {self.usuario.username} - Approved: {self.approved}"
 
-    def update(self, approved=None, reason=None, approval_date=None):
-        if approved is not None:
-            self.approved = approved
-        if reason is not None:
-            self.reason = reason
-        if approval_date is not None:
-            self.approval_date = approval_date
+    # Modifico el save, por si cambia el estado Approved, desde panel admin
+    def save(self, *args, **kwargs):
+        if self.approved:
+            self.ticket_code.state = TicketState.REFUNDED
+            self.ticket_code.save()
+            self.approval_date = timezone.now().date()
+        super().save(*args, **kwargs)
+
+    def update(self, approved, reason, approval_date,reason_detail):
+        self.approved = approved or self.approved
+        if approved:
+            from .ticket import TicketState
+            self.ticket_code.state = TicketState.REFUNDED
+            self.ticket_code.save()
+            self.approval_date = timezone.now().date()
+        self.reason = reason or self.reason
+        self.approval_date = approval_date or self.approval_date
+        self.reason_detail = reason_detail or self.reason_detail
         self.save()
