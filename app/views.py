@@ -74,6 +74,15 @@ class EventDetailView(DetailView):
         pk = self.kwargs['pk']
         context['event'] = Event.objects.get(pk=pk)
         context['comments'] = Comment.objects.filter(event= context['event'])
+        
+        from .models.ticket import TicketState
+        ticket = Ticket.objects.filter(
+            user=self.request.user, 
+            event=context['event'],
+            state__in=[TicketState.VALID, TicketState.EXPIRED]
+        )
+        context['userPurchase'] = ticket.exists()
+        
         return context
 
 # NOTIFICATIONS

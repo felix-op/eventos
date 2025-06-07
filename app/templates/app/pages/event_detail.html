@@ -14,7 +14,7 @@
         </div>
 
         <!-- Contenido -->
-        <div class="col-12 col-md-6 d-flex flex-column justify-content-center align-items-start p-4 p-md-5">
+        <div class="col-12 col-md-6 d-flex flex-column justify-content-center align-items-start" style="padding: 1.5rem">
 
             <h1 class="mb-3 fs-3 fs-md-1" style="text-align: center;">{{ event.title }}</h1>
             <p class="mb-4">{{ event.description }}</p>
@@ -34,24 +34,27 @@
             </div>
 
         </div>
+    
     <!-- COMMENTS -->
-    <div id="Comments" class="container my-5" style="display: flex; flex-direction: column; max-width: 70vw;">
+    {% if userPurchase %}
+        <div id="Comments" class="container my-5" style="display: flex; flex-direction: column; max-width: 70vw;">
+            <h5 class="mb-4 fw-semibold text-primary">Realizar un comentario</h5>
+            <!-- Formulario de nuevo comentario -->
+            <form method="post" class="mb-4" action="{% url 'comment_create' event.pk %}">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="title" class="form-label">Título</label>
+                    <input type="text" class="form-control" name="title" id="title" required>
+                </div>
+                <div class="mb-3">
+                    <label for="text" class="form-label">Comentario</label>
+                    <textarea class="form-control" name="text" id="text" rows="3" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Agregar comentario</button>
+            </form>
+        </div>
+    {% endif %}
 
-        <!-- Formulario de nuevo comentario -->
-        <form method="post" class="mb-4" action="{% url 'comment_create' event.pk %}">
-            {% csrf_token %}
-            <div class="mb-3">
-                <label for="title" class="form-label">Título</label>
-                <input type="text" class="form-control" name="title" id="title" required>
-            </div>
-            <div class="mb-3">
-                <label for="text" class="form-label">Comentario</label>
-                <textarea class="form-control" name="text" id="text" rows="3" required></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Agregar comentario</button>
-        </form>
-
-    </div>
     <div style="display: flex; flex-direction: column; align-items: center;">
         <h5 class="mb-4 fw-semibold text-primary">Comentarios</h5>
         {% comment "" %} FALTA QUE SOLO PUEDA COMENTAR SI COMPRA EL TICKET {% endcomment %}
