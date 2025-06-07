@@ -2,150 +2,146 @@
 
 {% block content %}
 
+<div class="container my-5">
 
-
-<div class="event-wrapper container-fluid d-flex flex-wrap align-items-stretch mb-5 pb-5 shadow-sm rounded" style="justify-content: center;">
-
+    <div class="row g-4 align-items-stretch shadow-sm rounded p-3">
         <!-- Imagen -->
-        <div class="col-12 col-md-6 p-0">
-            <img src="{{ event.imagen.url }}" alt="{{ event.title }}"
-                class="img-fluid w-100 object-fit-cover"
-                style="height: 100%; max-height: 500px; object-fit: cover;">
+        <div class="col-12 col-md-6">
+            <img src="{{ event.imagen.url }}" alt="{{ event.title }}" class="img-fluid rounded w-100" style="max-height: 500px; object-fit: cover;">
         </div>
 
         <!-- Contenido -->
-        <div class="col-12 col-md-6 d-flex flex-column justify-content-center align-items-start" style="padding: 1.5rem">
+        <div class="col-12 col-md-6 d-flex flex-column justify-content-center">
+            <h1 class="fs-3 text-center mb-3">{{ event.title }}</h1>
+            <p>{{ event.description }}</p>
 
-            <h1 class="mb-3 fs-3 fs-md-1" style="text-align: center;">{{ event.title }}</h1>
-            <p class="mb-4">{{ event.description }}</p>
+            <div class="card mt-4 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Lugar del evento</h5>
+                    <ul class="list-unstyled mb-3">
+                        <li><strong>Nombre:</strong> {{ event.venue.name }}</li>
+                        <li><strong>Ciudad:</strong> {{ event.venue.city }}</li>
+                        <li><strong>Dirección:</strong> {{ event.venue.address }}</li>
+                        <li><strong>Capacidad:</strong> {{ event.venue.capacity }} personas</li>
+                        <li><strong>Contacto:</strong> <a href="mailto:{{ event.venue.contact }}">{{ event.venue.contact }}</a></li>
+                    </ul>
 
-            <div class="card card-body bg-white shadow-sm mt-3">
-                <h5>Lugar del evento</h5>
-                <ul class="list-unstyled mb-3">
-                    <li><strong>Nombre:</strong> {{ event.venue.name }}</li>
-                    <li><strong>Ciudad:</strong> {{ event.venue.city }}</li>
-                    <li><strong>Dirección:</strong> {{ event.venue.address }}</li>
-                    <li><strong>Capacidad:</strong> {{ event.venue.capacity }} personas</li>
-                    <li><strong>Contacto:</strong> <a href="mailto:{{ event.venue.contact }}">{{ event.venue.contact }}</a></li>
-                </ul>
-
-                <h5>Categoría</h5>
-                <p><strong>{{ event.category.name }}</strong> - {{ event.category.description }}</p>
+                    <h5 class="card-title">Categoría</h5>
+                    <p><strong>{{ event.category.name }}</strong> - {{ event.category.description }}</p>
+                </div>
             </div>
-
         </div>
-    
-    <!-- COMMENTS -->
-    {% if userPurchase %}
-        <div id="Comments" class="container my-5" style="display: flex; flex-direction: column; max-width: 70vw;">
-            <h5 class="mb-4 fw-semibold text-primary">Realizar un comentario</h5>
-            <!-- Formulario de nuevo comentario -->
-            <form method="post" class="mb-4" action="{% url 'comment_create' event.pk %}">
-                {% csrf_token %}
-                <div class="mb-3">
-                    <label for="title" class="form-label">Título</label>
-                    <input type="text" class="form-control" name="title" id="title" required>
-                </div>
-                <div class="mb-3">
-                    <label for="text" class="form-label">Comentario</label>
-                    <textarea class="form-control" name="text" id="text" rows="3" required></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Agregar comentario</button>
-            </form>
-        </div>
-    {% endif %}
-
-    <div style="display: flex; flex-direction: column; align-items: center;">
-        <h5 class="mb-4 fw-semibold text-primary">Comentarios</h5>
-        {% comment "" %} FALTA QUE SOLO PUEDA COMENTAR SI COMPRA EL TICKET {% endcomment %}
-        {% if comments %}
-        {% for comment in comments %}
-        <div class="p-3 border rounded-3 shadow-sm" style="width: 80vw; margin-bottom: 1rem;">
-            <div class="d-flex justify-content-between align-items-center mb-1">
-            <span class="fw-semibold">{{ comment.title }}</span>
-            <small class="text-muted">{{ comment.create_at }}</small>
-            </div>
-                <p class="mb-2 text-body">{{ comment.text }}</p>
-                <div class="text-muted small mb-2">
-                <i class="bi bi-calendar-event me-1"></i>Evento: {{ comment.event.title }}<br>
-                <i class="bi bi-geo-alt me-1"></i>Ubicación: {{ comment.event.venue.name }}
-            </div>
-            {% if comment.user == user %}
-                <div class="d-flex gap-2 justify-content-end">
-                    <!-- Botón Editar -->
-                    <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editModal{{ comment.pk }}">
-                    <i class="bi bi-pencil"></i> Editar
-                    </button>
-                    <!-- Botón Eliminar -->
-                    <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ comment.pk }}">
-                    <i class="bi bi-trash"></i> Eliminar
-                    </button>
-                </div>            
-            {% endif %}
-
-            {% if comment.user == user %}
-            <!-- Editar -->
-            <div class="modal fade" id="editModal{{ comment.pk }}" tabindex="-1" aria-labelledby="editModalLabel{{ comment.pk }}" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content rounded-3">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editModalLabel{{ comment.pk }}">Editar Comentario</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                </div>
-                <form method="post" action="{% url 'comment_update' comment.pk %}">
-                    {% csrf_token %}
-                    <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="title{{ comment.pk }}" class="form-label">Título</label>
-                        <input type="text" class="form-control" name="title" id="title{{ comment.pk }}" value="{{ comment.title }}">
-                    </div>
-                    <div class="mb-3">
-                        <label for="text{{ comment.pk }}" class="form-label">Comentario</label>
-                        <textarea class="form-control" name="text" id="text{{ comment.pk }}" rows="3">{{ comment.text }}</textarea>
-                    </div>
-                    </div>
-                    <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
-                    </div>
-                </form>
-                </div>
-            </div>
-            </div>
-
-            <!-- Eliminar -->
-            <div class="modal fade" id="deleteModal{{ comment.pk }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ comment.pk }}" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content rounded-3">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModalLabel{{ comment.pk }}">Confirmar eliminación</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                </div>
-                <div class="modal-body">
-                    ¿Estás seguro de que deseas eliminar este comentario?
-                </div>
-                <div class="modal-footer">
-                    <form method="post" action="{% url 'comment_delete' comment.pk %}">
-                    {% csrf_token %}
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-danger">Eliminar</button>
-                    </form>
-                </div>
-                </div>
-            </div>
-            </div>
-
-            {% endif %}
-
-
-        </div>
-
-        {% endfor %}
-        {% else %}
-            <div class="text-muted fst-italic">No hay comentarios aún.</div>
-        {% endif %}
     </div>
 
+    <!-- COMENTARIOS -->
+    {% if userPurchase %}
+    <div id="Comments" class="mt-5">
+        <h4 class="text-primary fw-semibold mb-4">Realizar un comentario</h4>
+
+        <form method="post" action="{% url 'comment_create' event.pk %}">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="title" class="form-label">Título</label>
+                <input type="text" class="form-control" name="title" id="title" required>
+            </div>
+            <div class="mb-3">
+                <label for="text" class="form-label">Comentario</label>
+                <textarea class="form-control" name="text" id="text" rows="3" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Agregar comentario</button>
+        </form>
+    </div>
+    {% endif %}
+
+    <div class="mt-5">
+        <h4 class="text-primary fw-semibold mb-4 text-center">Comentarios</h4>
+
+        {% if comments %}
+            {% for comment in comments %}
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-2">
+                            <h6 class="mb-0 fw-bold">{{ comment.title }}</h6>
+                            <small class="text-muted">{{ comment.create_at }}</small>
+                        </div>
+                        <p class="mb-2">{{ comment.text }}</p>
+                        <div class="text-muted small">
+                            <i class="bi bi-calendar-event me-1"></i>Evento: {{ comment.event.title }}<br>
+                            <i class="bi bi-geo-alt me-1"></i>Ubicación: {{ comment.event.venue.name }}
+                        </div>
+
+                        {% if comment.user == user %}
+                        <div class="d-flex justify-content-end gap-2 mt-3">
+                            <!-- Botón Editar -->
+                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editModal{{ comment.pk }}">
+                                <i class="bi bi-pencil"></i> Editar
+                            </button>
+                            <!-- Botón Eliminar -->
+                            <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ comment.pk }}">
+                                <i class="bi bi-trash"></i> Eliminar
+                            </button>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                {% if comment.user == user %}
+                <!-- Modal Editar -->
+                <div class="modal fade" id="editModal{{ comment.pk }}" tabindex="-1" aria-labelledby="editModalLabel{{ comment.pk }}" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content rounded-3">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editModalLabel{{ comment.pk }}">Editar Comentario</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                            </div>
+                            <form method="post" action="{% url 'comment_update' comment.pk %}">
+                                {% csrf_token %}
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label for="title{{ comment.pk }}" class="form-label">Título</label>
+                                        <input type="text" class="form-control" name="title" id="title{{ comment.pk }}" value="{{ comment.title }}">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="text{{ comment.pk }}" class="form-label">Comentario</label>
+                                        <textarea class="form-control" name="text" id="text{{ comment.pk }}" rows="3">{{ comment.text }}</textarea>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal Eliminar -->
+                <div class="modal fade" id="deleteModal{{ comment.pk }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ comment.pk }}" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content rounded-3">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="deleteModalLabel{{ comment.pk }}">Confirmar eliminación</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                            </div>
+                            <div class="modal-body">
+                                ¿Estás seguro de que deseas eliminar este comentario?
+                            </div>
+                            <div class="modal-footer">
+                                <form method="post" action="{% url 'comment_delete' comment.pk %}">
+                                    {% csrf_token %}
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <div class="text-muted fst-italic text-center">No hay comentarios aún.</div>
+        {% endif %}
+    </div>
 
 </div>
 
