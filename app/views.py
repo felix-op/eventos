@@ -66,8 +66,15 @@ class UserDashboard(LoginRequiredMixin,TemplateView):
 
 class EventDetailView(DetailView):
     model = Event
-    template_name = "app/event_detail.html"
+    template_name = "app/pages/event_detail.html"
     context_object_name = "event"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        pk = self.kwargs['pk']
+        context['event'] = Event.objects.get(pk=pk)
+        context['comments'] = Comment.objects.filter(event= context['event'])
+        return context
 
 # NOTIFICATIONS
 class NotificationDetailView(LoginRequiredMixin, DetailView):
@@ -155,15 +162,30 @@ class CommentUpdateView(View):
         if form.is_valid():
             form.save()
         messages.success(request, "Comentario actualizado correctamente.")
-        return redirect('user_dashboard')  # o a donde quieras volver
-
+        return redirect(request.META.get('HTTP_REFERER', 'user_dashboard'))
+        #Devuelvo al link anterior o al user dashboard
 
 class CommentDeleteView(View):
     def post(self, request, pk):
         comment = get_object_or_404(Comment, pk=pk, user=request.user)
         comment.delete()
         messages.success(request, "Comentario eliminado correctamente.")
-        return redirect('user_dashboard')
+        return redirect(request.META.get('HTTP_REFERER', 'user_dashboard'))
+
+class CommentCreateView(View):
+    def post(self, request, event_id):
+        event = get_object_or_404(Event, pk=event_id)
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            Comment.objects.create(
+                user=request.user,
+                event=event,
+                title=form.cleaned_data['title'],
+                text=form.cleaned_data['text']
+            )
+        messages.success(request, "Comentario creado correctamente.")
+        return redirect(request.META.get('HTTP_REFERER', 'user_dashboard'))
+
 
 # RefundRequest CLASSES
 class RefundRequestCreateView(View):
