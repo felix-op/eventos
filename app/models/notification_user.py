@@ -15,7 +15,7 @@ class Notification_user(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     notification = models.ForeignKey(Notification, on_delete=models.CASCADE)
     is_read = models.BooleanField(default=False)
-    read_at = models.DateTimeField(null=True, blank=True) # Opcional: cuándo fue leída
+    read_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         # Asegura que un usuario solo pueda tener una entrada por notificación
@@ -25,7 +25,7 @@ class Notification_user(models.Model):
         return f"{self.user.username} - {self.notification.title} ({'Leída' if self.is_read else 'No Leída'})"
 
     def mark_as_read(self):
-        """Marca esta notificación como leída para este usuario específico."""
+        # Marca esta notificación como leída para este usuario específico.
         if not self.is_read:
             self.is_read = True
             self.read_at = models.DateTimeField.now() # Registra la hora de lectura
@@ -34,7 +34,7 @@ class Notification_user(models.Model):
         return False
 
     def mark_as_unread(self):
-        """Marca esta notificación como no leída para este usuario específico."""
+        # Marca esta notificación como no leída para este usuario específico.
         if self.is_read:
             self.is_read = False
             self.read_at = None

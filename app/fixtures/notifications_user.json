@@ -1,0 +1,152 @@
+[
+  {
+    "model": "app.notification_user",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "notification": 1,
+      "is_read": false,
+      "read_at": null
+    }
+  },
+  {
+    "model": "app.notification_user",
+    "pk": 2,
+    "fields": {
+      "user": 2,
+      "notification": 1,
+      "is_read": false,
+      "read_at": null
+    }
+  },
+  {
+    "model": "app.notification_user",
+    "pk": 3,
+    "fields": {
+      "user": 1,
+      "notification": 2,
+      "is_read": false,
+      "read_at": null
+    }
+  },
+  {
+    "model": "app.notification_user",
+    "pk": 4,
+    "fields": {
+      "user": 2,
+      "notification": 2,
+      "is_read": false,
+      "read_at": null
+    }
+  },
+  {
+    "model": "app.notification_user",
+    "pk": 5,
+    "fields": {
+      "user": 3,
+      "notification": 2,
+      "is_read": false,
+      "read_at": null
+    }
+  },
+  {
+    "model": "app.notification_user",
+    "pk": 6,
+    "fields": {
+      "user": 3,
+      "notification": 3,
+      "is_read": false,
+      "read_at": null
+    }
+  },
+  {
+    "model": "app.notification_user",
+    "pk": 7,
+    "fields": {
+      "user": 4,
+      "notification": 3,
+      "is_read": false,
+      "read_at": null
+    }
+  },
+  {
+    "model": "app.notification_user",
+    "pk": 8,
+    "fields": {
+      "user": 1,
+      "notification": 4,
+      "is_read": false,
+      "read_at": null
+    }
+  },
+  {
+    "model": "app.notification_user",
+    "pk": 9,
+    "fields": {
+      "user": 1,
+      "notification": 5,
+      "is_read": false,
+      "read_at": null
+    }
+  },
+  {
+    "model": "app.notification_user",
+    "pk": 10,
+    "fields": {
+      "user": 3,
+      "notification": 5,
+      "is_read": false,
+      "read_at": null
+    }
+  },
+  {
+    "model": "app.notification_user",
+    "pk": 11,
+    "fields": {
+      "user": 1,
+      "notification": 6,
+      "is_read": false,
+      "read_at": null
+    }
+  },
+  {
+    "model": "app.notification_user",
+    "pk": 12,
+    "fields": {
+      "user": 1,
+      "notification": 7,
+      "is_read": false,
+      "read_at": null
+    }
+  },
+  {
+    "model": "app.notification_user",
+    "pk": 13,
+    "fields": {
+      "user": 2,
+      "notification": 7,
+      "is_read": false,
+      "read_at": null
+    }
+  },
+  {
+    "model": "app.notification_user",
+    "pk": 14,
+    "fields": {
+      "user": 3,
+      "notification": 7,
+      "is_read": false,
+      "read_at": null
+    }
+  },
+  {
+    "model": "app.notification_user",
+    "pk": 15,
+    "fields": {
+      "user": 4,
+      "notification": 7,
+      "is_read": false,
+      "read_at": null
+    }
+  }
+]
