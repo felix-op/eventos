@@ -12,6 +12,7 @@ from .views import (
     #MarkNotificationReadView,
     CommentUpdateView,
     CommentDeleteView,
+    CommentCreateView,
     RefundRequestCreateView,
 )
 
@@ -27,6 +28,7 @@ urlpatterns = [
     path('notifications/', NotificationListView.as_view(), name='notifications'),
     #path("notifications/<int:pk>/", NotificationDetailView.as_view(), name="notification_detail"),
     #path("notifications/<int:pk>/mark_read/", MarkNotificationReadView.as_view(), name="notification_mark_read"),
+    path('comment/create/<int:event_id>/', CommentCreateView.as_view(), name='comment_create'),
     path('comment/update/<int:pk>/', CommentUpdateView.as_view(), name='comment_update'),
     path('comment/delete/<int:pk>/', CommentDeleteView.as_view(), name='comment_delete'),
     path('refund/create/<int:ticket_id>/', RefundRequestCreateView.as_view(), name='refund_create'),
