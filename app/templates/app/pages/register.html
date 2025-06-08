@@ -1,8 +1,23 @@
-<div class="container">
-    <h2>Registro</h2>
-    <form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Registrarse</button>
-    </form>
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh; max-height: 80vh;">
+    <div class="card shadow-sm p-4" style="max-width: 400px; width: 100%; max-height: 80vh; overflow-y: auto;">
+        <h3 class="text-center mb-4">Crear cuenta</h3>
+        <form method="POST" novalidate>
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="mb-3">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% for error in field.errors %}
+                        <div class="text-danger small">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary w-100">Registrarse</button>
+        </form>
+    </div>
 </div>
+{% endblock %}
+

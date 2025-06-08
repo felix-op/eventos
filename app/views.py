@@ -136,6 +136,13 @@ class RegistroForm(UserCreationForm):
         model = User
         fields = ['username', 'email', 'password1', 'password2']
 
+    # el metodo, añade clases de boostrap
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs.update({'class': 'form-control'})
+
+
 class RegisterView(CreateView):
     form_class = RegistroForm
     template_name = 'app/pages/register.html'
