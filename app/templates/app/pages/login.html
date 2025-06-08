@@ -37,6 +37,7 @@
         <input type="submit" class="{% if not form.errors %}fadeIn four{% else %}first{% endif %}" value="Log In">
       </form>
   
+      <a class="underlineHover" href="{% url 'register' %}">Dont have an account?</a>
       <!-- Remind Passowrd -->
       <div id="formFooter">
         <a class="underlineHover" href="{% url 'home' %}">Go to the Site</a>

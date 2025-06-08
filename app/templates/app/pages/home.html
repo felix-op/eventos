@@ -1,40 +1,74 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block link_css %}
-    {% static "css_home/home_styles.css" %}
-{% endblock %}
-
 {% block content %}
 <div class="home_block">
-    <div class="home_container_01 container-fluid">
-        <h1 class="display-5 fw-bold">Events & Tickets</h1>
 
-        <p class="fs-4">Discover, organize and participate in the best events. Buy tickets, leave
-            comments and rate your experiences.</p>
+    <!-- Carrusel principal -->
+    <div id="mainCarousel" class="carousel slide" data-bs-ride="carousel" style="max-height: 80vh; overflow: hidden;">
+        <div class="carousel-inner">
+            <div class="carousel-item active position-relative">
+                <img src="{% static 'media/home/home-event-2.png' %}" class="d-block w-100" alt="Banner" style="object-fit: cover; height: 80vh;">
+                
+                <!-- Overlay oscuro -->
+                <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-50"></div>
+            
+                <!-- Texto encima del overlay -->
+                <div class="carousel-caption text-center">
+                    <h1 class="display-4 fw-bold text-white">Events & Tickets</h1>
+                    <p class="fs-5 text-white">Discover, organize and participate in the best events.</p>
+                    <a href="{% url 'events' %}" class="btn btn-light btn-lg mt-2">Get your ticket</a>
+                </div>
 
-        <a href="#" class="button btn btn-light">Get your ticket</a>
+                
+            </div>
+            
+            <div class="carousel-item position-relative">
+                <img src="{% static 'media/home/home-event-1.png' %}" class="d-block w-100" alt="Banner" style="object-fit: cover; height: 80vh;">
+                
+                <!-- Overlay oscuro -->
+                <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-50"></div>
+            
+                <!-- Texto encima del overlay -->
+                <div class="carousel-caption text-center">
+                    <h1 class="display-4 fw-bold text-white">Unforgettable Experiences</h1>
+                    <p class="fs-5 text-white">Concerts, festivals, sports and more.</p>
+                </div>
+            </div>
+        </div>
 
+        <!-- Controles del carrusel -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#mainCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#mainCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
     </div>
 
-    <div class="home_container_02">
-        <h1 class="display-5 fw-bold">About Us</h1>
+    <!-- About Us -->
+    <section class="py-5 bg-light">
+        <div class="container text-center px-3">
+            <h2 class="display-6 fw-bold mb-4">About Us</h2>
+            <p class="fs-6 mx-auto" style="max-width: 800px;">
+                We are a leading ticket sales company that connects event enthusiasts with unforgettable experiences.
+                From concerts and festivals to sports and plays – discover and purchase tickets easily, securely and quickly.
+            </p>
+        </div>
+    </section>
 
-        <p class="fs-4">We are a leading ticket sales company that connects event enthusiasts with unforgettable experiences. 
-            We offer an intuitive and secure platform where you can find and purchase tickets for a wide range of events, from concerts and festivals to sports games and plays. 
-            We are committed to providing easy and reliable access to the moments that excite you the most, ensuring that your shopping experience is smooth and hassle-free from start to finish.</p>
-
-    </div>
-
-    <div class="home_container_03">
-        <h1 class="display-5 fw-bold">Visit our networks and get to know us more</h1>
-
-        <a href="#" class="button">Facebook</a>
-        <a href="#" class="button">Instagram</a>
-        <a href="#" class="button">Youtube</a>
-        <a href="#" class="button">TikTok</a>
-
-    </div>
+    <!-- Redes Sociales -->
+    <section class="py-5">
+        <div class="container text-center px-3">
+            <h2 class="display-6 fw-bold mb-4">Visit our social networks</h2>
+            <div class="d-flex justify-content-center flex-wrap gap-3">
+                <a href="#" class="btn btn-outline-primary"><i class="bi bi-facebook"></i> Facebook</a>
+                <a href="#" class="btn btn-outline-danger"><i class="bi bi-instagram"></i> Instagram</a>
+                <a href="#" class="btn btn-outline-dark"><i class="bi bi-youtube"></i> YouTube</a>
+                <a href="#" class="btn btn-outline-info"><i class="bi bi-tiktok"></i> TikTok</a>
+            </div>
+        </div>
+    </section>
 
 </div>
-{% endblock content %}
+{% endblock %}

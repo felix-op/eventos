@@ -50,29 +50,10 @@
 
             <button class="btn btn-primary btn-lg mb-3 w-100 w-md-auto">Comprar ticket</button>
 
-            <button class="btn btn-outline-secondary mb-3 w-100 w-md-auto" type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#detallesEvento{{ forloop.counter }}"
-                    aria-expanded="false" aria-controls="detallesEvento{{ forloop.counter }}">
-                Ver detalles
-            </button>
-
-            <div class="collapse w-100" id="detallesEvento{{ forloop.counter }}">
-                <div class="card card-body bg-white shadow-sm mt-3">
-                    <h5>Lugar del evento</h5>
-                    <ul class="list-unstyled mb-3">
-                        <li><strong>Nombre:</strong> {{ event.venue.name }}</li>
-                        <li><strong>Ciudad:</strong> {{ event.venue.city }}</li>
-                        <li><strong>Dirección:</strong> {{ event.venue.address }}</li>
-                        <li><strong>Capacidad:</strong> {{ event.venue.capacity }} personas</li>
-                        <li><strong>Contacto:</strong> <a href="mailto:{{ event.venue.contact }}">{{ event.venue.contact }}</a></li>
-                    </ul>
-
-                    <h5>Categoría</h5>
-                    <p><strong>{{ event.category.name }}</strong> - {{ event.category.description }}</p>
-                </div>
-            </div>
-
+            <a href="{% url 'event_detail' event.pk %}" class="btn btn-outline-secondary mb-3 w-100 w-md-auto">
+             Ver detalles
+            </a>
+         
             {% include "app/components/rating.html" with promedio=event.total_rating %}
         </div>
     </div>
