@@ -13,6 +13,8 @@ from .forms import LoginForm, CommentForm,RefundRequestForm
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 
+class AccessDeniedView(TemplateView):
+    template_name = "app/pages/access_denied.html"
 
 class HomeView(TemplateView):
     template_name = "app/pages/home.html"
@@ -54,6 +56,7 @@ class EventListView(ListView):
         return context
 
 class UserDashboard(LoginRequiredMixin,TemplateView):
+    login_url = 'access-denied'
     template_name = "app/components/user_dashboard.html"
     
     def get_context_data(self, **kwargs):
@@ -177,7 +180,9 @@ class LoginManualView(FormView):
     
 #   COMMENT CLASSES
 
-class CommentUpdateView(View):
+class CommentUpdateView(LoginRequiredMixin,View):
+    login_url = 'access-denied'
+
     def post(self, request, pk):
         comment = get_object_or_404(Comment, pk=pk, user=request.user)
         form = CommentForm(request.POST, instance=comment)
@@ -187,14 +192,18 @@ class CommentUpdateView(View):
         return redirect(request.META.get('HTTP_REFERER', 'user_dashboard'))
         #Devuelvo al link anterior o al user dashboard
 
-class CommentDeleteView(View):
+class CommentDeleteView(LoginRequiredMixin,View):
+    login_url = 'access-denied'
+
     def post(self, request, pk):
         comment = get_object_or_404(Comment, pk=pk, user=request.user)
         comment.delete()
         messages.success(request, "Comentario eliminado correctamente.")
         return redirect(request.META.get('HTTP_REFERER', 'user_dashboard'))
 
-class CommentCreateView(View):
+class CommentCreateView(LoginRequiredMixin,View):
+    login_url = 'access-denied'
+
     def post(self, request, event_id):
         event = get_object_or_404(Event, pk=event_id)
         form = CommentForm(request.POST)
@@ -210,7 +219,9 @@ class CommentCreateView(View):
 
 
 # RefundRequest CLASSES
-class RefundRequestCreateView(View):
+class RefundRequestCreateView(LoginRequiredMixin,View):
+    login_url = 'access-denied'
+    
     def post(self, request, ticket_id):
         ticket = get_object_or_404(Ticket, pk=ticket_id)
         form = RefundRequestForm(request.POST)
