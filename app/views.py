@@ -75,13 +75,19 @@ class EventDetailView(DetailView):
         context['event'] = Event.objects.get(pk=pk)
         context['comments'] = Comment.objects.filter(event= context['event'])
         
-        from .models.ticket import TicketState
-        ticket = Ticket.objects.filter(
-            user=self.request.user, 
-            event=context['event'],
-            state__in=[TicketState.VALID, TicketState.EXPIRED]
-        )
-        context['userPurchase'] = ticket.exists()
+        if self.request.user.is_authenticated:
+            from .models.ticket import TicketState
+            ticket = Ticket.objects.filter(
+                user=self.request.user, 
+                event=context['event'],
+                state__in=[TicketState.VALID, TicketState.EXPIRED]
+            )
+            context['userPurchase'] = ticket.exists()
+        else:
+            context['userPurchase'] = False
+
+
+
         
         return context
 

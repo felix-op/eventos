@@ -31,10 +31,20 @@
                         </button>
                     {% endif %}      
                 {% else %}
-                    {% comment "" %} Que hacer con los tickets Expired????? {% endcomment %}
-                    <button class="btn btn-sm btn-outline-warning" data-bs-toggle="modal" data-bs-target="#refundModal{{ ticket.pk }}">
-                        <i class="bi bi-arrow-counterclockwise me-1"></i>Solicitar reembolso           
-                    </button>
+
+                    {% if ticket.state == 1%} {% comment "" %}es valid{% endcomment %}
+                        {% comment "" %} Que hacer con los tickets Expired????? {% endcomment %}
+                        <button class="btn btn-sm btn-warning" disabled>
+                            <i class="bi bi-arrow-counterclockwise me-1"></i>Solicitar reembolso           
+                        </button>
+              
+                    {% else %}
+                        {% comment "" %} Que hacer con los tickets Expired????? {% endcomment %}
+                        <button class="btn btn-sm btn-outline-warning" data-bs-toggle="modal" data-bs-target="#refundModal{{ ticket.pk }}">
+                            <i class="bi bi-arrow-counterclockwise me-1"></i>Solicitar reembolso           
+                        </button>
+                    {% endif %}
+
                 {% endif %}
                 </div>
             </div>
