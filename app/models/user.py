@@ -23,12 +23,7 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username
-    def save(self, *args, **kwargs):
-            # Si el usuario pertenece al grupo 'seller', se le asigna como is_staff=true asi puede ingrsar al panel de control 
-        if self.groups.filter(name='seller').exists():
-            self.is_staff = True
-        
-        super().save(*args, **kwargs)
+    
     def update(self, username=None):
         if username:
             self.username = username
