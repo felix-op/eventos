@@ -1,8 +1,18 @@
 from django.contrib import admin
 from .models import Category, Comment, Event, Notification, Rating, RefundRequest, Ticket, User, Venue, Notification_user
+from django import forms
 
+
+class EventForm(forms.ModelForm):
+    class Meta:
+        model = Event
+        fields = "__all__"
+        widgets = {
+            "categories": forms.CheckboxSelectMultiple
+        }
 
 class EventAdmin(admin.ModelAdmin):
+    form = EventForm
     list_display = ("title", "description", "date")
     search_fields = ("title", "date")
     list_filter = ("date",)

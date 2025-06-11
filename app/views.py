@@ -1,6 +1,6 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import TemplateView, ListView, DetailView,CreateView, FormView
-from .models import Event, Notification, Ticket, User, Comment, PriorityLevel, RefundRequest, Notification_user
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.views.generic import TemplateView, ListView, DetailView,CreateView, FormView, UpdateView, DeleteView
+from .models import Event, Notification, Ticket, User, Comment, PriorityLevel, RefundRequest, Venue, Notification_user, Category
 from django.shortcuts import render,redirect, get_object_or_404
 from django.db.models import Case, When
 from django.contrib.auth.forms import UserCreationForm
@@ -9,9 +9,10 @@ from django.urls import reverse_lazy,reverse
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.models import Group
-from .forms import LoginForm, CommentForm,RefundRequestForm
+from .forms import LoginForm, CommentForm,RefundRequestForm, VenueForm
 from django.contrib import messages
 from django.http import HttpResponseRedirect
+from django.utils import timezone
 
 class AccessDeniedView(TemplateView):
     template_name = "app/pages/access_denied.html"
@@ -49,10 +50,22 @@ class EventListView(ListView):
     context_object_name = "events"
 
     def get_queryset(self):
-        return Event.objects.all().order_by("date")
+        user = self.request.user
+        category_filter = self.request.GET.get('category', '')
+        # Filtrar eventos según la autenticación del usuario y tipo
+        if user.is_staff:
+            events = Event.objects.all()  # Mostrar todos los eventos
+        else:
+            events = Event.objects.filter(date__gt=timezone.now())  # Mostrar solo eventos futuros
+        # Aplicar filtro por categoría si se seleccionó alguna
+        if category_filter:
+            events = events.filter(categories__id=category_filter)
+
+        return events.order_by("date")  # Ordenar por fecha
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()  # Pasar las categorías al template
         return context
 
 class UserDashboard(LoginRequiredMixin,TemplateView):

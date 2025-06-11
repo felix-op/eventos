@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+
 {% block title %}Eventos{% endblock %}
 
 {% block link_css %}
@@ -11,12 +12,16 @@
     <h2 class="mb-3">Explora nuestros eventos</h2>
     <form method="get" class="row g-2 align-items-center">
         <div class="col-auto">
-            <input type="text" name="search" class="form-control" placeholder="Buscar por título, ciudad...">
+            <input type="text" name="search" class="form-control" placeholder="Buscar por título, ciudad..." value="{{ request.GET.search }}">
         </div>
         <div class="col-auto">
             <select name="category" class="form-select">
                 <option value="">Todas las categorías</option>
-                {# Podrías iterar las categorías desde el contexto más adelante #}
+                {% for category in categories %}
+                    <option value="{{ category.id }}" {% if category.id == request.GET.category|default_if_none:'' %}selected{% endif %}>
+                        {{ category.name }}
+                    </option>
+                {% endfor %}
             </select>
         </div>
         <div class="col-auto">
@@ -25,10 +30,7 @@
     </form>
 </header>
 
-
-
 {% for event in events %}
-    {# app/components/event_card.html #}
     <div class="event-wrapper container-fluid d-flex flex-wrap align-items-stretch mb-5 pb-5 shadow-sm rounded"
         style="background-color: {% if forloop.counter|divisibleby:'2' %}#e9ecef{% else %}#f8f9fa{% endif %};"
     >
@@ -44,26 +46,30 @@
         <div class="col-12 col-md-6 d-flex flex-column justify-content-center align-items-start p-4 p-md-5"
             style="background-color: {% if forloop.counter|divisibleby:'2' %}#e9ecef{% else %}#f8f9fa{% endif %};">
 
-            <h1 class="mb-3 fs-3 fs-md-1">{{ event.title }}</h1>
+            <h1 class="mb-3 fs-3 fs-md-1">
+                {{ event.title }} 
+                <span class="text-muted fs-5" style="margin-left: 10px;">
+                    {% if event.date %}
+                        {{ event.date|date:"d/m/Y" }}
+                    {% else %}
+                        Fecha no disponible
+                    {% endif %}
+                </span>
+            </h1>
             <p class="mb-4">{{ event.description }}</p>
             <p class="mb-4 fw-bold fs-4">Precio: ${{ event.price }}</p>
 
             <button class="btn btn-primary btn-lg mb-3 w-100 w-md-auto">Comprar ticket</button>
 
             <a href="{% url 'event_detail' event.pk %}" class="btn btn-outline-secondary mb-3 w-100 w-md-auto">
-             Ver detalles
+                Ver detalles
             </a>
-         
+
             {% include "app/components/rating.html" with promedio=event.total_rating %}
         </div>
     </div>
     <div class="w-100 clearfix"></div>
-
 {% endfor %}
-
-
-
-
 
 <script src="{% static 'app/events/rating.js' %}"></script>
 

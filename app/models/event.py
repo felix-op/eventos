@@ -5,7 +5,7 @@ from django.db import models
 # Description: Represents an event with a title, description, and scheduled date.
 # =======================
 class Event(models.Model):
-    category = models.ForeignKey("Category", on_delete=models.PROTECT, null=True)
+    categories = models.ManyToManyField("Category", related_name="events", blank=True)
     venue = models.ForeignKey("Venue", on_delete=models.PROTECT, null=True)
     imagen = models.ImageField(upload_to='events/', null=True, blank=True)
     title = models.CharField(max_length=200)

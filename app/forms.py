@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth import authenticate
 from django.core.exceptions import ValidationError
-from .models import Comment, RefundRequest
+from .models import Comment, RefundRequest, Venue
 
 
 class LoginForm(forms.Form):
@@ -70,3 +70,17 @@ class RefundRequestForm(forms.ModelForm):
     class Meta:
         model = RefundRequest
         fields = ['reason', 'reason_detail']
+
+#venue
+class VenueForm(forms.ModelForm):
+    class Meta:
+        model = Venue
+        fields = ['name', 'address', 'city', 'capacity', 'contact', 'imagen']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'address': forms.TextInput(attrs={'class': 'form-control'}),
+            'city': forms.TextInput(attrs={'class': 'form-control'}),
+            'capacity': forms.NumberInput(attrs={'class': 'form-control'}),
+            'contact': forms.TextInput(attrs={'class': 'form-control'}),
+            'imagen': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+        }
