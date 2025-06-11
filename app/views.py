@@ -9,7 +9,7 @@ from django.urls import reverse_lazy,reverse
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.models import Group
-from .forms import LoginForm, CommentForm,RefundRequestForm, VenueForm
+from .forms import LoginForm, CommentForm,RefundRequestForm
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.utils import timezone
