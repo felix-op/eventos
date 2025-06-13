@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth import authenticate
 from django.core.exceptions import ValidationError
-from .models import Comment, RefundRequest
+from .models import Comment, RefundRequest, Ticket, TicketType
 
 
 class LoginForm(forms.Form):
@@ -71,3 +71,26 @@ class RefundRequestForm(forms.ModelForm):
         model = RefundRequest
         fields = ['reason', 'reason_detail']
 
+class TicketPurchaseForm(forms.Form):
+    quantity = forms.IntegerField(
+        label="Quantity",
+        min_value=1,
+        initial=1,
+        widget=forms.NumberInput(attrs={'class': 'form-control'})
+    )
+    ticket_type = forms.ChoiceField(
+        label="Ticket type",
+        choices=TicketType,
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        
+        quantity = cleaned_data.get('quantity')
+
+        errors = Ticket.validate(quantity=quantity)
+        if "quantity" in errors:
+            self.add_error('quantity', errors['quantity'])
+        
+        return cleaned_data

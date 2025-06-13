@@ -59,7 +59,9 @@
             <p class="mb-4">{{ event.description }}</p>
             <p class="mb-4 fw-bold fs-4">Precio: ${{ event.price }}</p>
 
-            <button class="btn btn-primary btn-lg mb-3 w-100 w-md-auto">Comprar ticket</button>
+            <a href="{% url 'ticket_purchase' event.pk %}" class="btn btn-primary btn-lg mb-3 w-100 w-md-auto">
+                Comprar ticket
+            </a>
 
             <a href="{% url 'event_detail' event.pk %}" class="btn btn-outline-secondary mb-3 w-100 w-md-auto">
                 Ver detalles

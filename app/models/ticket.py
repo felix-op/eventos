@@ -42,15 +42,11 @@ class Ticket(models.Model):
         return f"{self.ticket_code} - {self.user.username} - {self.event.title}"
     
     @classmethod
-    def validate(cls, quantity, ticket_code):
+    def validate(cls, quantity):
         errors = {}
 
         if quantity >= 30:
             errors["quantity"] = "No se pueden comprar mas de 30 entradas en un ticket"
-
-        if len(ticket_code) >= 100:
-            errors["ticket_code"] = "El codigo no puede ser mayor a 100 caracteres"
-
 
         return errors
 

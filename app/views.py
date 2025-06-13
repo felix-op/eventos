@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import TemplateView, ListView, DetailView,CreateView, FormView, UpdateView, DeleteView
-from .models import Event, Notification, Ticket, User, Comment, PriorityLevel, RefundRequest, Venue, Notification_user, Category
+from .models import Event, Notification, Ticket, User, Comment, PriorityLevel, RefundRequest, Venue, Notification_user, Category, TicketState
 from django.shortcuts import render,redirect, get_object_or_404
 from django.db.models import Case, When
 from django.contrib.auth.forms import UserCreationForm
@@ -9,7 +9,7 @@ from django.urls import reverse_lazy,reverse
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.models import Group
-from .forms import LoginForm, CommentForm,RefundRequestForm
+from .forms import LoginForm, CommentForm, RefundRequestForm, TicketPurchaseForm
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.utils import timezone
@@ -247,3 +247,44 @@ class RefundRequestCreateView(LoginRequiredMixin,View):
             )
         messages.success(request, "Solicitud enviada correctamente.")
         return redirect('user_dashboard')  
+
+# Compra de Tickets 
+class EventPurchaseView(LoginRequiredMixin, View):
+    form_class = TicketPurchaseForm
+    template_name = 'app/pages/ticket_purchase.html'
+
+    def get(self, request, *args, **kwargs):
+        """Muestra el formulario de compra."""
+        event = get_object_or_404(Event, pk=kwargs.get('pk'))
+        form = self.form_class()
+        context = {'event': event, 'form': form}
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        """Procesa el formulario de compra."""
+        event = get_object_or_404(Event, pk=kwargs.get('pk'))
+        form = self.form_class(request.POST)
+
+        if form.is_valid():
+            quantity = form.cleaned_data['quantity']
+            ticket_type = int(form.cleaned_data['ticket_type'])
+            
+            # GENERACIÓN DE CODIGO Y CREACIÓN DEL TICKET
+            import uuid
+            ticket_code = f"EVT{event.pk}-{uuid.uuid4().hex[:8].upper()}"
+
+            Ticket.objects.create(
+                user=request.user,
+                event=event,
+                quantity=quantity,
+                type=ticket_type,
+                state=TicketState.VALID,
+                ticket_code=ticket_code
+            )
+
+            messages.success(request, f"¡Has comprado {quantity} ticket(s) para '{event.title}' exitosamente!")
+            return redirect('user_dashboard')
+
+        messages.error(request, "Por favor, corrige los errores en el formulario.")
+        context = {'event': event, 'form': form}
+        return render(request, self.template_name, context)
