@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.views.generic import TemplateView, ListView, DetailView,CreateView, FormView, UpdateView, DeleteView
-from .models import Event, Notification, Ticket, User, Comment, PriorityLevel, RefundRequest, Venue, Notification_user, Category, TicketState
+from django.views.generic import TemplateView, ListView, DetailView,CreateView, FormView
+from .models import Event, Ticket, User, Comment, PriorityLevel, RefundRequest, Venue, Notification_user, Category, TicketState
 from django.shortcuts import render,redirect, get_object_or_404
 from django.db.models import Case, When
 from django.contrib.auth.forms import UserCreationForm
@@ -108,27 +108,6 @@ class EventDetailView(DetailView):
         return context
 
 # NOTIFICATIONS
-class NotificationDetailView(LoginRequiredMixin, DetailView):
-    model = Notification_user
-    template_name = "app/pages/notification_detail.html"
-    context_object_name = "notif"
-
-    def get_object(self):
-        notif_user = get_object_or_404(
-            Notification_user.objects.select_related('notification'),
-            id=self.kwargs['pk'],
-            user=self.request.user
-        )
-        # Marcar como leída si aún no lo está
-        if not notif_user.is_read:
-            notif_user.mark_as_read()
-        return notif_user
-    
-#class MarkNotificationReadView(LoginRequiredMixin, View):
-#    def post(self, request, pk):
-#        notif_user = get_object_or_404(Notification_user, pk=pk, user=request.user)
-#        notif_user.mark_as_read()
-#        return HttpResponseRedirect(reverse("notification_detail", args=[pk]))
 
 class NotificationListView(LoginRequiredMixin, ListView):
     template_name = "app/pages/notifications.html"
@@ -150,6 +129,18 @@ class NotificationListView(LoginRequiredMixin, ListView):
         ).count()
         return context
 
+    def post(self, request, *args, **kwargs):
+        notification_user_id = request.POST.get('notification_user_id')
+        notification_to_mark = get_object_or_404(
+            Notification_user, 
+            id=notification_user_id, 
+            user=self.request.user
+        )
+        if notification_to_mark:
+            notification_to_mark.is_read = True
+            notification_to_mark.save()
+
+        return redirect('notifications')
 
 # REGISTER
 class RegistroForm(UserCreationForm):

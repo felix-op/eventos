@@ -37,25 +37,28 @@
                     <ul class="dropdown-menu dropdown-menu-end p-2 shadow-lg" style="min-width: 300px;">
                         {% if notis_preview %}
                             {% for n in notis_preview %}
-                                <li>
-                                    <a class="dropdown-item d-flex flex-column px-3 py-2" href="#" style="white-space: normal;">
-                                        <div class="d-flex justify-content-between align-items-center mb-1">
-                                            <strong class="me-2">{{ n.notification.title }}</strong>
-                                            <span class="badge 
-                                                {% if n.notification.priority == 'HIGH' %} bg-danger 
-                                                {% elif n.notification.priority == 'MEDIUM' %} bg-warning text-dark 
-                                                {% else %} bg-secondary 
-                                                {% endif %}
-                                                ">
-                                                {{ n.notification.priority }}
-                                            </span>
-                                        </div>
-                                        <div class="small text-body">{{ n.notification.message|truncatechars:50 }}</div>
-                                        <div class="text-muted small mt-1">{{ n.notification.created_at|date:"d M Y H:i" }}</div>
-                                    </a>
-                                </li>
-                                {% if not forloop.last %}
-                                    <li><hr class="dropdown-divider"></li>
+                                {% if not n.is_read %}
+                                    <li>
+                                        <a class="dropdown-item d-flex flex-column px-3 py-2" href="#" style="white-space: normal;">
+                                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                                <strong class="me-2">{{ n.notification.title }}</strong>
+                                                <span class="badge 
+                                                    {% if n.notification.priority == 'HIGH' %} bg-danger 
+                                                    {% elif n.notification.priority == 'MEDIUM' %} bg-warning text-dark 
+                                                    {% else %} bg-secondary 
+                                                    {% endif %}
+                                                    ">
+                                                    {{ n.notification.priority }}
+                                                </span>
+                                            </div>
+                                            <div class="small text-body">{{ n.notification.message|truncatechars:50 }}</div>
+                                            <div class="text-muted small mt-1">{{ n.notification.created_at|date:"d M Y H:i" }}</div>
+                                        </a>
+                                    </li>
+                                
+                                    {% if not forloop.last %}
+                                        <li><hr class="dropdown-divider"></li>
+                                    {% endif %}
                                 {% endif %}
                             {% endfor %}
                             <li>
