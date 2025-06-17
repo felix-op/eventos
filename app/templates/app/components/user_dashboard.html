@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load app_filters %}
 
 {% block extra_css %}
 .sidebar {
@@ -80,10 +81,9 @@
       {% include "../pages/purchase_dashboard.html" %}
       <!-- COMMENT -->        
       {% include "../pages/comment_dashboard.html" %}
-      
-      <div id="Ratings" class="section">
-        <h5 class="mb-4 fw-semibold text-primary">Ratings</h5>
-      </div>
+      <!-- RATINGS -->        
+      {% show_rating_dashboard %}
+
       <div id="Favorites" class="section">
         <h5 class="mb-4 fw-semibold text-primary">Favorites</h5>
       </div>
