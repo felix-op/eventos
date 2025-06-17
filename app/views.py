@@ -241,6 +241,7 @@ class RefundRequestCreateView(LoginRequiredMixin,View):
 
 # Compra de Tickets 
 class EventPurchaseView(LoginRequiredMixin, View):
+    login_url = 'access-denied'
     form_class = TicketPurchaseForm
     template_name = 'app/pages/ticket_purchase.html'
 

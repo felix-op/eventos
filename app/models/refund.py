@@ -17,7 +17,7 @@ class RefundRequest(models.Model):
     approved = models.BooleanField(default=False)
     approval_date = models.DateField(null=True, blank=True)
     reason = models.CharField(max_length=50, choices=REASON_CHOICES,blank=False)
-    reason_detail = models.CharField(max_length=1000, blank=False)
+    reason_detail = models.CharField(max_length=1000,  blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     usuario = models.ForeignKey("User", on_delete=models.CASCADE)
     ticket_code = models.ForeignKey("Ticket", on_delete=models.CASCADE, related_name='ticket_refund', blank = False)
