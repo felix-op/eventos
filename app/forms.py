@@ -80,7 +80,7 @@ class TicketPurchaseForm(forms.Form):
     )
     ticket_type = forms.ChoiceField(
         label="Ticket type",
-        choices=TicketType,
+        choices=TicketType.choices,
         widget=forms.Select(attrs={'class': 'form-control'})
     )
     

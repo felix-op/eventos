@@ -1,15 +1,17 @@
 <div class="rating-block mt-4">
     <div class="d-flex align-items-center">
         <!-- Estrellas -->
-        <div id="rating-stars" class="me-3">
-            {% for i in "12345" %}
+        <div class="me-3">
+            {% for i in marcadas %}
+                <span class="star fs-3 text-warning" data-value="{{ forloop.counter }}">&#9733;</span>
+            {% endfor %}
+            {% for i in no_marcadas %}
                 <span class="star fs-3 text-muted" data-value="{{ forloop.counter }}">&#9733;</span>
             {% endfor %}
         </div>
         <!-- Preview y promedio -->
         <div>
-            <div id="" class="hover-rating small text-secondary">Estás calificando: -</div>
-            <div id="" class="avg-rating fw-bold">
+            <div class="avg-rating fw-bold">
                 Promedio: {{ promedio|default:"-" }}
             </div>
         </div>

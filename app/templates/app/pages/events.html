@@ -67,12 +67,11 @@
                 Ver detalles
             </a>
 
-            {% include "app/components/rating.html" with promedio=event.total_rating %}
+            {% include "app/components/rating.html" with promedio=event.average_rating marcadas=event.starts_marked no_marcadas=event.starts_unmarked %}
         </div>
     </div>
     <div class="w-100 clearfix"></div>
 {% endfor %}
 
-<script src="{% static 'app/events/rating.js' %}"></script>
 
 {% endblock %}
