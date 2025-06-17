@@ -3,7 +3,7 @@
         "model": "app.event",
         "pk": 1,
         "fields": {
-            "category": 1,
+            "categories": [1],
             "venue": 1,
             "imagen": "events/boda.jpg",
             "title": "Boda de Ana y Luis",
@@ -18,7 +18,7 @@
         "model": "app.event",
         "pk": 2,
         "fields": {
-            "category": 2,
+            "categories": [2],
             "venue": 2,
             "imagen": "events/cena_dorada.jpg",
             "title": "Cena Dorada",
@@ -33,7 +33,7 @@
         "model": "app.event",
         "pk": 3,
         "fields": {
-            "category": 1,
+            "categories": [1],
             "venue": 3,
             "imagen": "events/espectaculo.jpg",
             "title": "Noche de Gala y Espectáculo",
@@ -48,7 +48,7 @@
         "model": "app.event",
         "pk": 4,
         "fields": {
-            "category": 3,
+            "categories": [3],
             "venue": 3,
             "imagen": "events/taller.jpg",
             "title": "Taller de Inversión y Mentoría",

@@ -3,8 +3,6 @@
 }
 
 .event-wrapper {
-    min-height: 80vh;
-    margin-bottom: 3rem;
-    /* o usar Bootstrap's mb-5 */
+    height: 80vh;
     padding-bottom: 2rem;
 }
