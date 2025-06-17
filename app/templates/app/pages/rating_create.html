@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0">
+                        {% if object %}
+                            Editar Calificación
+                        {% else %}
+                            Calificar Evento
+                        {% endif %}
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Estás calificando: <strong>{{ event.title }}</strong></h5>
+                    <p class="card-text text-muted">Comparte tu opinión para ayudar a otros usuarios.</p>
+                    
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+                            <label for="{{ form.title.id_for_label }}" class="form-label">{{ form.title.label }}</label>
+                            {{ form.title }}
+                            {% if form.title.errors %}<div class="text-danger small">{{ form.title.errors.as_text }}</div>{% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.text.id_for_label }}" class="form-label">{{ form.text.label }}</label>
+                            {{ form.text }}
+                             {% if form.text.errors %}<div class="text-danger small">{{ form.text.errors.as_text }}</div>{% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">{{ form.rating.label }}</label>
+                            <div class="rating-radio-group">
+                                {{ form.rating }}
+                            </div>
+                             {% if form.rating.errors %}<div class="text-danger small">{{ form.rating.errors.as_text }}</div>{% endif %}
+                        </div>
+                        
+                        <hr>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{% url 'user_dashboard' %}" class="btn btn-secondary me-md-2">Cancelar</a>
+                            <button type="submit" class="btn btn-primary">Enviar Calificación</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

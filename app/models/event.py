@@ -11,6 +11,7 @@ class Event(models.Model):
     imagen = models.ImageField(upload_to='events/', null=True, blank=True)
     title = models.CharField(max_length=200)
     description = models.TextField()
+    total_rating = models.IntegerField(default=0)
     date = models.DateTimeField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

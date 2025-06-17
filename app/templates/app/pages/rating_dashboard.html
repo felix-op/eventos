@@ -1,29 +1,47 @@
 <div id="Ratings" class="card mt-4">
     <div class="card-header">
-        <h5 class="mb-0">Calificar Eventos Pasados</h5>
+        <h5 class="mb-0">Mis Calificaciones</h5>
     </div>
     <div class="card-body">
+
+        {# --- SECCIÓN 1: EVENTOS PENDIENTES --- #}
         {% if events_to_rate %}
-            <p>Has participado en estos eventos y ya puedes dejar tu opinión.</p>
-            <ul class="list-group list-group-flush">
+            <h6 class="card-subtitle mb-2 text-muted">Eventos Pendientes de Calificación</h6>
+            <ul class="list-group list-group-flush mb-4">
                 {% for event in events_to_rate %}
-                    <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                        <div class="me-3">
-                            <strong>{{ event.title }}</strong>
-                            <br>
-                            <small class="text-muted">Finalizó el {{ event.date|date:"d F Y" }}</small>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>{{ event.title }}</span>
+                        <a href="{% url 'rating_create' event.id %}" class="btn btn-primary btn-sm">Calificar</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {# --- SECCIÓN 2: CALIFICACIONES ENVIADAS --- #}
+        {% if completed_ratings %}
+            <h6 class="card-subtitle mb-2 text-muted">Calificaciones Enviadas</h6>
+            <ul class="list-group list-group-flush">
+                {% for rating in completed_ratings %}
+                    <li class="list-group-item">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h5 class="mb-1">{{ rating.event.title }}</h5>
+                                <p class="mb-1"><strong>"{{ rating.title }}"</strong></p>
+                                <p class="mb-2 fst-italic">"{{ rating.text }}"</p>
+                                <small class="text-warning">Puntuación: {{ rating.rating }}/5</small>
+                            </div>
+                            <div>
+                                <a href="{% url 'rating_edit' rating.id %}" class="btn btn-outline-secondary btn-sm me-2">Editar</a>
+                                <a href="{% url 'rating_delete' rating.id %}" class="btn btn-outline-danger btn-sm">Eliminar</a>
+                            </div>
                         </div>
-                        
-                        {# Este es el botón de acción. Lo prepararemos para el siguiente paso. #}
-                        {# Usaremos el ID del evento en la URL para saber qué evento calificar. #}
-                        <a href="#" class="btn btn-primary btn-sm mt-2 mt-md-0">
-                            Calificar
-                        </a>
                     </li>
                 {% endfor %}
             </ul>
         {% else %}
-            <p class="text-muted mb-0">No tienes eventos pendientes para calificar por el momento.</p>
+            {% if not events_to_rate %}
+                 <p class="text-muted mb-0">No tienes calificaciones enviadas ni eventos pendientes.</p>
+            {% endif %}
         {% endif %}
     </div>
 </div>

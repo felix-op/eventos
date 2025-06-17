@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth import authenticate
 from django.core.exceptions import ValidationError
-from .models import Comment, RefundRequest, Ticket, TicketType
+from .models import Comment, RefundRequest, Ticket, TicketType, Rating
 
 
 class LoginForm(forms.Form):
@@ -94,3 +94,19 @@ class TicketPurchaseForm(forms.Form):
             self.add_error('quantity', errors['quantity'])
         
         return cleaned_data
+
+class RatingForm(forms.ModelForm):
+    class Meta:
+        model = Rating
+        fields = ['title', 'text', 'rating']
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Un título para tu reseña'}),
+            'text': forms.Textarea(attrs={'class': 'form-control', 'rows': 4, 'placeholder': 'Escribe tu opinión sobre el evento...'}),
+            'rating': forms.RadioSelect(choices=[(i, str(i)) for i in range(1, 6)]),
+        }
+
+        labels = {
+            'title': 'Título de la reseña',
+            'text': 'Tu opinión',
+            'rating': 'Tu puntuación (1=Malo, 5=Excelente)',
+        }
