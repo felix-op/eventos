@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.views.generic import TemplateView, ListView, DetailView,CreateView, FormView
-from .models import Event, Ticket, User, Comment, PriorityLevel, RefundRequest, Venue, Notification_user, Category, TicketState
+from django.views.generic import TemplateView, ListView, DetailView,CreateView, FormView, DeleteView, UpdateView
+from .models import Event, Ticket, User, Comment, PriorityLevel, RefundRequest, Venue, Notification_user, Category, TicketState, Rating
 from django.shortcuts import render,redirect, get_object_or_404
 from django.db.models import Case, When
 from django.contrib.auth.forms import UserCreationForm
@@ -9,9 +9,9 @@ from django.urls import reverse_lazy,reverse
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.models import Group
-from .forms import LoginForm, CommentForm, RefundRequestForm, TicketPurchaseForm
+from .forms import LoginForm, CommentForm, RefundRequestForm, TicketPurchaseForm, RatingForm
 from django.contrib import messages
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.utils import timezone
 
 class AccessDeniedView(TemplateView):
@@ -299,3 +299,59 @@ class ProbandoView(TemplateView):
         context['categories'] = Category.objects.all()  # Pasar las categorías al template
         return context
     
+class RatingCreateView(LoginRequiredMixin, CreateView):
+    model = Rating
+    form_class = RatingForm
+    template_name = 'app/pages/rating_create.html'
+    success_url = reverse_lazy('user_dashboard')
+
+    def dispatch(self, request, *args, **kwargs):
+        self.event = Event.objects.filter(pk=self.kwargs['event_id']).first()
+        if self.event is None:
+            raise Http404("El evento no existe.")
+
+        # Comprueba si el usuario tiene un ticket expirado para este evento.
+        has_permission = Ticket.objects.filter(
+            user=request.user, 
+            event=self.event, 
+            state=TicketState.EXPIRED
+        ).exists()
+
+        already_rated = Rating.objects.filter(user=request.user, event=self.event).exists()
+
+        if not has_permission or already_rated:
+            raise Http404("No tienes permiso para calificar este evento.")
+        
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['event'] = self.event
+        return context
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        form.instance.event = self.event
+        return super().form_valid(form)
+    
+class RatingDeleteView(LoginRequiredMixin, DeleteView):
+    model = Rating
+    template_name = 'app/pages/rating_delete.html' 
+    success_url = reverse_lazy('user_dashboard') 
+
+    def get_queryset(self):
+        return Rating.objects.filter(user=self.request.user)
+
+class RatingUpdateView(LoginRequiredMixin, UpdateView):
+    model = Rating
+    form_class = RatingForm
+    template_name = 'app/pages/rating_create.html' 
+    success_url = reverse_lazy('user_dashboard') 
+
+    def get_queryset(self):
+        return Rating.objects.filter(user=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['event'] = self.object.event
+        return context
