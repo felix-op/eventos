@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block link_css %}
+    {% static 'app/home/home.css' %}
+{% endblock %}
+
 {% block content %}
 <div class="home_block">
 
@@ -46,9 +50,12 @@
         </button>
     </div>
 
+    <div class="divider"></div>
+
     <!-- About Us -->
-    <section class="py-5 bg-light">
-        <div class="container text-center px-3">
+    <section>
+        <div class="text-center p-5 border-bottom border-top bg-light"
+            style="padding-top: 100px !important; padding-bottom: 100px !important;">
             <h2 class="display-6 fw-bold mb-4">About Us</h2>
             <p class="fs-6 mx-auto" style="max-width: 800px;">
                 We are a leading ticket sales company that connects event enthusiasts with unforgettable experiences.
@@ -57,9 +64,12 @@
         </div>
     </section>
 
+    <div class="divider"></div>
+
     <!-- Redes Sociales -->
-    <section class="py-5">
-        <div class="container text-center px-3">
+    <section>
+        <div class="text-center border-top border-bottom border-2 bg-light"
+            style="padding-top: 100px !important; padding-bottom: 100px !important;">
             <h2 class="display-6 fw-bold mb-4">Visit our social networks</h2>
             <div class="d-flex justify-content-center flex-wrap gap-3">
                 <a href="#" class="btn btn-outline-primary"><i class="bi bi-facebook"></i> Facebook</a>
@@ -69,6 +79,8 @@
             </div>
         </div>
     </section>
+
+    <div class="divider"></div>
 
 </div>
 {% endblock %}

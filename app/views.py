@@ -279,3 +279,23 @@ class EventPurchaseView(LoginRequiredMixin, View):
         messages.error(request, "Por favor, corrige los errores en el formulario.")
         context = {'event': event, 'form': form}
         return render(request, self.template_name, context)
+    
+class ProbandoView(TemplateView):
+    model = Event    
+    template_name = 'app/pages/probando.html'
+    context_object_name = "events"
+
+    def get_queryset(self):
+        category_filter = self.request.GET.get('category', '')
+        events = Event.objects.all()
+        # Aplicar filtro por categoría si se seleccionó alguna
+        if category_filter:
+            events = events.filter(categories__id=category_filter)
+
+        return events.order_by("date")  # Ordenar por fecha
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()  # Pasar las categorías al template
+        return context
+    

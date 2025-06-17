@@ -14,6 +14,7 @@ from .views import (
     AccessDeniedView,
     CommentCreateView,
     EventPurchaseView,
+    ProbandoView
 )
 
 
@@ -32,5 +33,5 @@ urlpatterns = [
     path('refund/create/<int:ticket_id>/', RefundRequestCreateView.as_view(), name='refund_create'),
     path('access-denied/', AccessDeniedView.as_view(), name='access-denied'),
     path('event/<int:pk>/purchase/', EventPurchaseView.as_view(), name='ticket_purchase'),
-
+    path('probando/', ProbandoView.as_view(),name='probando')
 ]
