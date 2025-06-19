@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model # Importa la forma correcta de obtener el User model
+from django.core.exceptions import ValidationError
 
 User = get_user_model() # Obtiene la instancia activa del modelo de usuario
 
@@ -25,12 +26,27 @@ class Notification(models.Model):
     recipients = models.ManyToManyField(
         User,
         through='app.Notification_user', # Especifica el modelo intermedio
-        related_name='notifications_received'
+        related_name='notifications_received',
+        blank=True
     )
     
     def __str__(self):
         return self.title
-    
+
+    def clean(self):
+        errors = {}
+        if not self.title:
+            errors["title"] = ValidationError("Por favor ingrese un titulo", code='required')
+
+        if not self.message: 
+            errors["message"] = ValidationError("Por favor ingrese un mensaje", code='required')
+
+        if self.priority not in PriorityLevel.values:
+            errors["priority"] = ValidationError("Nivel de prioridad no válido. Elija entre HIGH, MEDIUM o LOW.", code='required')
+        
+        if errors:
+            raise ValidationError(errors)
+        
     @classmethod
     def validate(cls, title, message, priority):
         errors = {}
@@ -46,7 +62,7 @@ class Notification(models.Model):
         return errors
 
     @classmethod
-    def new(cls, title, message, priority):
+    def new(cls, title, message, priority, recipient_users=[]):
 
         errors = Notification.validate(title, message, priority)
 
