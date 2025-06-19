@@ -5,10 +5,7 @@ from django import forms
 class HiddenFromSellerAdmin(admin.ModelAdmin):
     def has_module_permission(self, request):
         return not request.user.groups.filter(name='seller').exists()
-
-    def has_view_permission(self, request, obj=None):
-        return not request.user.groups.filter(name='seller').exists()
-
+    
 class EventForm(forms.ModelForm):
     class Meta:
         model = Event
@@ -24,10 +21,10 @@ class EventAdmin(admin.ModelAdmin):
     list_filter = ("date",)
 
     def has_view_permission(self, request, obj=None):
-        return True  # Todos pueden ver
+        return True  
 
     def has_change_permission(self, request, obj=None):
-        return True  # Todos pueden modificar (opcional, podés restringir)
+        return True  
 
     def has_add_permission(self, request):
         return not request.user.groups.filter(name='seller').exists()
@@ -39,8 +36,6 @@ class EventAdmin(admin.ModelAdmin):
         return True
 
 class CommentAdmin(admin.ModelAdmin):
-    #list_display = ('user', 'event', 'created_at')
-
     def has_module_permission(self, request):
         return True
 
@@ -54,10 +49,9 @@ class CommentAdmin(admin.ModelAdmin):
         return not request.user.groups.filter(name='seller').exists()
 
     def has_delete_permission(self, request, obj=None):
-        return True  # sellers pueden eliminar
+        return True  
 
 class RefundRequestAdmin(admin.ModelAdmin):
-    #list_display = ('user', 'ticket', 'status')
 
     def has_module_permission(self, request):
         return True
@@ -66,7 +60,7 @@ class RefundRequestAdmin(admin.ModelAdmin):
         return True
 
     def has_change_permission(self, request, obj=None):
-        return True  # sellers pueden modificar
+        return True  
 
     def has_add_permission(self, request):
         return not request.user.groups.filter(name='seller').exists()
@@ -76,18 +70,25 @@ class RefundRequestAdmin(admin.ModelAdmin):
 
 class CategoryAdmin(HiddenFromSellerAdmin):
     pass
+
 class NotificationAdmin(HiddenFromSellerAdmin):
     pass
+
 class RatingAdmin(HiddenFromSellerAdmin):
     pass
+
 class TicketAdmin(HiddenFromSellerAdmin):
     pass
+
 class UserAdmin(HiddenFromSellerAdmin):
     pass
+
 class VenueAdmin(HiddenFromSellerAdmin):
     pass
+
 class Notification_userAdmin(HiddenFromSellerAdmin):
     pass
+
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Comment, CommentAdmin)
 admin.site.register(Event, EventAdmin)
