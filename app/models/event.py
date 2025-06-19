@@ -14,6 +14,7 @@ class Event(models.Model):
     date = models.DateTimeField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    _tickets_updated = models.BooleanField(default=False) # _ hace que sea privado
 
     def __str__(self):
         return self.title
