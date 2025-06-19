@@ -14,7 +14,7 @@ class RefundRequest(models.Model):
         ('other', 'Otro'),
     ]
 
-    approved = models.BooleanField(default=False)
+    approved = models.BooleanField(null=True, blank=True, default=None)
     approval_date = models.DateField(null=True, blank=True)
     reason = models.CharField(max_length=50, choices=REASON_CHOICES,blank=False)
     reason_detail = models.CharField(max_length=1000,  blank=True)
@@ -28,19 +28,33 @@ class RefundRequest(models.Model):
 
     # Modifico el save, por si cambia el estado Approved, desde panel admin
     def save(self, *args, **kwargs):
-        if self.approved:
+        if self.approved is True:
             self.ticket_code.state = TicketState.REFUNDED
             self.ticket_code.save()
             self.approval_date = timezone.now().date()
+
+        if self.approved is False:
+            self.ticket_code.state = TicketState.EXPIRED
+            self.ticket_code.save()
+            self.approval_date = timezone.now().date()
+            
         super().save(*args, **kwargs)
 
     def update(self, approved, reason, approval_date,reason_detail):
-        self.approved = approved or self.approved
-        if approved:
-            from .ticket import TicketState
-            self.ticket_code.state = TicketState.REFUNDED
-            self.ticket_code.save()
-            self.approval_date = timezone.now().date()
+        if approved is not None:
+            self.approved = approved
+            if approved is True:
+                from .ticket import TicketState
+                self.ticket_code.state = TicketState.REFUNDED
+                self.ticket_code.save()
+                self.approval_date = timezone.now().date()
+        
+        if approved is False:
+                from .ticket import TicketState
+                self.ticket_code.state = TicketState.EXPIRED
+                self.ticket_code.save()
+                self.approval_date = timezone.now().date()
+
         self.reason = reason or self.reason
         self.approval_date = approval_date or self.approval_date
         self.reason_detail = reason_detail or self.reason_detail

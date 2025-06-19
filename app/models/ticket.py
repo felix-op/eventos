@@ -71,6 +71,11 @@ class Ticket(models.Model):
         from . import RefundRequest
         return RefundRequest.objects.filter(ticket_code=self).exists()
 
+    @property
+    def solicitudRechazada(self):
+        from . import RefundRequest
+        return RefundRequest.objects.get(ticket_code=self).approved is False
+
     @classmethod
     def new(cls, ticket_code, quantity, type, state, user, event):
         errors = Ticket.validate(quantity,user,event,state,type)
