@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models import Avg
+from django.db.models import Avg, Sum
 
 # =======================
 # Model: Event
@@ -11,7 +11,6 @@ class Event(models.Model):
     imagen = models.ImageField(upload_to='events/', null=True, blank=True)
     title = models.CharField(max_length=200)
     description = models.TextField()
-    total_rating = models.IntegerField(default=0)
     date = models.DateTimeField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -52,3 +51,7 @@ class Event(models.Model):
         self.date = date or self.date
 
         self.save()
+
+    @property
+    def average_rating(self):
+        return self.rating_set.aggregate(avg=Avg('rating'))['avg'] or 0

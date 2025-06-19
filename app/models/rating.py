@@ -45,6 +45,8 @@ class Rating(models.Model):
             rating=rating
         )
 
+        event.update_total_rating()
+
         return True, rating_obj
 
     def update(self, title=None, text=None, rating=None):

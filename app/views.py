@@ -65,6 +65,17 @@ class EventListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        events = context['events']
+
+        for event in events:
+            promedio = event.average_rating
+            rating = int(promedio % 5) if promedio else 0
+            event.starts_marked = range(rating)
+            event.starts_unmarked = range(5 - rating)
+
+        print(event.starts_marked)
+        print(event.starts_unmarked)
+        
         context['categories'] = Category.objects.all()  # Pasar las categorías al template
         return context
 
