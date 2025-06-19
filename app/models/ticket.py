@@ -1,4 +1,4 @@
-from django.db import models
+from django.db import models, IntegrityError
 # =======================
 # Enum: TicketType
 # Description: Enum for ticket categories (General, VIP).
@@ -22,7 +22,7 @@ class TicketState(models.IntegerChoices):
 # =======================
 class Ticket(models.Model):
     buy_date = models.DateTimeField(auto_now_add=True)
-    ticket_code = models.CharField(max_length=100)
+    ticket_code = models.CharField(max_length=100, unique=True)
     quantity = models.IntegerField(default=1)
     type = models.IntegerField(
         choices = TicketType.choices,
@@ -42,13 +42,29 @@ class Ticket(models.Model):
         return f"{self.ticket_code} - {self.user.username} - {self.event.title}"
     
     @classmethod
-    def validate(cls, quantity):
+    def validate(cls, quantity=None, user=None, event=None, state=None, type=None):
         errors = {}
 
-        if quantity >= 30:
-            errors["quantity"] = "No se pueden comprar mas de 30 entradas en un ticket"
+        if quantity is not None:
+            if quantity > 30:
+                errors["quantity"] = "no se pueden comprar mas de 30 tickets"
+            elif quantity <= 0:
+                errors["quantity"] = "Debe comprar al menos un ticket"
+
+        if user is not None and not user: #verifica falsy
+            errors["user"] = "Debe estar asociado a un usuario"
+
+        if event is not None and not event: #verifica falsy
+            errors["event"] = "Debe estar asociado a un evento"
+
+        if state is not None and state not in [choice.value for choice in TicketState]:
+            errors["state"] = "Estado de ticket invalido"
+
+        if type is not None and type not in [choice.value for choice in TicketType]:
+            errors["type"] = "Tipo de ticket invalido"
 
         return errors
+
 
     @property
     def has_refund(self):
@@ -56,29 +72,36 @@ class Ticket(models.Model):
         return RefundRequest.objects.filter(ticket_code=self).exists()
 
     @classmethod
-    def new(cls, buy_date,  ticket_code, quantity, type, state, user, event):
-        errors = Ticket.validate(quantity,ticket_code)
+    def new(cls, ticket_code, quantity, type, state, user, event):
+        errors = Ticket.validate(quantity,user,event,state,type)
 
         if len(errors.keys()) > 0:
             return False, errors
 
-        cls.objects.create(
-            buy_date,
-            quantity = quantity,
-            ticket_code = ticket_code,
-            type = type,
-            state = state,
-            user = user,
-            event = event
-        )
+        try:
+            cls.objects.create(
+                quantity = quantity,
+                ticket_code = ticket_code,
+                type = type,
+                state = state,
+                user = user,
+                event = event
+            )
 
-        return True, None
+            return True, None
+        except IntegrityError:
+            return False, {"ticket_code": "Ya existe un ticket con ese codigo."}
 
-    def update(self, quantity, type, state, user, event):
-        self.quantity = quantity or self.quantity
-        self.type = type or self.type
-        self.state = state or self.state
-        self.user = user or self.user
-        self.event = event or self.event
+    def update(self, quantity=None, type=None, state=None, user=None, event=None):
+        if quantity is not None:
+            self.quantity = quantity
+        if type is not None:
+            self.type = type
+        if state is not None:
+            self.state = state
+        if user is not None:
+            self.user = user
+        if event is not None:
+            self.event = event
 
         self.save()
