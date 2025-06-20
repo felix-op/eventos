@@ -29,109 +29,130 @@ class TicketModelTest(TestCase):
         self.assertIsNotNone(ticket.buy_date)
         self.assertEqual(ticket.quantity, 1)
 
-    
-    def test_event_validate_with_valid_data(self):
-        """Test que verifica la validación de eventos con datos válidos"""
-        date = timezone.now() + datetime.timedelta(days=1)
-        errors = Event.validate("Título válido", "Descripción válida", date)
-        self.assertEqual(errors, {})
+    def test_ticket_update(self):
 
-    def test_event_validate_with_empty_title(self):
-        """Test que verifica la validación de eventos con título vacío"""
-        date = timezone.now() + datetime.timedelta(days=1)
-        errors = Event.validate("", "Descripción válida", date)
-        self.assertIn("title", errors)
-        self.assertEqual(errors["title"], "Por favor ingrese un titulo")
-
-    def test_event_validate_with_empty_description(self):
-        """Test que verifica la validación de eventos con descripción vacía"""
-        date = timezone.now() + datetime.timedelta(days=1)
-        errors = Event.validate("Título válido", "", date)
-        self.assertIn("description", errors)
-        self.assertEqual(errors["description"], "Por favor ingrese una descripcion")
-
-    def test_event_new_with_valid_data(self):
-        """Test que verifica la creación de eventos con datos válidos"""
-        date = timezone.now() + datetime.timedelta(days=2)
-        success, errors = Event.new(
-            title="Nuevo evento",
-            description="Descripción del nuevo evento",
-            date=date,
+        ticket = Ticket.objects.create(
+            ticket_code = "EVT4-F119D7D2",
+            type = TicketType.GENERAL,
+            state = TicketState.VALID,
+            user = self.user,
+            event = self.event
         )
 
-        self.assertTrue(success)
-        self.assertIsNone(errors)
+        auxUser = User.objects.create(username="aux us", password="Password123")
+        auxEvent = Event.objects.create(title="Evento y", description="descripcion", date=timezone.now())
 
-        # Verificar que el evento fue creado en la base de datos
-        new_event = Event.objects.get(title="Nuevo evento")
-        self.assertEqual(new_event.description, "Descripción del nuevo evento")
 
-    def test_event_new_with_invalid_data(self):
-        """Test que verifica que no se crean eventos con datos inválidos"""
-        date = timezone.now() + datetime.timedelta(days=2)
-        initial_count = Event.objects.count()
+        ticket.update(
+            quantity = 20,
+            type = TicketType.VIP,
+            state = TicketState.REFUNDED,
+            user = auxUser,
+            event = auxEvent
+        )
 
-        # Intentar crear evento con título vacío
-        success, errors = Event.new(
-            title="",
-            description="Descripción del evento",
-            date=date,
+        self.assertEqual(ticket.quantity, 20)
+        self.assertEqual(ticket.type, TicketType.VIP)
+        self.assertEqual(ticket.state, TicketState.REFUNDED)
+        self.assertEqual(ticket.user, auxUser)
+        self.assertEqual(ticket.event, auxEvent)
+
+    def test_ticket_update_parcial(self):
+
+        ticket = Ticket.objects.create(
+            ticket_code = "EVT4-F119D7D2",
+            type = TicketType.GENERAL,
+            state = TicketState.VALID,
+            user = self.user,
+            event = self.event
+        )
+
+        ticket.update(
+            quantity = 20,
+            state = TicketState.REFUNDED,
+        )
+
+        self.assertEqual(ticket.quantity, 20)
+        self.assertEqual(ticket.type, TicketType.GENERAL)
+        self.assertEqual(ticket.state, TicketState.REFUNDED)
+        self.assertEqual(ticket.user, self.user)
+        self.assertEqual(ticket.event, self.event)
+
+    def test_invalid_quantity_max(self):
+        success, errors = Ticket.new(
+            ticket_code = "EVT4-F119D7D2",
+            quantity = 31,
+            type = TicketType.GENERAL,
+            state = TicketState.VALID,
+            user = self.user,
+            event = self.event
         )
 
         self.assertFalse(success)
-        self.assertIn("title", errors)
+        self.assertIn("quantity", errors)
+        self.assertIn(errors["quantity"], "no se pueden comprar mas de 30 tickets")
 
-        # Verificar que no se creó ningún evento nuevo
-        self.assertEqual(Event.objects.count(), initial_count)
-
-    def test_event_update(self):
-        """Test que verifica la actualización de eventos"""
-        new_title = "Título actualizado"
-        new_description = "Descripción actualizada"
-        new_date = timezone.now() + datetime.timedelta(days=3)
-
-        event = Event.objects.create(
-            title="Evento de prueba",
-            description="Descripción del evento de prueba",
-            date=timezone.now() + datetime.timedelta(days=1),
+    def test_invalid_quantity_min(self):
+        success, errors = Ticket.new(
+            ticket_code = "EVT4-F119D7D2",
+            quantity = 0,
+            type = TicketType.GENERAL,
+            state = TicketState.VALID,
+            user = self.user,
+            event = self.event
         )
 
-        event.update(
-            title=new_title,
-            description=new_description,
-            date=new_date,
-        )
-
-        # Recargar el evento desde la base de datos
-        updated_event = Event.objects.get(pk=event.pk)
-
-        self.assertEqual(updated_event.title, new_title)
-        self.assertEqual(updated_event.description, new_description)
-        self.assertEqual(updated_event.date.time(), new_date.time())
-
-    def test_event_update_partial(self):
-        """Test que verifica la actualización parcial de eventos"""
-        event = Event.objects.create(
-            title="Evento de prueba",
-            description="Descripción del evento de prueba",
-            date=timezone.now() + datetime.timedelta(days=1),
-        )
-
-        original_title = event.title
-        original_date = event.date
-        new_description = "Solo la descripción ha cambiado"
-
-        event.update(
-            title=None,  # No cambiar
-            description=new_description,
-            date=None,  # No cambiar
-        )
-
-        # Recargar el evento desde la base de datos
-        updated_event = Event.objects.get(pk=event.pk)
-
-        # Verificar que solo cambió la descripción
-        self.assertEqual(updated_event.title, original_title)
-        self.assertEqual(updated_event.description, new_description)
-        self.assertEqual(updated_event.date, original_date)
+        self.assertFalse(success)
+        self.assertIn("quantity", errors)
+        self.assertEqual(errors["quantity"], "Debe comprar al menos un ticket")
+ 
+    def test_duplicate_code(self):
         
+        Ticket.objects.create(
+            ticket_code = "codigo1",
+            quantity = 1,
+            type = TicketType.GENERAL,
+            state = TicketState.VALID,
+            user = self.user,
+            event = self.event
+        )
+
+        success, errors = Ticket.new(
+            ticket_code = "codigo1",
+            quantity = 3,
+            type = TicketType.VIP,
+            state = TicketState.VALID,
+            user = self.user,
+            event = self.event
+        )
+
+        self.assertFalse(success)
+        self.assertIn("ticket_code", errors)
+
+    def test_invalid_state(self):
+        
+        success, errors = Ticket.new(
+            ticket_code = "EVT4-F119D7D2",
+            quantity = 1,
+            type = TicketType.GENERAL,
+            state = 111,
+            user = self.user,
+            event = self.event
+        )
+        
+        self.assertFalse(success)
+        self.assertIn("state",errors)
+    
+    def test_invalid_type(self):
+        
+        success, errors = Ticket.new(
+            ticket_code = "EVT4-F119D7D2",
+            quantity = 1,
+            type = 111,
+            state = TicketState.VALID,
+            user = self.user,
+            event = self.event
+        )
+        
+        self.assertFalse(success)
+        self.assertIn("type",errors)

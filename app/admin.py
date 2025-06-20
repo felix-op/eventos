@@ -16,6 +16,7 @@ class EventForm(forms.ModelForm):
 
 class EventAdmin(admin.ModelAdmin):
     form = EventForm
+    exclude = ['_tickets_updated'] # solo lo modifica el comando tickets_expirados
     list_display = ("title", "description", "date")
     search_fields = ("title", "date")
     list_filter = ("date",)
