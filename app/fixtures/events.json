@@ -9,7 +9,6 @@
             "title": "Boda de Ana y Luis",
             "description": "Una hermosa ceremonia en los jardines del Hotel Paraíso, acompañada de una recepción íntima con familia y amigos.",
             "date": "2025-06-15T17:00:00Z",
-            "total_rating": 0,
             "created_at": "2025-05-01T12:00:00Z",
             "updated_at": "2025-05-01T12:00:00Z"
         }
@@ -24,7 +23,6 @@
             "title": "Cena Dorada",
             "description": "Una experiencia culinaria en un restaurante ambientado con luces cálidas y decoración clásica. Ideal para celebrar aniversarios o encuentros especiales.",
             "date": "2025-07-10T20:30:00Z",
-            "total_rating": 0,
             "created_at": "2025-06-01T12:00:00Z",
             "updated_at": "2025-06-01T12:00:00Z"
         }
@@ -39,7 +37,6 @@
             "title": "Noche de Gala y Espectáculo",
             "description": "Una velada inolvidable con música en vivo y artistas invitados en un salón elegante. Asistentes disfrutan del show sentados en mesas redondas con cena incluida.",
             "date": "2025-08-05T21:00:00Z",
-            "total_rating": 0,
             "created_at": "2025-06-01T12:00:00Z",
             "updated_at": "2025-06-01T12:00:00Z"
         }
@@ -54,7 +51,6 @@
             "title": "Taller de Inversión y Mentoría",
             "description": "Un espacio colaborativo con expertos del sector financiero, donde los asistentes participan en mesas de trabajo, charlas y sesiones personalizadas sobre inversión y negocios.",
             "date": "2025-09-12T10:00:00Z",
-            "total_rating": 0,
             "created_at": "2025-06-01T12:00:00Z",
             "updated_at": "2025-06-01T12:00:00Z"
         }
