@@ -86,7 +86,7 @@ class Notification(models.Model):
 
         return notification, None # Devuelve el objeto creado
 
-    def update(self, title=None, message=None, priority=None, is_read=None):
+    def update(self, title=None, message=None, priority=None):
         updated_fields = {}
         if title is not None:
             updated_fields['title'] = title

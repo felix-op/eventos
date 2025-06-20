@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-
-
+from django.utils import timezone
 from .notification import Notification 
 
 User = get_user_model() # Obtiene la instancia activa del modelo de usuario
@@ -26,7 +25,7 @@ class Notification_user(models.Model):
     def mark_as_read(self):
         if not self.is_read:
             self.is_read = True
-            self.read_at = models.DateTimeField.now()
+            self.read_at = timezone.now()
             self.save()
             return True
         return False
@@ -38,3 +37,10 @@ class Notification_user(models.Model):
             self.save()
             return True
         return False
+    
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            self.is_read = False
+            self.read_at = None
+        
+        super().save(*args, **kwargs)
