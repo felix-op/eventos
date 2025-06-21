@@ -1,8 +1,8 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
-from app.models import Notification, PriorityLevel, Notification_user, User
+from app.models import Notification, PriorityLevel, Notification_user
 
-
+User = get_user_model()
 
 class NotificationTest(TestCase):
 
