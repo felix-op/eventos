@@ -15,7 +15,6 @@ class RatingTest(TestCase):
             date=timezone.now()
         )
         
-        # Asigna el usuario y el evento directamente en el .create()
         self.rating = Rating.objects.create(
             user=self.user,
             event=self.event,
@@ -74,18 +73,11 @@ class RatingTest(TestCase):
         self.assertEqual(errors["text"], "El texto no puede estar vacío")
     
     def test_rating_new_with_valid_data(self):
-        user = User.objects.create_user(username="userTest", password="Password123")
-        event = Event.objects.create(
-            title="Titulo prueba event",
-            description="Description prueba event",
-            date=timezone.now()
-        )
-
         initial_rating_count = Rating.objects.count()
 
         success, new_rating = Rating.new(
-            user=user,
-            event=event,
+            user=self.user,
+            event=self.event,
             title="Titulo prueba rating",
             text="Texto prueba rating",
             rating=5
@@ -95,23 +87,17 @@ class RatingTest(TestCase):
         self.assertIsInstance(new_rating, Rating, "El objeto devuelto debe ser una instancia de Rating.")
         self.assertEqual(Rating.objects.count(), initial_rating_count + 1)
         
-        self.assertEqual(new_rating.user, user)
-        self.assertEqual(new_rating.event, event)
+        self.assertEqual(new_rating.user, self.user)
+        self.assertEqual(new_rating.event, self.event)
         self.assertEqual(new_rating.rating, 5)
         self.assertEqual(new_rating.title, "Titulo prueba rating")
     
     def test_rating_new_with_invalid_data(self):
-        user = User.objects.create_user(username="userTest2", password="Password123")
-        event = Event.objects.create(
-            title="Titulo prueba event 2",
-            description="Description prueba event",
-            date=timezone.now()
-        )
         inicial_rating_count = Rating.objects.count()
         rating = 250
         success, new_rating = Rating.new(
-            user=user,
-            event=event,
+            user=self.user,
+            event=self.event,
             title="",
             text="Texto prueba rating",
             rating=rating
@@ -127,15 +113,9 @@ class RatingTest(TestCase):
                         "La cantidad de ratings en la DB no debería haber cambiado")
     
     def test_rating_update_with_valid_data(self):
-        user = User.objects.create_user(username="userTest3", password="Password123")
-        event = Event.objects.create(
-            title="Titulo prueba event 3",
-            description="Description prueba event",
-            date=timezone.now()
-        )
         original_rating = Rating.objects.create(
-            user=user,
-            event=event,
+            user=self.user,
+            event=self.event,
             title="Titulo original prueba rating",
             text="Texto original prueba rating",
             rating=5
@@ -158,15 +138,10 @@ class RatingTest(TestCase):
     def test_rating_update_with_invalid_data(self):
         original_title="Titulo original prueba rating"
         original_rating=5
-        user = User.objects.create_user(username="userTest4", password="Password123")
-        event = Event.objects.create(
-            title="Titulo prueba event 5",
-            description="Description prueba event",
-            date=timezone.now()
-        )
+
         obj_rating = Rating.objects.create(
-            user=user,
-            event=event,
+            user=self.user,
+            event=self.event,
             title=original_title,
             text="Texto original prueba rating",
             rating=original_rating

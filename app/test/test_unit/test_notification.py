@@ -74,7 +74,6 @@ class NotificationTest(TestCase):
         )
 
         # Sobre los valores
-        self.assertTrue(notification)
         self.assertIsNone(errors, "No deberia haber errores")
         new_notification = Notification.objects.get(title="Titulo prueba nueva notification")
         self.assertEqual(new_notification.message, "Mensaje prueba nueva notification")

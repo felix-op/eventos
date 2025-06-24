@@ -40,22 +40,14 @@ class RefundRequest(models.Model):
             
         super().save(*args, **kwargs)
 
-    def update(self, approved, reason, approval_date,reason_detail):
+    def update(self, approved=None, reason=None, reason_detail=None):
         if approved is not None:
             self.approved = approved
-            if approved is True:
-                from .ticket import TicketState
-                self.ticket_code.state = TicketState.REFUNDED
-                self.ticket_code.save()
-                self.approval_date = timezone.now().date()
         
-        if approved is False:
-                from .ticket import TicketState
-                self.ticket_code.state = TicketState.EXPIRED
-                self.ticket_code.save()
-                self.approval_date = timezone.now().date()
+        if reason is not None:
+            self.reason = reason
 
-        self.reason = reason or self.reason
-        self.approval_date = approval_date or self.approval_date
-        self.reason_detail = reason_detail or self.reason_detail
+        if reason_detail is not None:
+            self.reason_detail = reason_detail
+
         self.save()
