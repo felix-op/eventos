@@ -45,16 +45,29 @@ class Rating(models.Model):
             rating=rating
         )
 
-        event.update_total_rating()
-
         return True, rating_obj
 
     def update(self, title=None, text=None, rating=None):
+        updated_fields={}
+
         if title is not None:
-            self.title = title
+            updated_fields['title'] = title
         if text is not None:
-            self.text = text
-        if rating is not None and (1 <= rating <= 5):
-            self.rating = rating
+            updated_fields['text'] = text
+        if rating is not None:
+            updated_fields['rating'] = rating
+
+        temp_title = updated_fields.get('title', self.title)
+        temp_text = updated_fields.get('text', self.text)
+        temp_rating = updated_fields.get('rating', self.rating)
+
+        errors = self.validate(temp_title, temp_text, temp_rating)
+
+        if errors:
+            return False, errors 
+
+        for field, value in updated_fields.items():
+            setattr(self, field, value)
 
         self.save()
+        return True, None
