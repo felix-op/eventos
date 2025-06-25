@@ -1,23 +1,40 @@
-import datetime
-
 from django.test import TestCase
+from django.contrib.auth import get_user_model
+from app.models import Event, Category, Venue
 from django.utils import timezone
 
-from app.models import Event
-
+User = get_user_model()
 
 class EventModelTest(TestCase):
+    def setUp(self):
+        self.categories = Category.objects.create(
+            name="Categ. Prueba",
+            descripcion="Descripcion categoria prueba",
+        )
+        self.venue = Venue.objects.create(
+            name="Nombre lugar prueba",
+            address="Direccion prueba lugar",
+            city="Ciudad prueba lugar",
+            capacity=100,
+            contact="Contacto prueba lugar"
+        )
+
     def test_event_creation(self):
         event = Event.objects.create(
+            categories=self.categories,
+            venue=self.venue,
             title="Evento de prueba",
             description="Descripción del evento de prueba",
-            date=timezone.now() + datetime.timedelta(days=1),
+            date=timezone.now(),
         )
+    # De aca para atras en teoria podria servirte, lo demas para abajo tenes que hacerlo vos, felix xd
+    
         """Test que verifica la creación correcta de eventos"""
         self.assertEqual(event.title, "Evento de prueba")
         self.assertEqual(event.description, "Descripción del evento de prueba")
         self.assertIsNotNone(event.created_at)
         self.assertIsNotNone(event.updated_at)
+        self.assertIsNotNone(event._tickets_updated)
 
     def test_event_validate_with_valid_data(self):
         """Test que verifica la validación de eventos con datos válidos"""
