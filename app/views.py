@@ -1,6 +1,6 @@
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView, ListView, DetailView,CreateView, FormView, DeleteView, UpdateView
-from .models import Event, Ticket, User, Comment, PriorityLevel, RefundRequest, Venue, Notification_user, Category, TicketState, Rating
+from .models import Event, Ticket, User, Comment, PriorityLevel, RefundRequest, Notification_user, Category, TicketState, Rating
 from django.shortcuts import render,redirect, get_object_or_404
 from django.db.models import Case, When
 from django.contrib.auth.forms import UserCreationForm
@@ -11,7 +11,7 @@ from django.contrib.auth import login
 from django.contrib.auth.models import Group
 from .forms import LoginForm, CommentForm, RefundRequestForm, TicketPurchaseForm, RatingForm
 from django.contrib import messages
-from django.http import HttpResponseRedirect, Http404
+from django.http import Http404
 from django.utils import timezone
 
 class AccessDeniedView(TemplateView):
@@ -140,7 +140,7 @@ class NotificationListView(LoginRequiredMixin, ListView):
         ).count()
         return context
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
         notification_user_id = request.POST.get('notification_user_id')
         notification_to_mark = get_object_or_404(
             Notification_user, 
@@ -256,14 +256,14 @@ class EventPurchaseView(LoginRequiredMixin, View):
     form_class = TicketPurchaseForm
     template_name = 'app/pages/ticket_purchase.html'
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request, **kwargs):
         """Muestra el formulario de compra."""
         event = get_object_or_404(Event, pk=kwargs.get('pk'))
         form = self.form_class()
         context = {'event': event, 'form': form}
         return render(request, self.template_name, context)
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request, **kwargs):
         """Procesa el formulario de compra."""
         event = get_object_or_404(Event, pk=kwargs.get('pk'))
         form = self.form_class(request.POST)

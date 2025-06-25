@@ -1,4 +1,4 @@
-from unittest import TestCase
+from django.test import TestCase
 from django.contrib.auth import get_user_model
 from app.models import Notification, Notification_user
 from django.utils import timezone

@@ -23,6 +23,9 @@ class Command(BaseCommand):
             call_command('loaddata', 'client_users.json')
             self.stdout.write(self.style.SUCCESS("Usuarios clientes, cargados ✅"))
 
+            call_command('loaddata', 'seller_users.json')
+            self.stdout.write(self.style.SUCCESS("Usuarios vendedores cargados ✅"))
+
             call_command('loaddata', 'tickets.json')
             self.stdout.write(self.style.SUCCESS("tickets cargados ✅"))
 
