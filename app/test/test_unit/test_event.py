@@ -2,40 +2,48 @@ from django.test import TestCase
 from django.contrib.auth import get_user_model
 from app.models import Event, Category, Venue
 from django.utils import timezone
+import datetime
 
 User = get_user_model()
 
-"""
-def test_event_validate_with_valid_data(self):
-    # Test que verifica la validación de eventos con datos válidos
-    date = timezone.now() + datetime.timedelta(days=1)
-    errors = Event.validate("Título válido", "Descripción válida", date)
-    self.assertEqual(errors, {})
-
-def test_event_validate_with_empty_title(self):
-    # Test que verifica la validación de eventos con título vacío
-    date = timezone.now() + datetime.timedelta(days=1)
-    errors = Event.validate("", "Descripción válida", date)
-    self.assertIn("title", errors)
-    self.assertEqual(errors["title"], "Por favor ingrese un titulo")
-
-def test_event_validate_with_empty_description(self):
-    # Test que verifica la validación de eventos con descripción vacía
-    date = timezone.now() + datetime.timedelta(days=1)
-    errors = Event.validate("Título válido", "", date)
-    self.assertIn("description", errors)
-    self.assertEqual(errors["description"], "Por favor ingrese una descripcion")
-"""
-
 class TestEventValidation(TestCase):
     def test_validate_all_fields_empty(self):
-        pass
+        date = timezone.now() + datetime.timedelta(days=1)
+        errors = Event.validate("", "", date)
+        self.assertIn("title", errors)
+        self.assertEqual(errors["title"], "Por favor ingrese un titulo")
+        self.assertIn("description", errors)
+        self.assertEqual(errors["description"], "Por favor ingrese una descripcion")
+
     def test_validate_title_only(self):
-        pass
+        date = timezone.now() + datetime.timedelta(days=1)
+        errors = Event.validate("Título válido", "", date)
+        self.assertIn("description", errors)
+        self.assertEqual(errors["description"], "Por favor ingrese una descripcion")
+        self.assertNotIn("title", errors)
+
     def test_validate_description_only(self):
-        pass
+        date = timezone.now() + datetime.timedelta(days=1)
+        errors = Event.validate("", "Descripción válida", date)
+        self.assertIn("title", errors)
+        self.assertEqual(errors["title"], "Por favor ingrese un titulo")
+        self.assertNotIn("description", errors)
+
     def test_validate_valid_data(self):
-        pass
+        date = timezone.now() + datetime.timedelta(days=1)
+        errors = Event.validate("Título válido", "Descripción válida", date)
+        self.assertEqual(errors, {})
+
+    def test_validate_with_past_date(self):
+        date = timezone.now() - datetime.timedelta(days=1)
+        errors = Event.validate("Título", "Descripción", date)
+        self.assertIn("date", errors)
+        self.assertEqual(errors["date"], "La fecha no puede estar en el pasado")
+
+    def test_validate_with_missing_date(self):
+        errors = Event.validate("Título", "Descripción", None)
+        self.assertIn("date", errors)
+        self.assertEqual(errors["date"], "Por favor ingrese una fecha válida")
 
 """
 def test_event_new_with_valid_data(self):

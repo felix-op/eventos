@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models import Avg, Sum
+from django.utils import timezone
 
 # =======================
 # Model: Event
@@ -28,6 +29,11 @@ class Event(models.Model):
 
         if description == "":
             errors["description"] = "Por favor ingrese una descripcion"
+
+        if not date:
+            errors["date"] = "Por favor ingrese una fecha válida"
+        elif date < timezone.now():
+            errors["date"] = "La fecha no puede estar en el pasado"
 
         return errors
 
