@@ -14,7 +14,6 @@ from .views import (
     AccessDeniedView,
     CommentCreateView,
     EventPurchaseView,
-    ProbandoView,
     RatingCreateView,
     RatingDeleteView,
     RatingUpdateView,
@@ -46,6 +45,4 @@ urlpatterns = [
     path('rating/event/<int:event_id>/create', RatingCreateView.as_view(), name='rating_create'),
     path('rating/<int:pk>/delete/', RatingDeleteView.as_view(), name='rating_delete'),
     path('rating/<int:pk>/edit/', RatingUpdateView.as_view(), name='rating_edit'),
-    # ¿?
-    path('probando/', ProbandoView.as_view(),name='probando'),
 ]
