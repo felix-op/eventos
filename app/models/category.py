@@ -11,3 +11,33 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+    
+    @classmethod
+    def validate(cls, name, description):
+        errors = {}
+
+        if not name or name.strip() == "":
+            errors["name"] = "El nombre no puede estar vacío"
+
+        if not description or description.strip() == "":
+            errors["description"] = "La descripción no puede estar vacía"
+
+        return errors
+
+    @classmethod
+    def new(cls, name, description, is_active=False):
+        errors = cls.validate(name, description)
+        if errors:
+            return False, errors
+
+        category = cls.objects.create(name=name, description=description, is_active=is_active)
+        return True, category
+
+    def update(self, name=None, description=None, is_active=None):
+        if name is not None:
+            self.name = name
+        if description is not None:
+            self.description = description
+        if is_active is not None:
+            self.is_active = is_active
+        self.save()
