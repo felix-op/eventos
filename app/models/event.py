@@ -25,15 +25,15 @@ class Event(models.Model):
         errors = {}
 
         if title == "":
-            errors["title"] = "Por favor ingrese un titulo"
+            errors["title"] = "Por favor ingrese un titulo coherente"
 
         if description == "":
-            errors["description"] = "Por favor ingrese una descripcion"
+            errors["description"] = "Por favor ingrese una descripcion útil"
 
         if not date:
-            errors["date"] = "Por favor ingrese una fecha válida"
+            errors["date"] = "Por favor ingrese una fecha con sentido"
         elif date < timezone.now():
-            errors["date"] = "La fecha no puede estar en el pasado"
+            errors["date"] = "La fecha no puede estar en el pasado >:|"
 
         return errors
 
