@@ -77,9 +77,9 @@ class EventListView(ListView):
             rating = int(promedio % 5) if promedio else 0
             event.starts_marked = range(rating)
             event.starts_unmarked = range(5 - rating)
+            print(event.starts_marked)
+            print(event.starts_unmarked)
 
-        print(event.starts_marked)
-        print(event.starts_unmarked)
         
         context['categories'] = Category.objects.all()  # Pasar las categorías al template
         return context
