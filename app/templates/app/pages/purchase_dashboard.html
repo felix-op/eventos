@@ -40,40 +40,39 @@
 
                 {% else %}
 
-                    {% if ticket.state == 1%} {# state ==  valid #}
-
-                        {# MEJORAR (NO FUNCIONA EL TOOLTIP DE BOOSTRAP) #}
+                    {% if ticket.event.date > now %}
+                        <!-- Mostrar botón habilitado -->
+                        <button class="btn btn-sm btn-outline-warning" data-bs-toggle="modal" data-bs-target="#refundModal{{ ticket.pk }}">
+                            <i class="bi bi-arrow-counterclockwise me-1"></i>Solicitar reembolso           
+                        </button>
+                    {% else %}
+                        <!-- Mostrar botón deshabilitado con tooltip -->
                         <div style="position: relative; display: inline-block;"
                             onclick="this.querySelector('.tooltip-text').style.display = 'block';"
                             onmouseout="this.querySelector('.tooltip-text').style.display = 'none';"
                         >
-                        <button class="btn btn-sm btn-warning" disabled>
-                            <i class="bi bi-arrow-counterclockwise me-1"></i>Solicitar reembolso
-                        </button>
-                        <div class="tooltip-text"
-                            style="
-                                display: none;
-                                position: absolute;
-                                top: 100%;
-                                left: 50%;
-                                transform: translateX(-50%);
-                                margin-top: 6px;
-                                background: #000;
-                                color: #fff;
-                                padding: 5px 8px;
-                                border-radius: 5px;
-                                font-size: 12px;
-                                white-space: nowrap;
-                                z-index: 999;
-                            ">
-                            No puede solicitar un reembolso, si todavia no ocurrio el evento
+                            <button class="btn btn-sm btn-warning" disabled>
+                                <i class="bi bi-arrow-counterclockwise me-1"></i>Solicitar reembolso
+                            </button>
+                            <div class="tooltip-text"
+                                style="
+                                    display: none;
+                                    position: absolute;
+                                    top: 100%;
+                                    left: 50%;
+                                    transform: translateX(-50%);
+                                    margin-top: 6px;
+                                    background: #000;
+                                    color: #fff;
+                                    padding: 5px 8px;
+                                    border-radius: 5px;
+                                    font-size: 12px;
+                                    white-space: nowrap;
+                                    z-index: 999;
+                                ">
+                                No puede solicitar un reembolso, si ya paso el evento
+                            </div>
                         </div>
-                        </div>
-              
-                    {% else %}
-                        <button class="btn btn-sm btn-outline-warning" data-bs-toggle="modal" data-bs-target="#refundModal{{ ticket.pk }}">
-                            <i class="bi bi-arrow-counterclockwise me-1"></i>Solicitar reembolso           
-                        </button>
                     {% endif %}
 
                 {% endif %}

@@ -94,6 +94,7 @@ class UserDashboard(LoginRequiredMixin,TemplateView):
         context['comments'] = Comment.objects.filter(user=self.request.user)
         context['refundChoices'] = RefundRequest.REASON_CHOICES
         context['refunds'] = RefundRequest.objects.filter(usuario=self.request.user)
+        context["now"] = timezone.now()
         return context
 
 class EventDetailView(DetailView):
