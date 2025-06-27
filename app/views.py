@@ -52,6 +52,7 @@ class EventListView(ListView):
     def get_queryset(self):
         user = self.request.user
         category_filter = self.request.GET.get('category', '')
+        search_filter = self.request.GET.get('search', '')
         # Filtrar eventos según la autenticación del usuario y tipo
         if user.is_staff:
             events = Event.objects.all()  # Mostrar todos los eventos
@@ -60,6 +61,10 @@ class EventListView(ListView):
         # Aplicar filtro por categoría si se seleccionó alguna
         if category_filter:
             events = events.filter(categories__id=category_filter)
+        # Filtro por titulo y ciudad 
+        if search_filter:
+            events = events.filter(title__icontains=search_filter) | events.filter(venue__city__icontains=search_filter)
+
 
         return events.order_by("date")  # Ordenar por fecha
 

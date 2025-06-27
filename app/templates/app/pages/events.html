@@ -18,7 +18,7 @@
             <select name="category" class="form-select">
                 <option value="">Todas las categorías</option>
                 {% for category in categories %}
-                    <option value="{{ category.id }}" {% if category.id == request.GET.category|default_if_none:'' %}selected{% endif %}>
+                    <option value="{{ category.id }}" {% if category.id|stringformat:"s" == request.GET.category|default:'' %}selected{% endif %}>
                         {{ category.name }}
                     </option>
                 {% endfor %}
