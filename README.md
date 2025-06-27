@@ -18,3 +18,9 @@ python manage.py admin_default
 python manage.py tickets_expirados
 ```
    > - Si el evento ya se realizo, se cambia el estado de todos los tickets relacionados con ese evento a EXPIRED
+
+# Agregar librerias externas utiladas para el aspecto de la vista admin
+```bash
+pip install -r requirements.txt
+```
+
