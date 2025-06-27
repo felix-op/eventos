@@ -1,6 +1,10 @@
 from django.contrib import admin
 from .models import Category, Comment, Event, Notification, Rating, RefundRequest, Ticket, User, Venue, Notification_user
 from django import forms
+from django.contrib import messages
+from django.core.management import call_command
+
+
 
 class HiddenFromSellerAdmin(admin.ModelAdmin):
     def has_module_permission(self, request):
@@ -78,8 +82,12 @@ class NotificationAdmin(HiddenFromSellerAdmin):
 class RatingAdmin(HiddenFromSellerAdmin):
     pass
 
+def actualizar_tickets_expirados(modeladmin, request,queryset):
+    call_command('tickets_expirados')
+    modeladmin.message_user(request, "Tickets expirados actualizados correctamente.")
+
 class TicketAdmin(HiddenFromSellerAdmin):
-    pass
+    actions = [actualizar_tickets_expirados]
 
 class UserAdmin(HiddenFromSellerAdmin):
     pass

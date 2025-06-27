@@ -1,4 +1,8 @@
 from django.db import models, IntegrityError
+from . import Event
+from django.utils import timezone
+
+
 # =======================
 # Enum: TicketType
 # Description: Enum for ticket categories (General, VIP).
@@ -41,6 +45,27 @@ class Ticket(models.Model):
     def __str__(self):
         return f"{self.ticket_code} - {self.user.username} - {self.event.title}"
     
+    @property
+    def tickets_expirados(self):
+        eventos_pasados = Event.objects.filter(
+            date__lt = timezone.now(),
+            _tickets_updated = False
+        )
+        
+        if not eventos_pasados.exists():
+            print("No hay tickets para actualizar")
+            return
+
+        for event in eventos_pasados:
+            Ticket.objects.filter(
+                event = event, 
+                state = TicketState.VALID
+            ).update(state = TicketState.EXPIRED)
+
+            event._tickets_updated = True
+            event.save()
+        print("Tickets actualizados")
+
     @classmethod
     def validate(cls, quantity=None, user=None, event=None, state=None, type=None):
         errors = {}
