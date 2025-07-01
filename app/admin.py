@@ -7,16 +7,21 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin 
 
 User = get_user_model()
-
+class HiddenFromSellerAdmin(admin.ModelAdmin):
+    def has_module_permission(self, request):
+        return not request.user.groups.filter(name='seller').exists()
+ 
 class CustomUserCreationForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ("username", "email", "groups")  
 
-class CustomUserAdmin(UserAdmin):
+class CustomUserAdmin(HiddenFromSellerAdmin,UserAdmin):
     add_form = CustomUserCreationForm
     model = User
-
+    list_display = ("username", "date_joined", "is_active", "is_staff", "is_superuser")
+    search_fields = ("username", )
+    list_filter = ("date_joined", "is_active", "is_staff", "is_superuser")
     add_fieldsets = (
         (None, {
             'fields': ('username', 'email', 'groups'),
@@ -26,11 +31,7 @@ class CustomUserAdmin(UserAdmin):
         if not change:
             obj.set_password('123456')
         super().save_model(request, obj, form, change)
-
-class HiddenFromSellerAdmin(admin.ModelAdmin):
-    def has_module_permission(self, request):
-        return not request.user.groups.filter(name='seller').exists()
-    
+   
 class EventForm(forms.ModelForm):
     class Meta:
         model = Event
@@ -117,11 +118,6 @@ def actualizar_tickets_expirados(modeladmin, request,queryset):
 class TicketAdmin(HiddenFromSellerAdmin):
     list_display = ("user", "event", "buy_date", "quantity","type", "state", "ticket_code")
     actions = [actualizar_tickets_expirados]
-
-class UserAdmin(HiddenFromSellerAdmin):
-    list_display = ("username", "date_joined", "is_active", "is_staff", "is_superuser")
-    search_fields = ("username", )
-    list_filter = ("date_joined", "is_active", "is_staff", "is_superuser")
 
 class VenueAdmin(HiddenFromSellerAdmin):
     list_display = ("name", "address", "city", "capacity", "contact")
