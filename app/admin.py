@@ -3,8 +3,29 @@ from .models import Category, Comment, Event, Notification, Rating, RefundReques
 from django import forms
 from django.contrib import messages
 from django.core.management import call_command
+from django.contrib.auth import get_user_model
+from django.contrib.auth.admin import UserAdmin 
 
+User = get_user_model()
 
+class CustomUserCreationForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ("username", "email", "groups")  
+
+class CustomUserAdmin(UserAdmin):
+    add_form = CustomUserCreationForm
+    model = User
+
+    add_fieldsets = (
+        (None, {
+            'fields': ('username', 'email', 'groups'),
+        }),
+    )
+    def save_model(self, request, obj, form, change):
+        if not change:
+            obj.set_password('123456')
+        super().save_model(request, obj, form, change)
 
 class HiddenFromSellerAdmin(admin.ModelAdmin):
     def has_module_permission(self, request):
@@ -89,8 +110,6 @@ def actualizar_tickets_expirados(modeladmin, request,queryset):
 class TicketAdmin(HiddenFromSellerAdmin):
     actions = [actualizar_tickets_expirados]
 
-class UserAdmin(HiddenFromSellerAdmin):
-    pass
 
 class VenueAdmin(HiddenFromSellerAdmin):
     pass
@@ -105,6 +124,6 @@ admin.site.register(Notification, NotificationAdmin)
 admin.site.register(Rating, RatingAdmin)
 admin.site.register(RefundRequest, RefundRequestAdmin)
 admin.site.register(Ticket, TicketAdmin)
-admin.site.register(User, UserAdmin)
+admin.site.register(User, CustomUserAdmin)
 admin.site.register(Venue, VenueAdmin)
 admin.site.register(Notification_user, Notification_userAdmin)
