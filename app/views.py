@@ -133,12 +133,18 @@ class NotificationListView(LoginRequiredMixin, ListView):
 
     def post(self, request):
         notification_user_id = request.POST.get('notification_user_id')
-        notification_to_mark = get_object_or_404(
+        action = request.POST.get('action')
+        
+        notification_to_change = get_object_or_404(
             Notification_user, 
             id=notification_user_id, 
             user=self.request.user
         )
-        notification_to_mark.mark_as_read()
+        
+        if action == 'unread':
+            notification_to_change.mark_as_unread()
+        else:
+            notification_to_change.mark_as_read()
 
         return redirect('notifications')
 
