@@ -38,6 +38,8 @@ class Command(BaseCommand):
             call_command('loaddata', 'notifications_user.json')
             self.stdout.write(self.style.SUCCESS("notifications_user cargados ✅"))
 
+            call_command('tickets_expirados')
+
         except Exception as e:
             raise CommandError(f"Ocurrió un error al cargar fixtures: {e}")
     
