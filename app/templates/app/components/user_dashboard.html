@@ -49,9 +49,25 @@
       <div class="d-none d-md-block sidebar" style="height: 100%">
         <h4 class="mb-4 px-3">My Profile</h4>
         <ul class="nav flex-column px-3">
-          <li class="nav-item mb-2"><a class="nav-link" href="#Purchase">🛒 Purchase History</a></li>
+          <li class="nav-item mb-2">
+            <a class="nav-link" href="#Purchase">
+              {% include '../components/shop_icon.html' %}
+              Purchase History
+            </a>
+          </li>
           <li class="nav-item mb-2"><a class="nav-link" href="#Comments">💬 Comments</a></li>
-          <li class="nav-item mb-2"><a class="nav-link" href="#Ratings">⭐ Ratings</a></li>
+          <li class="nav-item mb-2">
+            <a class="nav-link" href="#Ratings">
+              {% include '../components/stars_icon.html' %}
+              Ratings
+            </a>
+          </li>
+          <li class="nav-item mb-2">
+            <a class="nav-link" href="#User">
+              {% include '../components/config_icon.html' %}
+             User Profile
+            </a>
+          </li>
         </ul>
       </div>
 
@@ -63,9 +79,25 @@
         </div>
         <div class="offcanvas-body px-3">
           <ul class="nav flex-column" style="font-size: 2.2rem; height: 100%; justify-content: space-evenly;">
-            <li class="nav-item mb-2"><a class="nav-link" href="#Purchase">🛒 Purchase History</a></li>
+            <li class="nav-item mb-2">
+              <a class="nav-link" href="#Purchase">
+                {% include '../components/shop_icon.html' %}
+                Purchase History
+              </a>
+            </li>
             <li class="nav-item mb-2"><a class="nav-link" href="#Comments">💬 Comments</a></li>
-            <li class="nav-item mb-2"><a class="nav-link" href="#Ratings">⭐ Ratings</a></li>
+            <li class="nav-item mb-2">
+              <a class="nav-link" href="#Ratings">
+                {% include '../components/stars_icon.html' %}
+                Ratings
+              </a>
+            </li>
+            <li class="nav-item mb-2">
+              <a class="nav-link" href="#User">
+                {% include '../components/config_icon.html' %}
+                User Profile
+              </a>
+            </li>
           </ul>
         </div>
       </div>
@@ -79,7 +111,7 @@
       {% include "../pages/comment_dashboard.html" %}
       <!-- RATINGS -->        
       {% show_rating_dashboard %}
-
+      {% include "../pages/user_profile.html" %}
     </div>
   </div>
 

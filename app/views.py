@@ -80,6 +80,8 @@ class UserDashboard(LoginRequiredMixin,TemplateView):
         context['refundChoices'] = RefundRequest.REASON_CHOICES
         context['refunds'] = RefundRequest.objects.filter(usuario=self.request.user)
         context["now"] = timezone.now()
+        context["username"] = self.request.user.username
+        context["email"] = self.request.user.email
         return context
 
 class EventDetailView(DetailView):
