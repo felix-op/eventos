@@ -1,46 +1,54 @@
-<div id="Ratings" class="card mt-4">
-    <div class="card-header">
+{% comment %} <div id="Ratings" class="card mt-4"> {% endcomment %}
+<div id="Ratings" class="container my-5">
+    {% comment %} <div class="card-header">
         <h5 class="mb-0">Mis Calificaciones</h5>
     </div>
-    <div class="card-body">
+    <div class="card-body"> {% endcomment %}
+    <h5 class="mb-4 fw-semibold text-primary">Mis Calificaciones</h5>  <!-- # MODIFICADO -->
+    <div class="d-flex flex-column gap-4">  <!-- # MODIFICADO -->
 
         {# --- SECCIÓN 1: EVENTOS PENDIENTES --- #}
         {% if events_to_rate %}
-            <h6 class="card-subtitle mb-2 text-muted">Eventos Pendientes de Calificación</h6>
-            <ul class="list-group list-group-flush mb-4">
-                {% for event in events_to_rate %}
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <span>{{ event.title }}</span>
-                        <a href="{% url 'rating_create' event.id %}" class="btn btn-primary btn-sm">Calificar</a>
-                    </li>
-                {% endfor %}
-            </ul>
+            <div>
+                <h6 class="card-subtitle mb-2 text-muted">Eventos Pendientes de Calificación</h6>
+                <ul class="list-group list-group-flush mb-4">
+                    {% for event in events_to_rate %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>{{ event.title }}</span>
+                            <a href="{% url 'rating_create' event.id %}" class="btn btn-primary btn-sm">Calificar</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
         {% endif %}
 
         {# --- SECCIÓN 2: CALIFICACIONES ENVIADAS --- #}
         {% if completed_ratings %}
-            <h6 class="card-subtitle mb-2 text-muted">Calificaciones Enviadas</h6>
-            <ul class="list-group list-group-flush">
-                {% for rating in completed_ratings %}
-                    <li class="list-group-item">
-                        <div class="d-flex justify-content-between align-items-start">
-                            <div>
-                                <h5 class="mb-1">{{ rating.event.title }}</h5>
-                                <p class="mb-1"><strong>"{{ rating.title }}"</strong></p>
-                                <p class="mb-2 fst-italic">"{{ rating.text }}"</p>
-                                <small class="text-warning">Puntuación: {{ rating.rating }}/5</small>
+            <div>
+                <h6 class="card-subtitle mb-2 text-muted">Calificaciones Enviadas</h6>
+                <ul class="list-group list-group-flush">
+                    {% for rating in completed_ratings %}
+                        <li class="list-group-item">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h5 class="mb-1">{{ rating.event.title }}</h5>
+                                    <p class="mb-1"><strong>"{{ rating.title }}"</strong></p>
+                                    <p class="mb-2 fst-italic">"{{ rating.text }}"</p>
+                                    <small class="text-warning">Puntuación: {{ rating.rating }}/5</small>
+                                </div>
+                                <div>
+                                    <a href="{% url 'rating_edit' rating.id %}" class="btn btn-outline-secondary btn-sm me-2">Editar</a>
+                                    <a href="{% url 'rating_delete' rating.id %}" class="btn btn-outline-danger btn-sm">Eliminar</a>
+                                </div>
                             </div>
-                            <div>
-                                <a href="{% url 'rating_edit' rating.id %}" class="btn btn-outline-secondary btn-sm me-2">Editar</a>
-                                <a href="{% url 'rating_delete' rating.id %}" class="btn btn-outline-danger btn-sm">Eliminar</a>
-                            </div>
-                        </div>
-                    </li>
-                {% endfor %}
-            </ul>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
         {% else %}
             {% if not events_to_rate %}
-                 <p class="text-muted mb-0">No tienes calificaciones enviadas ni eventos pendientes.</p>
+                {% comment %} <p class="text-muted mb-0">No tienes calificaciones enviadas ni eventos pendientes.</p> {% endcomment %}
+                <div class="text-muted fst-italic">No tienes calificaciones enviadas ni eventos pendientes.</div>
             {% endif %}
         {% endif %}
     </div>

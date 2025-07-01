@@ -117,9 +117,15 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 LANGUAGE_CODE = "en"
 
+
 TIME_ZONE = "UTC"
 
 USE_I18N = True
+USE_L10N = True
+
+LANGUAGES = [
+    ('en', 'English'),
+]
 
 USE_TZ = True
 
@@ -280,5 +286,5 @@ JAZZMIN_SETTINGS = {
     # override change forms on a per modeladmin basis
     #"changeform_format_overrides": {"auth.user": "collapsible", "auth.group": "vertical_tabs"},
     # Add a language dropdown into the admin
-    #"language_chooser": True,
+    "language_chooser": True,
 }
