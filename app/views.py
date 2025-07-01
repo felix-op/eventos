@@ -1,8 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView, ListView, DetailView,CreateView, FormView, DeleteView, UpdateView
-from .models import Event, Ticket, User, Comment, PriorityLevel, RefundRequest, Notification_user, Category, TicketState, Rating
+from .models import Event, Ticket, User, Comment, RefundRequest, Notification_user, Category, TicketState, Rating
 from django.shortcuts import render,redirect, get_object_or_404
-from django.db.models import Case, When
 from django.contrib.auth.forms import UserCreationForm
 from django.views import View
 from django.urls import reverse_lazy,reverse
@@ -28,20 +27,6 @@ class NavView(TemplateView):
         user = self.request.user
         context['usuario_logueado'] = user.is_authenticated
         
-        if user.is_authenticated:
-            notis_preview = Notification_user.objects.filter(
-                user=user
-            ).select_related('notification').annotate(
-                priority_orden=Case(
-                    When(notification__priority=PriorityLevel.HIGH, then=1),
-                    When(notification__priority=PriorityLevel.MEDIUM, then=2),
-                    When(notification__priority=PriorityLevel.LOW, then=3),
-                )
-            ).order_by('priority_orden', '-notification__created_at')[:5]
-        else:
-            notis_preview = []
-        
-        context['notis_preview'] = notis_preview
         return context
 
 class EventListView(ListView):
@@ -148,14 +133,18 @@ class NotificationListView(LoginRequiredMixin, ListView):
 
     def post(self, request):
         notification_user_id = request.POST.get('notification_user_id')
-        notification_to_mark = get_object_or_404(
+        action = request.POST.get('action')
+        
+        notification_to_change = get_object_or_404(
             Notification_user, 
             id=notification_user_id, 
             user=self.request.user
         )
-        if notification_to_mark:
-            notification_to_mark.is_read = True
-            notification_to_mark.save()
+        
+        if action == 'unread':
+            notification_to_change.mark_as_unread()
+        else:
+            notification_to_change.mark_as_read()
 
         return redirect('notifications')
 
@@ -257,7 +246,7 @@ class RefundRequestCreateView(LoginRequiredMixin,View):
         return redirect('user_dashboard')  
 
 # Compra de Tickets 
-class EventPurchaseView(LoginRequiredMixin, View):
+class TicketPurchaseView(LoginRequiredMixin, View):
     login_url = 'access-denied'
     form_class = TicketPurchaseForm
     template_name = 'app/pages/ticket_purchase.html'
@@ -297,7 +286,8 @@ class EventPurchaseView(LoginRequiredMixin, View):
         messages.error(request, "Por favor, corrige los errores en el formulario.")
         context = {'event': event, 'form': form}
         return render(request, self.template_name, context)
-    
+
+# Create, Delete y Update de Rating
 class RatingCreateView(LoginRequiredMixin, CreateView):
     model = Rating
     form_class = RatingForm

@@ -20,6 +20,21 @@ class NotificationUserTest(TestCase):
         self.assertFalse(relation.is_read)
         self.assertIsNone(relation.read_at)
     
+    def test_mark_as_read_valid(self):
+        relation = Notification_user.objects.create(
+            user=self.user,
+            notification=self.notification
+        )
+
+        self.assertFalse(relation.is_read)
+
+        result = relation.mark_as_read()
+
+        self.assertTrue(result)
+
+        self.assertTrue(relation.is_read)
+        self.assertIsNotNone(relation.read_at)
+
     def test_mark_as_unread_valid(self):
         relation = Notification_user.objects.create(
             user=self.user,
