@@ -10,11 +10,17 @@ User = get_user_model() # Obtiene la instancia activa del modelo de usuario
 # Description: Intermediate model for Many-to-Many relationship between User and Notification,
 #              storing read status for each user.
 # =======================
+
+class NotificationUserManager(models.Manager):
+    def unread_for_user(self, user):
+        return self.filter(user=user, is_read=False)
+
 class Notification_user(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     notification = models.ForeignKey(Notification, on_delete=models.CASCADE)
     is_read = models.BooleanField(default=False)
     read_at = models.DateTimeField(null=True, blank=True)
+    objects = NotificationUserManager()
 
     class Meta:
         unique_together = ('notification', 'user')
