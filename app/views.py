@@ -1,8 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView, ListView, DetailView,CreateView, FormView, DeleteView, UpdateView
-from .models import Event, Ticket, User, Comment, PriorityLevel, RefundRequest, Notification_user, Category, TicketState, Rating
+from .models import Event, Ticket, User, Comment, RefundRequest, Notification_user, Category, TicketState, Rating
 from django.shortcuts import render,redirect, get_object_or_404
-from django.db.models import Case, When
 from django.contrib.auth.forms import UserCreationForm
 from django.views import View
 from django.urls import reverse_lazy,reverse
@@ -139,9 +138,7 @@ class NotificationListView(LoginRequiredMixin, ListView):
             id=notification_user_id, 
             user=self.request.user
         )
-        if notification_to_mark:
-            notification_to_mark.is_read = True
-            notification_to_mark.save()
+        notification_to_mark.mark_as_read()
 
         return redirect('notifications')
 
