@@ -83,6 +83,9 @@ class CommentAdmin(admin.ModelAdmin):
         return True  
 
 class RefundRequestAdmin(admin.ModelAdmin):
+    list_display = ("usuario", "ticket_code", "reason", "approved", "approval_date", "reason_detail")
+    search_fields = ("reason", )
+    list_filter = ("approved", "approval_date")
 
     def has_module_permission(self, request):
         return True
