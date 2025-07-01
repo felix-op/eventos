@@ -2,7 +2,7 @@
 <div id="Purchase" class="container my-4">
     <h6 class="mb-3 fw-semibold text-primary">Historial de Compras</h6>
     {% if tickets %}
-        <div class="row g-3">
+        <div class="row g-3" style="overflow: hidden;">
         {% for ticket in tickets %}
             <div class="col-12 col-sm-6 col-lg-4">
             <div class="p-3 border rounded shadow-sm small h-100 d-flex flex-column justify-content-between">
@@ -59,7 +59,7 @@
                                     display: none;
                                     position: absolute;
                                     top: 100%;
-                                    left: 50%;
+                                    left: 20%;
                                     transform: translateX(-50%);
                                     margin-top: 6px;
                                     background: #000;
@@ -67,7 +67,7 @@
                                     padding: 5px 8px;
                                     border-radius: 5px;
                                     font-size: 12px;
-                                    white-space: nowrap;
+                                    text-align: center;
                                     z-index: 999;
                                 ">
                                 No puede solicitar un reembolso, si ya paso el evento
