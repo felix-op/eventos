@@ -41,6 +41,10 @@ class EventAdmin(admin.ModelAdmin):
         return True
 
 class CommentAdmin(admin.ModelAdmin):
+    list_display = ("title", "create_at")
+    search_fields = ("title", )
+    list_filter = ("create_at",)
+
     def has_module_permission(self, request):
         return True
 
@@ -74,10 +78,13 @@ class RefundRequestAdmin(admin.ModelAdmin):
         return not request.user.groups.filter(name='seller').exists()
 
 class CategoryAdmin(HiddenFromSellerAdmin):
-    pass
+    list_display = ("name", "is_active")
+    search_fields = ("name",)
+    list_filter = ("is_active",)
 
 class NotificationAdmin(HiddenFromSellerAdmin):
-    pass
+    list_display = ("title", "priority", "created_at")
+    list_filter = ("priority", "recipients", "created_at")
 
 class RatingAdmin(HiddenFromSellerAdmin):
     pass
@@ -87,16 +94,21 @@ def actualizar_tickets_expirados(modeladmin, request,queryset):
     modeladmin.message_user(request, "Tickets expirados actualizados correctamente.")
 
 class TicketAdmin(HiddenFromSellerAdmin):
+    list_display = ("user", "event", "buy_date", "quantity","type", "state", "ticket_code")
     actions = [actualizar_tickets_expirados]
 
 class UserAdmin(HiddenFromSellerAdmin):
-    pass
+    list_display = ("username", "date_joined", "is_active", "is_staff", "is_superuser")
+    search_fields = ("username", )
+    list_filter = ("date_joined", "is_active", "is_staff", "is_superuser")
 
 class VenueAdmin(HiddenFromSellerAdmin):
-    pass
+    list_display = ("name", "address", "city", "capacity", "contact")
+    search_fields = ("name", "address", "city", "contact")
 
 class Notification_userAdmin(HiddenFromSellerAdmin):
-    pass
+    list_display = ("user", "notification", "is_read")
+    list_filter = ("is_read", "read_at")
 
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Comment, CommentAdmin)
