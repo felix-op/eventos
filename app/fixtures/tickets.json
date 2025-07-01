@@ -33,7 +33,7 @@
         "ticket_code": "GHI789USER2",
         "quantity": 3,
         "type": 1,
-        "state": 2,
+        "state": 1,
         "user": 2,
         "event": 3
       }
@@ -46,7 +46,7 @@
         "ticket_code": "JKL012USER2",
         "quantity": 1,
         "type": 2,
-        "state": 1,
+        "state": 2,
         "user": 2,
         "event": 1
       }
@@ -59,7 +59,7 @@
         "ticket_code": "MNO345USER3",
         "quantity": 2,
         "type": 1,
-        "state": 2,
+        "state": 1,
         "user": 2,
         "event": 4
       }
@@ -85,7 +85,7 @@
         "ticket_code": "STU901USER4",
         "quantity": 1,
         "type": 1,
-        "state": 2,
+        "state": 1,
         "user": 4,
         "event": 3
       }
