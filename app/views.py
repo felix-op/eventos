@@ -246,7 +246,7 @@ class RefundRequestCreateView(LoginRequiredMixin,View):
         return redirect('user_dashboard')  
 
 # Compra de Tickets 
-class EventPurchaseView(LoginRequiredMixin, View):
+class TicketPurchaseView(LoginRequiredMixin, View):
     login_url = 'access-denied'
     form_class = TicketPurchaseForm
     template_name = 'app/pages/ticket_purchase.html'
@@ -286,7 +286,8 @@ class EventPurchaseView(LoginRequiredMixin, View):
         messages.error(request, "Por favor, corrige los errores en el formulario.")
         context = {'event': event, 'form': form}
         return render(request, self.template_name, context)
-    
+
+# Create, Delete y Update de Rating
 class RatingCreateView(LoginRequiredMixin, CreateView):
     model = Rating
     form_class = RatingForm

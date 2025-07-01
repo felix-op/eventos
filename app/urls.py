@@ -13,7 +13,7 @@ from .views import (
     RefundRequestCreateView,
     AccessDeniedView,
     CommentCreateView,
-    EventPurchaseView,
+    TicketPurchaseView,
     RatingCreateView,
     RatingDeleteView,
     RatingUpdateView,
@@ -28,7 +28,8 @@ urlpatterns = [
     # eventos
     path("events/", EventListView.as_view(), name="events"),
     path("events/<int:pk>/", EventDetailView.as_view(), name="event_detail"),
-    path('event/<int:pk>/purchase/', EventPurchaseView.as_view(), name='ticket_purchase'),
+    # tickets
+    path('event/<int:pk>/ticket-purchase/', TicketPurchaseView.as_view(), name='ticket_purchase'),
     # autenticacion
     path('logout/', auth_views.LogoutView.as_view(next_page='home'), name='logout'),
     path('login/', views.LoginManualView.as_view(), name="login"),
